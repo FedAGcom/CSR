@@ -1,4 +1,4 @@
-package com.fedag.CSR.services.utils;
+package com.fedag.CSR.service.utils;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
