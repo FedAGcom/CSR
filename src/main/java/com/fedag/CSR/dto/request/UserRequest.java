@@ -3,12 +3,6 @@ package com.fedag.CSR.dto.request;
 import com.fedag.CSR.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.annotations.Type;
-
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

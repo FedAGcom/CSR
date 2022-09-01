@@ -1,23 +1,18 @@
-package com.fedag.CSR.dto.update;
+package com.fedag.CSR.dto.response;
 
 import com.fedag.CSR.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class UserUpdate {
+public class UserResponse {
 
-    private int id;
     private String email;
     private String firstName;
     private String lastName;
     private String password;
     private Role role;
-    private LocalDateTime created;
     private String steamLink;
     private int balanceId;
 }
