@@ -3,11 +3,13 @@ package com.fedag.CSR.dto.response;
 import com.fedag.CSR.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserResponse {
 
     private int id;
