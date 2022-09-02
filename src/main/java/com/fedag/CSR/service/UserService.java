@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserService<T> {
 
-//    List<User> getAllUsers();
     Page<T> getAllUsers(Pageable pageable);
     UserResponse getUser(int id);
 
