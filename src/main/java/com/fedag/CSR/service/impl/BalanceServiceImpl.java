@@ -3,7 +3,7 @@ package com.fedag.CSR.service.impl;
 import com.fedag.CSR.exception.EntityNotFoundException;
 import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.model.BalanceItem;
-import com.fedag.CSR.model.mapper.BalanceMapper;
+import com.fedag.CSR.mapper.BalanceMapper;
 import com.fedag.CSR.repository.BalanceRepository;
 import com.fedag.CSR.service.BalanceService;
 import lombok.RequiredArgsConstructor;
