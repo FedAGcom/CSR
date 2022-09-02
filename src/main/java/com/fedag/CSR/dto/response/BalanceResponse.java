@@ -1,4 +1,4 @@
-package com.fedag.CSR.model.dto.response;
+package com.fedag.CSR.dto.response;
 
 import lombok.Data;
 import java.util.List;

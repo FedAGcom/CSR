@@ -1,7 +1,7 @@
 package com.fedag.CSR.service;
 
 import com.fedag.CSR.model.Balance;
-import com.fedag.CSR.model.mapper.BalanceMapper;
+import com.fedag.CSR.mapper.BalanceMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

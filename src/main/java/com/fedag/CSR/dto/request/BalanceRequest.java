@@ -1,4 +1,4 @@
-package com.fedag.CSR.model.dto.request;
+package com.fedag.CSR.dto.request;
 
 import lombok.Data;
 import java.util.List;

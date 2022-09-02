@@ -1,9 +1,9 @@
-package com.fedag.CSR.model.mapper;
+package com.fedag.CSR.mapper;
 
 import com.fedag.CSR.model.Balance;
-import com.fedag.CSR.model.dto.request.BalanceRequest;
-import com.fedag.CSR.model.dto.request.BalanceUpdateRequest;
-import com.fedag.CSR.model.dto.response.BalanceResponse;
+import com.fedag.CSR.dto.request.BalanceRequest;
+import com.fedag.CSR.dto.request.BalanceUpdateRequest;
+import com.fedag.CSR.dto.response.BalanceResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

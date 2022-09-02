@@ -1,4 +1,4 @@
-package com.fedag.CSR.model.mapper.config;
+package com.fedag.CSR.mapper.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
