@@ -1,10 +1,9 @@
 package com.fedag.CSR.controller;
 
-
-import com.fedag.CSR.dto.request.ItemRequest;
-import com.fedag.CSR.dto.response.ItemResponse;
-import com.fedag.CSR.dto.update.ItemUpdate;
-import com.fedag.CSR.service.impl.ItemServiceImpl;
+import com.fedag.CSR.dto.request.PackRequest;
+import com.fedag.CSR.dto.response.PackResponse;
+import com.fedag.CSR.dto.update.PackUpdate;
+import com.fedag.CSR.service.PackService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,65 +18,64 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/api/v1/items")
+@RequestMapping("/api/v1/packs")
 @RequiredArgsConstructor
-public class ItemController {
+public class PackController {
 
-    private final ItemServiceImpl itemService;
+    private final PackService packService;
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Получение предмета по id.",
+    @ApiOperation(value = "Получение кейса по id.",
             notes = "Предоставьте id.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Предмет получен",
+            @ApiResponse(responseCode = "200", description = "Кейс получен",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    public ItemResponse getItem(@PathVariable BigDecimal id){
-        return itemService.getItem(id);
+    public PackResponse getPack(@PathVariable BigDecimal id){
+        return packService.getPack(id);
     }
 
     @GetMapping
-    @ApiOperation(value = "Список всех предметов.")
+    @ApiOperation(value = "Список всех кейсов.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Список предметов получен.",
+            @ApiResponse(responseCode = "200", description = "Список кейсов получен.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    public Page<ItemResponse> getAllItems(@PageableDefault(size = 5) Pageable pageable) {
-        Page<ItemResponse> page = itemService.getAllItems(pageable);
-        System.out.println(page.getTotalElements());
-        return itemService.getAllItems(pageable);
+    public Page<PackResponse> getAllPacks(@PageableDefault(size = 5) Pageable pageable) {
+        Page<PackResponse> page = packService.getAllPacks(pageable);
+        return packService.getAllPacks(pageable);
     }
 
     @PutMapping
-    @ApiOperation(value = "Обновление предмета.")
+    @ApiOperation(value = "Обновление кейса.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Предмет обновлен.",
+            @ApiResponse(responseCode = "200", description = "Кейс обновлен.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    public void updateItem(@RequestBody ItemUpdate item) {
-        itemService.updateItem(item);
+    public void updatePack(@RequestBody PackUpdate pack) {
+        packService.updatePack(pack);
     }
 
     @PostMapping
-    @ApiOperation(value = "Создание нового предмета.")
+    @ApiOperation(value = "Создание нового кейса.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Предмет создан.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    public void createUser(@RequestBody ItemRequest item) {
-        itemService.create(item);
+    public void createPack(@RequestBody PackRequest pack) {
+        packService.create(pack);
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Удаление предмета",
+    @ApiOperation(value = "Удаление кейса.",
             notes = "Предоставьте id.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Предмет удален.",
@@ -86,6 +84,6 @@ public class ItemController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     public void delete(@PathVariable BigDecimal id) {
-        itemService.deleteItemById(id);
+        packService.deletePackById(id);
     }
 }

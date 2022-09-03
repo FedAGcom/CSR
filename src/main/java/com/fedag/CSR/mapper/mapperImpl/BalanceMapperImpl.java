@@ -50,7 +50,7 @@ public class BalanceMapperImpl implements BalanceMapper {
     private void mapSpecificFields(Balance source, BalanceResponse destination) {
         List<BigDecimal> listInt = new ArrayList<>();
         for (Item i: source.getItems()){
-            listInt.add(i.getId());
+            listInt.add(i.getItemId());
         }
         destination.setBalanceItemsId(listInt);
     }
