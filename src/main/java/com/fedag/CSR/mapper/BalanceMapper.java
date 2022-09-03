@@ -2,7 +2,7 @@ package com.fedag.CSR.mapper;
 
 import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.dto.request.BalanceRequest;
-import com.fedag.CSR.dto.request.BalanceUpdateRequest;
+import com.fedag.CSR.dto.update.BalanceUpdate;
 import com.fedag.CSR.dto.response.BalanceResponse;
 import org.springframework.data.domain.Page;
 
@@ -24,7 +24,7 @@ public interface BalanceMapper {
 
     public Balance dtoToModel(BalanceRequest dto);
 
-    public Balance dtoToModel(BalanceUpdateRequest dto);
+    public Balance dtoToModel(BalanceUpdate dto);
 
     public Balance dtoToModel(BalanceResponse dto);
 

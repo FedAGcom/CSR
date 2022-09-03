@@ -3,7 +3,7 @@ package com.fedag.CSR.service.impl;
 import com.fedag.CSR.dto.request.UserRequest;
 import com.fedag.CSR.dto.response.UserResponse;
 import com.fedag.CSR.dto.update.UserUpdate;
-import com.fedag.CSR.mapper.UserMapper;
+import com.fedag.CSR.mapper.mapperImpl.UserMapper;
 import com.fedag.CSR.model.User;
 import com.fedag.CSR.repository.UserRepository;
 import com.fedag.CSR.service.UserService;

@@ -2,8 +2,8 @@ package com.fedag.CSR.service.impl;
 
 import com.fedag.CSR.exception.EntityNotFoundException;
 import com.fedag.CSR.model.Balance;
-import com.fedag.CSR.model.BalanceItem;
 import com.fedag.CSR.mapper.BalanceMapper;
+import com.fedag.CSR.model.Item;
 import com.fedag.CSR.repository.BalanceRepository;
 import com.fedag.CSR.service.BalanceService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class BalanceServiceImpl implements BalanceService {
     private final BalanceMapper balanceMapper;
 
     @Override
-    public Balance findById(Integer id) {
+    public Balance findById(BigDecimal id) {
         log.info("Получение баланса c Id: {}", id);
         Balance result = balanceRepository.findById(id)
                 .orElseThrow(() -> {
@@ -57,8 +58,8 @@ public class BalanceServiceImpl implements BalanceService {
     @Transactional
     public Balance create(Balance balance) {
         log.info("Создание баланса");
-        final List<BalanceItem> balanceItems = balance.getBalanceItems();
-        balance.setBalanceItems(balanceItems);
+        final List<Item> balanceItems = balance.getItems();
+        balance.setItems(balanceItems);
         Balance result = balanceRepository.save(balance);
         log.info("Баланс создан");
         return result;
@@ -66,7 +67,7 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     @Transactional
-    public Balance update(Integer id, Balance balance) {
+    public Balance update(BigDecimal id, Balance balance) {
         log.info("Обновление баланса с Id: {}", id);
         Balance target = this.findById(id);
         Balance update = balanceMapper.merge(balance, target);
@@ -77,7 +78,7 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     @Transactional
-    public void deleteById(Integer id) {
+    public void deleteById(BigDecimal id) {
         log.info("Удаление баланса с Id: {}", id);
         this.findById(id);
         balanceRepository.deleteById(id);

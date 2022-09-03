@@ -1,10 +1,11 @@
-package com.fedag.CSR.mapper;
+package com.fedag.CSR.mapper.mapperImpl;
 
 import com.fedag.CSR.dto.request.BalanceRequest;
-import com.fedag.CSR.dto.request.BalanceUpdateRequest;
+import com.fedag.CSR.dto.update.BalanceUpdate;
 import com.fedag.CSR.dto.response.BalanceResponse;
+import com.fedag.CSR.mapper.BalanceMapper;
 import com.fedag.CSR.model.Balance;
-import com.fedag.CSR.model.BalanceItem;
+import com.fedag.CSR.model.Item;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -46,8 +48,8 @@ public class BalanceMapperImpl implements BalanceMapper {
 
 
     private void mapSpecificFields(Balance source, BalanceResponse destination) {
-        List<Integer> listInt = new ArrayList<>();
-        for (BalanceItem i: source.getBalanceItems()){
+        List<BigDecimal> listInt = new ArrayList<>();
+        for (Item i: source.getItems()){
             listInt.add(i.getId());
         }
         destination.setBalanceItemsId(listInt);
@@ -77,7 +79,7 @@ public class BalanceMapperImpl implements BalanceMapper {
         return mapper.map(dto, Balance.class);
     }
 
-    public Balance dtoToModel(BalanceUpdateRequest dto) {
+    public Balance dtoToModel(BalanceUpdate dto) {
         return mapper.map(dto, Balance.class);
     }
 

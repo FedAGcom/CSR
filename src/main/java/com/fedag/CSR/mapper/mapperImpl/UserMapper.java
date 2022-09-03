@@ -1,4 +1,4 @@
-package com.fedag.CSR.mapper;
+package com.fedag.CSR.mapper.mapperImpl;
 
 import com.fedag.CSR.dto.request.UserRequest;
 import com.fedag.CSR.dto.response.UserResponse;

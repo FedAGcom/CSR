@@ -2,7 +2,7 @@ package com.fedag.CSR.controller;
 
 import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.dto.request.BalanceRequest;
-import com.fedag.CSR.dto.request.BalanceUpdateRequest;
+import com.fedag.CSR.dto.update.BalanceUpdate;
 import com.fedag.CSR.dto.response.BalanceResponse;
 import com.fedag.CSR.mapper.BalanceMapper;
 import com.fedag.CSR.service.BalanceService;
@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -46,7 +47,7 @@ public class BalanceController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Shows the specified balance.",
             notes = "Please provide an id.")
-    public ResponseEntity<BalanceResponse> getBalance(@PathVariable int id) {
+    public ResponseEntity<BalanceResponse> getBalance(@PathVariable BigDecimal id) {
         BalanceResponse result = Optional.of(id)
                 .map(balanceService::findById)
                 .map(balanceMapper::modelToDto)
@@ -65,10 +66,10 @@ public class BalanceController {
         return new ResponseEntity<>(result, CREATED);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     @ApiOperation(value = "Updates the specified balance.")
-    public ResponseEntity<BalanceResponse> update(@PathVariable Integer id,
-                                                    @RequestBody @Valid BalanceUpdateRequest balanceRequestUpdate) {
+    public ResponseEntity<BalanceResponse> update(@PathVariable BigDecimal id,
+                                                    @RequestBody @Valid BalanceUpdate balanceRequestUpdate) {
         BalanceResponse result = Optional.ofNullable(balanceRequestUpdate)
                 .map(balanceMapper::dtoToModel)
                 .map(balance -> balanceService.update(id, balance))
@@ -81,7 +82,7 @@ public class BalanceController {
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Deletes the specified balance.",
             notes = "Please provide an id.")
-    public ResponseEntity<String> delete(@PathVariable int id) {
+    public ResponseEntity<String> delete(@PathVariable BigDecimal id) {
         balanceService.deleteById(id);
         return ResponseEntity.ok().body("Balance with ID = " + id + " was deleted.");
     }
