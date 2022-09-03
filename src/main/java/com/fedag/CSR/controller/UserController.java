@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class UserController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Shows the specified user.",
             notes = "Please provide an id.")
-    public UserResponse getUser(@PathVariable int id) {
+    public UserResponse getUser(@PathVariable BigDecimal id) {
         return userService.getUser(id);
     }
 
@@ -47,7 +49,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Deletes the specified user.",
             notes = "Please provide an id.")
-    public String delete(@PathVariable int id) {
+    public String delete(@PathVariable BigDecimal id) {
         userService.deteleUser(id);
         return "User with ID = " + id + " was deleted.";
     }

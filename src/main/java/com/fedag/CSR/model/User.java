@@ -10,6 +10,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -26,7 +27,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private BigDecimal id;
 
     @Column(name = "email")
     private String email;
@@ -52,6 +53,6 @@ public class User {
     private String steamLink;
 
     @Column(name = "balance_id")
-    private int balanceId;
+    private BigDecimal balanceId;
 
 }

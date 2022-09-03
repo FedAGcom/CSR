@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Slf4j
@@ -31,7 +32,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public UserResponse getUser(int id) {
+    public UserResponse getUser(BigDecimal id) {
         log.info("Получение пользователя c id {}", id);
         UserResponse userResponse = null;
         Optional<User> optional = userRepository.findById(id);
@@ -52,7 +53,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public void deteleUser(int id) {
+    public void deteleUser(BigDecimal id) {
         log.info("Удаление пользователя c id {}", id);
         userRepository.deleteById(id);
         log.info("Пользователь c id {} удален", id);

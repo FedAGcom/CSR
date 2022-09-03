@@ -6,14 +6,16 @@ import com.fedag.CSR.dto.update.UserUpdate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
+
 public interface UserService<T> {
 
     Page<T> getAllUsers(Pageable pageable);
-    UserResponse getUser(int id);
+    UserResponse getUser(BigDecimal id);
 
     void save(UserRequest user);
 
-    void deteleUser(int id);
+    void deteleUser(BigDecimal id);
 
     void update(UserUpdate user);
 }
