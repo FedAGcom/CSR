@@ -16,7 +16,7 @@ public class Item {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigDecimal id;
+    private BigDecimal itemId;
 
     @Column(name = "type", nullable = false)
     private String type;
@@ -31,11 +31,15 @@ public class Item {
     private String quality;
 
     @Column(name = "price", nullable = false)
-    private double price;
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "balance_id")
     private Balance balance;
+
+    @ManyToOne
+    @JoinColumn(name = "pack_id")
+    private Pack pack;
 
 }
 

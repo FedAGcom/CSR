@@ -40,7 +40,9 @@ CREATE TABLE Item
     quality VARCHAR(256)   NOT NULL,
     price   DECIMAL(10, 2) NOT NULL,
     balance_id BIGINT,
-    FOREIGN KEY (balance_id) REFERENCES Balance(id)
+    pack_id BIGINT,
+    FOREIGN KEY (balance_id) REFERENCES Balance(id),
+    FOREIGN KEY (pack_id) REFERENCES Pack(id)
 );
 
 --Таблица Pack
@@ -49,7 +51,5 @@ CREATE TABLE Pack
 (
     id    BIGSERIAL PRIMARY KEY,
     title VARCHAR(256)   NOT NULL,
-    items BIGINT         NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (items) REFERENCES Item (id)
+    price DECIMAL(10, 2) NOT NULL
 );

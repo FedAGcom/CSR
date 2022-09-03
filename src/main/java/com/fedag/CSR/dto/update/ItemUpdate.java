@@ -21,6 +21,11 @@ public class ItemUpdate {
 
     private double price;
 
+    private BigDecimal balanceId;
+
+    private BigDecimal packId;
+
+
 }
 
 
