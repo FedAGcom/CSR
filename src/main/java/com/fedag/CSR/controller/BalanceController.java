@@ -1,10 +1,10 @@
 package com.fedag.CSR.controller;
 
 import com.fedag.CSR.model.Balance;
-import com.fedag.CSR.model.dto.request.BalanceRequest;
-import com.fedag.CSR.model.dto.request.BalanceUpdateRequest;
-import com.fedag.CSR.model.dto.response.BalanceResponse;
-import com.fedag.CSR.model.mapper.BalanceMapper;
+import com.fedag.CSR.dto.request.BalanceRequest;
+import com.fedag.CSR.dto.request.BalanceUpdateRequest;
+import com.fedag.CSR.dto.response.BalanceResponse;
+import com.fedag.CSR.mapper.BalanceMapper;
 import com.fedag.CSR.service.BalanceService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
