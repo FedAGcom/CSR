@@ -25,7 +25,7 @@ public class ItemUpdate {
 
     private BigDecimal packId;
 
-
+    private String steam_id;
 }
 
 

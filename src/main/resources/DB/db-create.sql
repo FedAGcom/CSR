@@ -13,7 +13,8 @@ CREATE TABLE Users
     password   VARCHAR(256) NOT NULL,
     role       role,
     created    timestamp with time zone,
-    steam_link VARCHAR(256) NOT NULL
+    steam_link VARCHAR(256) NOT NULL,
+    steam_id VARCHAR(256) NOT NULL
 );
 
 --Таблица Balance, описывающая баланс и инвентарь пользователя
@@ -25,6 +26,15 @@ CREATE TABLE Balance
     user_id BIGINT NOT NULL,
     coins INTEGER,
     FOREIGN KEY (user_id) REFERENCES Users (id)
+);
+
+--Таблица Pack
+--Хранится ссылка на таблицу Item OneToMany
+CREATE TABLE Pack
+(
+    id    BIGSERIAL PRIMARY KEY,
+    title VARCHAR(256)   NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
 );
 
 -- Таблица Item, описывающая предметы, которые будут разыгрываться в ходе
@@ -41,15 +51,13 @@ CREATE TABLE Item
     price   DECIMAL(10, 2) NOT NULL,
     balance_id BIGINT,
     pack_id BIGINT,
-    FOREIGN KEY (balance_id) REFERENCES Balance(id),
+    steam_id VARCHAR(256) NOT NULL,
+        FOREIGN KEY (balance_id) REFERENCES Balance(id),
     FOREIGN KEY (pack_id) REFERENCES Pack(id)
 );
 
---Таблица Pack
---Хранится ссылка на таблицу Item OneToMany
-CREATE TABLE Pack
-(
-    id    BIGSERIAL PRIMARY KEY,
-    title VARCHAR(256)   NOT NULL,
-    price DECIMAL(10, 2) NOT NULL
-);
+-- Монетки добавляются с null
+ALTER TABLE Item
+ALTER COLUMN quality
+DROP NOT NULL
+
