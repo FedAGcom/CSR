@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,15 @@ import java.util.List;
 public class Balance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private BigDecimal id;
+
+    @Column(name = "coins")
     private int coins;
 
-    @OneToMany(mappedBy = "balance", cascade = CascadeType.ALL)
-    private List<BalanceItem> balanceItems = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "balance")
+    private List<Item> items = new ArrayList<>();
 }

@@ -1,4 +1,4 @@
-package com.fedag.CSR.dto.response;
+package com.fedag.CSR.dto.update;
 
 import lombok.Data;
 
@@ -6,10 +6,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-public class BalanceResponse {
-
+public class BalanceUpdate {
     private BigDecimal id;
-    private int coins;
     private BigDecimal userId;
+    private int coins;
     private List<BigDecimal> balanceItemsId;
 }

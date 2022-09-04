@@ -1,7 +1,8 @@
 package com.fedag.CSR.model;
 
-import com.fedag.CSR.enums.Role;
-import com.fedag.CSR.service.utils.PostgreSQLEnumType;
+
+import com.fedag.CSR.enums.CSRRole;
+import com.vladmihalcea.hibernate.type.basic.PostgreSQLEnumType;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,10 +33,10 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "first_name")
+    @Column(name = "firstname")
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "lastname")
     private String lastName;
 
     @Column(name = "password")
@@ -44,7 +45,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     @Type(type = "role" )
-    private Role role;
+    private CSRRole role;
 
     @Column(name = "created")
     private LocalDateTime created;
@@ -52,7 +53,7 @@ public class User {
     @Column(name = "steam_link")
     private String steamLink;
 
-    @Column(name = "balance_id")
-    private BigDecimal balanceId;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private Balance balance;
 
 }
