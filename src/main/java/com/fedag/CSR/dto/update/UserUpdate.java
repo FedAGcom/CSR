@@ -1,7 +1,7 @@
 package com.fedag.CSR.dto.update;
 
 
-import com.fedag.CSR.enums.CSRRole;
+import com.fedag.CSR.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,7 +17,7 @@ public class UserUpdate {
     private String firstName;
     private String lastName;
     private String password;
-    private CSRRole role;
+    private Role role;
     private LocalDateTime created;
     private String steamLink;
     private String steam_id;

@@ -9,8 +9,10 @@ import com.fedag.CSR.repository.UserRepository;
 import com.fedag.CSR.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,10 +21,11 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImplementation implements UserService {
+public class UserServiceImpl extends UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
     public Page<UserResponse> getAllUsers(Pageable pageable) {
         log.info("Получение всех пользователей");
@@ -48,6 +51,7 @@ public class UserServiceImplementation implements UserService {
     @Override
     public void save(UserRequest user) {
         log.info("Создание пользователя");
+        user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(userMapper.dtoToModel(user));
         log.info("Пользователь создан");
     }
@@ -65,3 +69,5 @@ public class UserServiceImplementation implements UserService {
         log.info("Пользователь с id {} обновлен", user.getId());
     }
 }
+
+

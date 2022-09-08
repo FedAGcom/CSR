@@ -9,11 +9,11 @@ import java.util.List;
 @Repository
 public class ItemRepositoryImpl {
 
-    private final String postgresqlUrl = "jdbc:postgresql://localhost:5432/csr";
+    private final String postgresqlUrl = "jdbc:postgresql://localhost:5432/postgres";
 
     private final String username = "postgres";
 
-    private final String password = "Linkin";
+    private final String password = "admin";
 
     public void addAllUserItems(List<Item> list) {
 

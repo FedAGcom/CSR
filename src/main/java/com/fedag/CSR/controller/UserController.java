@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -33,6 +34,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('user')")
     public Page<UserResponse> getAllUsers(@PageableDefault(size = 5) Pageable pageable) {
         return userService.getAllUsers(pageable);
     }
@@ -46,6 +48,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
                     })
+    @PreAuthorize("hasAuthority('user')")
     public UserResponse getUser(@PathVariable BigDecimal id) {
         return userService.getUser(id);
     }
@@ -58,6 +61,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public void createUser(@RequestBody UserRequest user) {
         userService.save(user);
     }
@@ -70,6 +74,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public void updateUser(@RequestBody UserUpdate user) {
         userService.update(user);
     }
@@ -84,6 +89,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public String delete(@PathVariable BigDecimal id) {
         userService.deteleUser(id);
         return "User with ID = " + id + " was deleted.";

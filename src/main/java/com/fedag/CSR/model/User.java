@@ -1,7 +1,7 @@
 package com.fedag.CSR.model;
 
 
-import com.fedag.CSR.enums.CSRRole;
+import com.fedag.CSR.enums.Role;
 import com.vladmihalcea.hibernate.type.basic.PostgreSQLEnumType;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -45,7 +45,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     @Type(type = "role")
-    private CSRRole role;
+    private Role role;
 
     @Column(name = "created")
     private LocalDateTime created;

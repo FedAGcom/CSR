@@ -90,16 +90,16 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void addAllItems(BigDecimal id) {
         log.info("Добавление вещей пользователя с id {}", id);
-        String stream_id = userRepository.findById(id).orElseThrow(
+        String steam_id = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Пользователь не найден")
         ).getSteam_id();
         ResponseEntity<String> response;
-        if (stream_id.matches(".*[A-Za-z]+.*")) {
+        if (steam_id.matches(".*[A-Za-z]+.*")) {
             response = restTemplate.getForEntity(
-                    steamURL + "/id/" + stream_id + "/inventory/json/730/2", String.class);
+                    steamURL + "/id/" + steam_id + "/inventory/json/730/2", String.class);
         } else {
             response = restTemplate.getForEntity(
-                    steamURL + "/profiles/" + stream_id + "/inventory/json/730/2"
+                    steamURL + "/profiles/" + steam_id + "/inventory/json/730/2"
                     , String.class);
         }
 
