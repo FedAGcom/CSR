@@ -4,12 +4,14 @@ import com.fedag.CSR.model.User;
 import com.fedag.CSR.repository.UserRepository;
 import com.fedag.CSR.security.AuthenticationRequestDto;
 import com.fedag.CSR.security.jwt.JwtTokenProvider;
+import com.fedag.CSR.security.security_exception.RegistrationRequest;
+import com.fedag.CSR.service.UserAuth;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,20 +32,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 @Tag(name = "Контроллер безопасности.", description = "Работа с безопасностью.")
 public class AuthController {
-
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
-
+    private final UserAuth userAuth;
     @Operation(summary = "Ввод и проверка данных для аутентификации и авторизации пользователя.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь зашел в учетную запись.",
@@ -54,18 +49,17 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDto request) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-            User user = userRepository.findByEmail(request.getEmail()).orElseThrow(()   -> new UsernameNotFoundException("User doesn't exist"));
-            String token = jwtTokenProvider.createToken(request.getEmail(), user.getRole().name());
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword()));
+            User user = userRepository.findByUserName(request.getUserName()).orElseThrow(()   -> new UsernameNotFoundException("User doesn't exist"));
+            String token = jwtTokenProvider.createToken(request.getUserName(), user.getRole().name());
             Map<Object, Object> response = new HashMap<>();
-            response.put("email", request.getEmail());
+            response.put("userName", request.getUserName());
             response.put("token", token);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             return new ResponseEntity<>("Неверная пара email/пароль.", HttpStatus.FORBIDDEN);
         }
     }
-
     @Operation(summary = "Выход из учетной записи.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Выход выполнен",
@@ -77,6 +71,17 @@ public class AuthController {
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);
+    }
+    @Operation(summary = "Регистрация")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Регистрация",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+    @PostMapping("/registration")
+    public ResponseEntity<?> saveUser(@RequestBody RegistrationRequest registrationRequest) throws Exception {
+        return ResponseEntity.ok(userAuth.saveUser(registrationRequest));
     }
 }
 

@@ -21,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl extends UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
@@ -45,9 +45,7 @@ public class UserServiceImpl extends UserService {
         }
         log.info("Получен пользователь с id {}", id);
         return userResponse;
-
     }
-
     @Override
     public void save(UserRequest user) {
         log.info("Создание пользователя");

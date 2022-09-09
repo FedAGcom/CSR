@@ -14,5 +14,5 @@ public class UserRequest {
     private String password;
     private Role role;
     private String steamLink;
-    private String steam_id;
+    private String userName ;
 }

@@ -33,9 +33,6 @@ public class Item {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
-    @Column(name = "steam_id", nullable = false)
-    private String steam_id;
-
     @ManyToOne
     @JoinColumn(name = "balance_id")
     private Balance balance;

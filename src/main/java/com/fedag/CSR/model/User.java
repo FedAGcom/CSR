@@ -7,8 +7,10 @@ import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -47,16 +49,21 @@ public class User {
     @Type(type = "role")
     private Role role;
 
-    @Column(name = "created")
+    @Column(name = "created", updatable = false)
     private LocalDateTime created;
 
     @Column(name = "steam_link")
     private String steamLink;
 
-    @Column(name = "steam_id")
-    private String steam_id;
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "confirmation_token")
+    private String confirmationToken;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Balance balance;
-
 }

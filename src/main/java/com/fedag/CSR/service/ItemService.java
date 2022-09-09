@@ -20,6 +20,4 @@ public interface ItemService {
     void deleteItemById(BigDecimal id);
 
     ItemResponse getItem(BigDecimal id);
-
-    void addAllItems(BigDecimal id);
 }

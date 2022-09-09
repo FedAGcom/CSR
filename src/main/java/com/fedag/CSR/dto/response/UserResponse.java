@@ -21,5 +21,5 @@ public class UserResponse {
     private Role role;
     private LocalDateTime created;
     private String steamLink;
-    private String steam_id;
+    private String userName;
 }
