@@ -25,5 +25,4 @@ public class ItemRequest {
 
     private BigDecimal packId;
 
-    private String steam_id;
 }

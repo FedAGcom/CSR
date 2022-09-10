@@ -20,5 +20,4 @@ public class UserUpdate {
     private CSRRole role;
     private LocalDateTime created;
     private String steamLink;
-    private String steam_id;
 }

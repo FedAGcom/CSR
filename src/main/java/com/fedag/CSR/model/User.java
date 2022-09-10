@@ -44,7 +44,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    @Type(type = "role")
+    @Type(type = "role" )
     private CSRRole role;
 
     @Column(name = "created")
@@ -52,9 +52,6 @@ public class User {
 
     @Column(name = "steam_link")
     private String steamLink;
-
-    @Column(name = "steam_id")
-    private String steam_id;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Balance balance;
