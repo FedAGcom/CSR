@@ -3,7 +3,6 @@ package com.fedag.CSR.dto.update;
 import com.fedag.CSR.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 

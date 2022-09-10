@@ -3,7 +3,6 @@ package com.fedag.CSR.service;
 import com.fedag.CSR.dto.request.UserRequest;
 import com.fedag.CSR.dto.response.UserResponse;
 import com.fedag.CSR.dto.update.UserUpdate;
-import com.fedag.CSR.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
