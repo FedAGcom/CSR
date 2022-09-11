@@ -25,6 +25,9 @@ public class Pack {
     @Column(name = "price")
     private BigDecimal price;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pack")
+    private OpenCase openCase;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
     private List<Item> items;
 }

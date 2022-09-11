@@ -1,6 +1,7 @@
 package com.fedag.CSR.controller;
 
 import com.fedag.CSR.service.ItemService;
+import com.fedag.CSR.service.SteamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,6 +27,10 @@ public class SteamController {
             description = "Содержит имплементацию методов для работы с репозиторием")
     private final ItemService itemService;
 
+    @Schema(name = "Сервис для работы со Steam",
+            description = "Содержит имплементацию методов для работы с репозиторием")
+    private final SteamService steamService;
+
     @Operation(summary = "Добавление в приложение вещей с аккаунта Steam")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Вещи добавлены",
@@ -36,5 +41,10 @@ public class SteamController {
     @GetMapping(value = "/add-all-items/{id}")
     public void addAllItemsFromUserSteamAccount(@PathVariable BigDecimal id) {
         itemService.addAllItems(id);
+    }
+
+    @GetMapping(value = "/get-item-from-case/{pack_id}/{user_id}")
+    public void getItemFromCase(@PathVariable BigDecimal pack_id, @PathVariable BigDecimal user_id) {
+        steamService.getItemFromCase(pack_id, user_id);
     }
 }

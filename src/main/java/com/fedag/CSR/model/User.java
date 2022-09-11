@@ -13,6 +13,7 @@ import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -53,7 +54,13 @@ public class User {
     @Column(name = "steam_link")
     private String steamLink;
 
+    @Column(name = "steam_id")
+    private String steam_id;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Balance balance;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<OpenCase> openCaseList;
 
 }
