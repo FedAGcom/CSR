@@ -29,11 +29,11 @@ import static org.springframework.http.HttpStatus.OK;
  * Rest Controller for class {@link Balance}.
  *
  * @author Kirill Soklakov
- * @since 2022-09-01
  * @version 1.1
+ * @since 2022-09-01
  */
 @RestController
-@RequestMapping("/api/v1/balance")
+@RequestMapping("/api/v1/balances")
 @RequiredArgsConstructor
 public class BalanceController {
     private final BalanceService balanceService;
@@ -48,7 +48,7 @@ public class BalanceController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     public ResponseEntity<Page<BalanceResponse>> getAllBalances(@PageableDefault(size = 5)
-                                                Pageable pageable) {
+                                                                Pageable pageable) {
         Page<BalanceResponse> result = balanceService.findAll(pageable)
                 .map(balanceMapper::modelToDto);
         return new ResponseEntity<>(result, OK);
@@ -97,7 +97,7 @@ public class BalanceController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     public ResponseEntity<BalanceResponse> update(@PathVariable BigDecimal id,
-                                                    @RequestBody @Valid BalanceUpdate balanceRequestUpdate) {
+                                                  @RequestBody @Valid BalanceUpdate balanceRequestUpdate) {
         BalanceResponse result = Optional.ofNullable(balanceRequestUpdate)
                 .map(balanceMapper::dtoToModel)
                 .map(balance -> balanceService.update(id, balance))

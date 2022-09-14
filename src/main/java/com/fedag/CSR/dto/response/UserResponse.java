@@ -1,7 +1,7 @@
 package com.fedag.CSR.dto.response;
 
 
-import com.fedag.CSR.enums.CSRRole;
+import com.fedag.CSR.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,8 @@ public class UserResponse {
     private String email;
     private String firstName;
     private String lastName;
-    private CSRRole role;
+    private Role role;
     private LocalDateTime created;
     private String steamLink;
+    private String userName;
 }

@@ -10,13 +10,16 @@ import java.util.List;
 
 /**
  * Entity class balance columns id, coins one-to-many relationship with item model by key balance_id
- *  @author Kirill Soklakov
- *  @version 1.1
+ *
+ * @author Kirill Soklakov
+ * @version 1.1
  */
 @Data
 @Entity
 public class Balance {
+
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 

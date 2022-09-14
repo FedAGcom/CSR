@@ -1,7 +1,7 @@
 package com.fedag.CSR.model;
 
 
-import com.fedag.CSR.enums.CSRRole;
+import com.fedag.CSR.enums.Role;
 import com.vladmihalcea.hibernate.type.basic.PostgreSQLEnumType;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -44,16 +43,24 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    @Type(type = "role" )
-    private CSRRole role;
+    @Type(type = "role")
+    private Role role;
 
-    @Column(name = "created")
+    @Column(name = "created", updatable = false)
     private LocalDateTime created;
 
     @Column(name = "steam_link")
     private String steamLink;
 
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "confirmation_token")
+    private String confirmationToken;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Balance balance;
-
 }

@@ -1,10 +1,8 @@
 package com.fedag.CSR.dto.request;
 
-import com.fedag.CSR.enums.CSRRole;
+import com.fedag.CSR.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +12,7 @@ public class UserRequest {
     private String firstName;
     private String lastName;
     private String password;
-    private CSRRole role;
+    private Role role;
     private String steamLink;
+    private String userName ;
 }

@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
-
+    private final RestTemplate restTemplate;
     @Override
     public Page<ItemResponse> getAllItems(Pageable pageable) {
         log.info("Получение всех предметов");
@@ -49,9 +49,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItemById(BigDecimal id) {
-        log.info("Удаление предмета с id{}: ",id);
+        log.info("Удаление предмета с id{}: ", id);
         itemRepository.deleteById(id);
-        log.info("Предмет удалёнс id{}:" ,id);
+        log.info("Предмет удалёнс id{}:", id);
     }
 
     @Override
