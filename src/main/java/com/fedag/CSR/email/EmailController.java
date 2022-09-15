@@ -53,7 +53,7 @@ public class EmailController {
                     user.getConfirmationToken(),
                     true);
             userService.update(userUpdate);
-            ResponseEntity.ok("Account verified successfully!");
+            return ResponseEntity.ok("Account verified successfully!");
         }
         return ResponseEntity.ok("Something went wrong.");
     }

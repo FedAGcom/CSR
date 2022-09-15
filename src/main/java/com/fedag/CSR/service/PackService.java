@@ -11,12 +11,9 @@ import java.math.BigDecimal;
 
 public interface PackService {
     Page<PackResponse> getAllPacks(Pageable pageable);
-
     Pack create(PackRequest pack);
-
     Pack updatePack(PackUpdate pack);
-
     void deletePackById(BigDecimal id);
-
     PackResponse getPack(BigDecimal id);
+    PackResponse getPackByTitle(String title);
 }

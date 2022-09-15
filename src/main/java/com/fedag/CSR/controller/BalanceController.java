@@ -5,7 +5,10 @@ import com.fedag.CSR.dto.request.BalanceRequest;
 import com.fedag.CSR.dto.update.BalanceUpdate;
 import com.fedag.CSR.dto.response.BalanceResponse;
 import com.fedag.CSR.mapper.BalanceMapper;
+import com.fedag.CSR.model.User;
+import com.fedag.CSR.repository.UserRepository;
 import com.fedag.CSR.service.BalanceService;
+import com.fedag.CSR.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,14 +19,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * Rest Controller for class {@link Balance}.
@@ -38,7 +41,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class BalanceController {
     private final BalanceService balanceService;
     private final BalanceMapper balanceMapper;
-
+    private final UserRepository userRepository;
     @GetMapping
     @ApiOperation(value = "Список всех балансов.")
     @ApiResponses(value = {
@@ -47,6 +50,7 @@ public class BalanceController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Page<BalanceResponse>> getAllBalances(@PageableDefault(size = 5)
                                                                 Pageable pageable) {
         Page<BalanceResponse> result = balanceService.findAll(pageable)
@@ -63,6 +67,7 @@ public class BalanceController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ResponseEntity<BalanceResponse> getBalance(@PathVariable BigDecimal id) {
         BalanceResponse result = Optional.of(id)
                 .map(balanceService::findById)
@@ -79,6 +84,7 @@ public class BalanceController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<BalanceResponse> create(@RequestBody @Valid BalanceRequest balanceRequest) {
         BalanceResponse result = Optional.ofNullable(balanceRequest)
                 .map(balanceMapper::dtoToModel)
@@ -96,6 +102,7 @@ public class BalanceController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<BalanceResponse> update(@PathVariable BigDecimal id,
                                                   @RequestBody @Valid BalanceUpdate balanceRequestUpdate) {
         BalanceResponse result = Optional.ofNullable(balanceRequestUpdate)
@@ -115,6 +122,7 @@ public class BalanceController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> delete(@PathVariable BigDecimal id) {
         balanceService.deleteById(id);
         return ResponseEntity.ok().body("Balance with ID = " + id + " was deleted.");
