@@ -15,8 +15,9 @@ public class SkinnifyController {
     public SkinnifyController(SkinnyfyServiceImpl skinnyService) {
         this.skinnyService = skinnyService;
     }
+
     @PostMapping("/createDeposit")
-    public void createDepositPost(){
+    public void createDepositPost() {
         skinnyService.createDeposit();
     }
 }
