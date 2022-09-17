@@ -25,12 +25,9 @@ public class Pack {
     @Column(name = "price")
     private BigDecimal price;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
-//    private List<Item> items;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
-    private List<WinChance> winChances;
+    private List<Item> items;
 
-
-
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
+//    private List<WinChance> winChances;
 }

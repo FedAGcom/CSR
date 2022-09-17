@@ -38,19 +38,11 @@ public class Item {
     @JoinColumn(name = "balance_id")
     private Balance balance;
 
-//    @ManyToOne
-//    @JoinColumn(name = "pack_id")
-//    private Pack pack;
+    @ManyToOne
+    @JoinColumn(name = "pack_id")
+    private Pack pack;
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "pack_item"
-//            , joinColumns = @JoinColumn(name = "item_id")
-//            , inverseJoinColumns = @JoinColumn(name = "pack_id")
-//    )
-//    private List<Pack> packs;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-    private List<WinChance> winChances;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
+//    private List<WinChance> winChances;
 }
 

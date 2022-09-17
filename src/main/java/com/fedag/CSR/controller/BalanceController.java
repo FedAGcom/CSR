@@ -41,7 +41,6 @@ import static org.springframework.http.HttpStatus.*;
 public class BalanceController {
     private final BalanceService balanceService;
     private final BalanceMapper balanceMapper;
-    private final UserRepository userRepository;
     @GetMapping
     @ApiOperation(value = "Список всех балансов.")
     @ApiResponses(value = {
