@@ -44,10 +44,10 @@ public class PackMapperImpl implements PackMapper {
 
     private void mapSpecificFields(Pack source, PackResponse destination) {
         List<BigDecimal> listInt = new ArrayList<>();
-        for (Item i: source.getItems()){
-            listInt.add(i.getItemId());
-        }
-        destination.setPackItemsId(listInt);
+//        for (Item i: source.getItems()){
+//            listInt.add(i.getItemId());
+//        }
+//        destination.setPackItemsId(listInt);
     }
     @Override
     public Page<PackResponse> modelToDto(Page<Pack> packPage) {

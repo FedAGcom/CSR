@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Data
@@ -41,5 +42,7 @@ public class Item {
     @JoinColumn(name = "pack_id")
     private Pack pack;
 
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
+//    private List<WinChance> winChances;
 }
 

@@ -22,18 +22,15 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
-
     public Page<UserResponse> getAllUsers(Pageable pageable) {
         log.info("Получение всех пользователей");
         Page<UserResponse> userResponses = userMapper.modelToDto(userRepository.findAll(pageable));
         log.info("Все пользователи получены");
         return userResponses;
     }
-
     @Override
     public UserResponse getUser(BigDecimal id) {
         log.info("Получение пользователя c id {}", id);
@@ -60,7 +57,6 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
         log.info("Пользователь c id {} удален", id);
     }
-
     public void update(UserUpdate user) {
         log.info("Обновление пользователя с id {}", user.getId());
         userRepository.save(userMapper.dtoToModel(user));

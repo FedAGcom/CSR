@@ -27,4 +27,7 @@ public class Pack {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
     private List<Item> items;
+
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
+//    private List<WinChance> winChances;
 }

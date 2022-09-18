@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -33,6 +34,7 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public PackResponse getPack(@PathVariable BigDecimal id){
         return packService.getPack(id);
     }
@@ -45,6 +47,7 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public Page<PackResponse> getAllPacks(@PageableDefault(size = 5) Pageable pageable) {
         Page<PackResponse> page = packService.getAllPacks(pageable);
         return packService.getAllPacks(pageable);
@@ -58,6 +61,7 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public void updatePack(@RequestBody PackUpdate pack) {
         packService.updatePack(pack);
     }
@@ -70,6 +74,7 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public void createPack(@RequestBody PackRequest pack) {
         packService.create(pack);
     }
@@ -83,6 +88,7 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public void delete(@PathVariable BigDecimal id) {
         packService.deletePackById(id);
     }

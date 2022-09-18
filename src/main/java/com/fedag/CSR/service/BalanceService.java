@@ -16,13 +16,8 @@ import java.math.BigDecimal;
 
 public interface BalanceService {
     Balance findById(BigDecimal id);
-
     Page<Balance> findAll(Pageable pageable);
-
     Balance create(Balance companyDto);
-
     Balance update(BigDecimal id, Balance companyDto);
-
     void deleteById(BigDecimal id);
-
 }

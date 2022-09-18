@@ -22,7 +22,6 @@ import java.util.Optional;
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
-    private final RestTemplate restTemplate;
     @Override
     public Page<ItemResponse> getAllItems(Pageable pageable) {
         log.info("Получение всех предметов");
@@ -30,7 +29,6 @@ public class ItemServiceImpl implements ItemService {
         log.info("Все предметы получены");
         return result;
     }
-
     @Override
     public Item create(ItemRequest item) {
         log.info("Создание предмета");
@@ -38,7 +36,6 @@ public class ItemServiceImpl implements ItemService {
         log.info("Предмет создан");
         return result;
     }
-
     @Override
     public Item updateItem(ItemUpdate item) {
         log.info("Обновление предмета");
@@ -46,24 +43,22 @@ public class ItemServiceImpl implements ItemService {
         log.info("Предмет обновлён");
         return result;
     }
-
     @Override
     public void deleteItemById(BigDecimal id) {
-        log.info("Удаление предмета с id{}: ", id);
+        log.info("Удаление предмета с id {}", id);
         itemRepository.deleteById(id);
-        log.info("Предмет удалёнс id{}:", id);
+        log.info("Предмет удалёнс id {}", id);
     }
-
     @Override
     public ItemResponse getItem(BigDecimal id) {
-        log.info("Получение одного предмета с id{} : ", id);
+        log.info("Получение одного предмета с id {}", id);
         ItemResponse itemResponse = null;
         Optional<Item> optional = itemRepository.findById(id);
         if (optional.isPresent()) {
             Item item = optional.get();
             itemResponse = itemMapper.modelToDto(item);
         }
-        log.info("Предмет получен с id{} :", id);
+        log.info("Предмет получен с id {}", id);
         return itemResponse;
     }
 }
