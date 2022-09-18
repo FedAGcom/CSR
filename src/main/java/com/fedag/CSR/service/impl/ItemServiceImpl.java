@@ -94,15 +94,18 @@ public class ItemServiceImpl implements ItemService {
         String steam_id = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Пользователь не найден")
         ).getSteam_id();
-        ResponseEntity<String> response;
-        if (steam_id.matches(".*[A-Za-z]+.*")) {
-            response = restTemplate.getForEntity(
-                    steamURL + "/id/" + steam_id + "/inventory/json/730/2", String.class);
-        } else {
-            response = restTemplate.getForEntity(
-                    steamURL + "/profiles/" + steam_id + "/inventory/json/730/2"
-                    , String.class);
-        }
+        ResponseEntity<String> response = restTemplate.getForEntity(
+                steamURL + "/profiles/" + steam_id + "/inventory/json/730/2"
+                , String.class);
+
+//        if (steam_id.matches(".*[A-Za-z]+.*")) {
+//            response = restTemplate.getForEntity(
+//                    steamURL + "/id/" + steam_id + "/inventory/json/730/2", String.class);
+//        } else {
+//            response = restTemplate.getForEntity(
+//                    steamURL + "/profiles/" + steam_id + "/inventory/json/730/2"
+//                    , String.class);
+//        }
 
         try {
             JsonNode rootNode = mapper.readValue(response.getBody(), JsonNode.class);
@@ -156,6 +159,7 @@ public class ItemServiceImpl implements ItemService {
             item.setRare(rare.substring(1, rare.length() - 1));
             item.setType(rareAndType[rareAndType.length - 1]
                     .substring(0, rareAndType[rareAndType.length - 1].length() - 1));
+
 
             result.add(item);
         }
