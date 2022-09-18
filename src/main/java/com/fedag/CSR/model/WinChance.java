@@ -24,12 +24,4 @@ public class WinChance {
 
     @Column(name = "win_chance")
     private Double winChance;
-
-//    @ManyToOne
-//    @JoinColumn(name = "pack_id")
-//    private Pack pack;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "item_id")
-//    private Item item;
 }

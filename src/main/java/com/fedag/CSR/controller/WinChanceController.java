@@ -22,12 +22,10 @@ public class WinChanceController {
     private final WinChanceRepository winChanceRepository;
 
     @GetMapping("/spin/{id}")
-    public ResponseEntity<?> spinCase(@PathVariable Long id) {
+    public Long spinCase(@PathVariable Long id) {
         List<WinChance> listWinChance = winChanceRepository.getWinChanceByPackId(id);
-        ResponseEntity<?> result = null;
+
         double total = 0;
-        double counterLeft = 0;
-        double counterRight = 0;
 
         for (int i = 0; i < listWinChance.size(); i++) {
             double modifiedWinChance = listWinChance.get(i).getWinChance() * 10_000;
@@ -37,32 +35,16 @@ public class WinChanceController {
         Random random = new Random();
         double value = random.nextInt((int) total);
 
-        if (value <= listWinChance.get(0).getWinChance()) {
-            result = ResponseEntity.ok().body(listWinChance.get(0).getItemId());
-        }
+        double counterLeft = 0;
+        double counterRight = listWinChance.get(0).getWinChance();
 
-        counterRight = listWinChance.get(0).getWinChance();
-        counterLeft = listWinChance.get(0).getWinChance();
-
-        try {
-            for (int i = 1; i < listWinChance.size(); i++) {
-                if (value >= counterLeft && value <= (listWinChance.get(i + 1).getWinChance() + counterRight)) {
-                    result = ResponseEntity.ok().body(listWinChance.get(i).getItemId());
-                }
-                counterRight = counterRight + listWinChance.get(i).getWinChance();
-                counterLeft = counterLeft + listWinChance.get(i).getWinChance();
+        for (int i = 0; i < listWinChance.size(); i++) {
+            if (value >= counterLeft && value <= counterRight) {
+                return listWinChance.get(i).getItemId();
             }
-        } catch (IndexOutOfBoundsException e) {
-            result = ResponseEntity.ok().body(listWinChance.get(listWinChance.size() - 1).getItemId());
+            counterLeft = counterRight;
+            counterRight = counterRight + listWinChance.get(i).getWinChance();
         }
-
-        return result;
+        return null;
     }
-
-//    @GetMapping("/{pack_id}")
-//    public ResponseEntity<?> spin(@PathVariable BigDecimal id) {
-//        Pack pack = packRepository.findById(id).get();
-//        return null;
-//    }
-
 }
