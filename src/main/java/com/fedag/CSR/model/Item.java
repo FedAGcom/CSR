@@ -32,7 +32,10 @@ public class Item {
     private String quality;
 
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private Double price;
+
+    @Column(name = "steam_id")
+    private String steamId;
 
     @ManyToOne
     @JoinColumn(name = "balance_id")
