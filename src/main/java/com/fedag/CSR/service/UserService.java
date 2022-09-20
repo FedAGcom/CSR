@@ -11,10 +11,7 @@ import java.math.BigDecimal;
 public interface UserService<T> {
     Page<T> getAllUsers(Pageable pageable);
     UserResponse getUser(BigDecimal id);
-
     void save(UserRequest user);
-
     void deteleUser(BigDecimal id);
-
     void update(UserUpdate user);
 }

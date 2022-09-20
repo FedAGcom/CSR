@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -34,6 +35,7 @@ public class ItemController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ItemResponse getItem(@PathVariable BigDecimal id){
         return itemService.getItem(id);
     }
@@ -46,6 +48,7 @@ public class ItemController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public Page<ItemResponse> getAllItems(@PageableDefault(size = 5) Pageable pageable) {
         Page<ItemResponse> page = itemService.getAllItems(pageable);
         System.out.println(page.getTotalElements());
@@ -60,6 +63,7 @@ public class ItemController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public void updateItem(@RequestBody ItemUpdate item) {
         itemService.updateItem(item);
     }
@@ -72,6 +76,7 @@ public class ItemController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public void createUser(@RequestBody ItemRequest item) {
         itemService.create(item);
     }
@@ -85,6 +90,7 @@ public class ItemController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAuthority('admin')")
     public void delete(@PathVariable BigDecimal id) {
         itemService.deleteItemById(id);
     }

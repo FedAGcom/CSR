@@ -61,6 +61,18 @@ public class User {
     @Column(name = "enabled")
     private Boolean enabled;
 
+    @Column(name = "steam_id")
+    private String steamId;
+
+    @Column(name = "steam_avatar")
+    private String steamAvatarLink;
+
+    @Column(name = "steam_avatar_medium")
+    private String steamAvatarMediumLink;
+
+    @Column(name = "steam_avatar_full")
+    private String steamFullAvatarLink;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Balance balance;
 }

@@ -30,7 +30,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @PreAuthorize("hasAuthority('user')")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public Page<UserResponse> getAllUsers(@PageableDefault(size = 5) Pageable pageable) {
         return userService.getAllUsers(pageable);
     }
@@ -43,7 +43,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
                     })
-    @PreAuthorize("hasAuthority('user')")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public UserResponse getUser(@PathVariable BigDecimal id) {
         return userService.getUser(id);
     }

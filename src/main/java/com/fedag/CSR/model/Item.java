@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,7 +32,10 @@ public class Item {
     private String quality;
 
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private Double price;
+
+    @Column(name = "steam_id")
+    private String steamId;
 
     @ManyToOne
     @JoinColumn(name = "balance_id")
@@ -41,5 +45,7 @@ public class Item {
     @JoinColumn(name = "pack_id")
     private Pack pack;
 
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
+//    private List<WinChance> winChances;
 }
 

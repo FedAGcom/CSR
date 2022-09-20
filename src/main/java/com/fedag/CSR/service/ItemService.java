@@ -10,14 +10,11 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 
 public interface ItemService {
-
     Page<ItemResponse> getAllItems(Pageable pageable);
-
     Item create(ItemRequest item);
-
     Item updateItem(ItemUpdate item);
-
     void deleteItemById(BigDecimal id);
-
     ItemResponse getItem(BigDecimal id);
+
+    void addAllItems(BigDecimal id);
 }

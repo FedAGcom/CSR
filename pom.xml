@@ -88,6 +88,11 @@
 			<version>2.18.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20220320</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
@@ -108,6 +113,11 @@
 		<artifactId>log4jdbc</artifactId>
 		<version>1.2</version>
 	</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>4.3.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -118,6 +128,7 @@
 				<version>2.7.3</version>
 			</plugin>
 		</plugins>
+		<finalName>csr</finalName>
 	</build>
 
 </project>
