@@ -113,6 +113,11 @@
 		<artifactId>log4jdbc</artifactId>
 		<version>1.2</version>
 	</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>4.3.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>
