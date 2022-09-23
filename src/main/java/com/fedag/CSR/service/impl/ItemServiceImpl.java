@@ -102,15 +102,6 @@ public class ItemServiceImpl implements ItemService {
                 steamURL + "/profiles/" + steam_id + "/inventory/json/730/2"
                 , String.class);
 
-//        if (steam_id.matches(".*[A-Za-z]+.*")) {
-//            response = restTemplate.getForEntity(
-//                    steamURL + "/id/" + steam_id + "/inventory/json/730/2", String.class);
-//        } else {
-//            response = restTemplate.getForEntity(
-//                    steamURL + "/profiles/" + steam_id + "/inventory/json/730/2"
-//                    , String.class);
-//        }
-
         try {
             JsonNode rootNode = mapper.readValue(response.getBody(), JsonNode.class);
             List<Item> items = jsonParser(rootNode);
@@ -158,8 +149,6 @@ public class ItemServiceImpl implements ItemService {
                 quality = intermittentResult.substring(1, intermittentResult.length() - 2);
                 item.setQuality(quality);
             }
-
-
             // определяем rare и тип вещи
             String[] rareAndType = childNode3.get("type").toString().split(" ");
             StringBuilder rare = new StringBuilder();
@@ -183,10 +172,7 @@ public class ItemServiceImpl implements ItemService {
                         .substring(1, childNodeForPrice.toString().length() - 6)
                         .replace(",", ".");
                 item.setPrice(Double.parseDouble(price));
-
             }
-
-
             result.add(item);
         }
         return result;

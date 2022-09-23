@@ -1,8 +1,6 @@
 package com.fedag.CSR.controller;
 
-import com.fedag.CSR.dto.request.PackRequest;
-import com.fedag.CSR.dto.response.PackResponse;
-import com.fedag.CSR.dto.update.PackUpdate;
+import com.fedag.CSR.model.Pack;
 import com.fedag.CSR.service.PackService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,9 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 @RestController
@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 public class PackController {
 
     private final PackService packService;
+
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Получение кейса по id.",
@@ -35,8 +36,8 @@ public class PackController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public PackResponse getPack(@PathVariable BigDecimal id){
-        return packService.getPack(id);
+    public ResponseEntity<?> getPack(@PathVariable BigDecimal id){
+        return ResponseEntity.ok().body(packService.findById(id));
     }
 
     @GetMapping
@@ -48,34 +49,21 @@ public class PackController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public Page<PackResponse> getAllPacks(@PageableDefault(size = 5) Pageable pageable) {
-        Page<PackResponse> page = packService.getAllPacks(pageable);
-        return packService.getAllPacks(pageable);
-    }
-
-    @PutMapping
-    @ApiOperation(value = "Обновление кейса.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Кейс обновлен.",
-                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
-                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    })
-    @PreAuthorize("hasAuthority('admin')")
-    public void updatePack(@RequestBody PackUpdate pack) {
-        packService.updatePack(pack);
+    public ResponseEntity<?> getAllPacks(@PageableDefault(size = 5) Pageable pageable) {
+        Page<Pack> page = packService.findAll(pageable);
+        return ResponseEntity.ok().body(page);
     }
 
     @PostMapping
     @ApiOperation(value = "Создание нового кейса.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Предмет создан.",
+            @ApiResponse(responseCode = "200", description = "Кейс создан.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @PreAuthorize("hasAuthority('admin')")
-    public void createPack(@RequestBody PackRequest pack) {
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    public void createPack(@RequestBody Pack pack) throws IOException {
         packService.create(pack);
     }
 
