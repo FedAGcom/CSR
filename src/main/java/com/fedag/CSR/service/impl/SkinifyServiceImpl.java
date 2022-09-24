@@ -93,6 +93,8 @@ public class SkinifyServiceImpl implements SkinifyService {
 
         depositGlobalRepository.save(new DepositGlobal(1L, depositGlobalValue.getGlobal_id() + 1));
         Deposit newDeposit = new Deposit();
+        Long transactionId = (Long) jsonObject.get("transaction_id");
+        newDeposit.setTransactionId(transactionId);
         newDeposit.setDeposit(depositGlobalValue.getGlobal_id());
         newDeposit.setStatus(DepositStatus.PENDING);
         depositRepository.save(newDeposit);
@@ -101,44 +103,47 @@ public class SkinifyServiceImpl implements SkinifyService {
     }
 
     public DepositStatus checkDepositStatus(Long depositId, String userToken) {
+        Deposit currentDeposit = depositRepository.findById(depositId).orElseThrow(
+                () -> new EntityNotFoundException("Не найден deposit с id " + depositId));
         DepositGlobal depositGlobalValue = depositGlobalRepository.findById(1L).orElseThrow(
                 () -> new EntityNotFoundException("Не найдена глобальная переменная globalDeposit"));
 //        Optional<User> user = userRepository.findById(BigDecimal.valueOf(userId));
         Optional<User> user = userRepository.findUserByConfirmationToken(userToken);
         user.ifPresent(value -> balanceId = value.getBalance().getId());
-        String stringDepositId = String.valueOf(depositGlobalValue.getGlobal_id());
-        HttpHeaders depositHttpHeaders = new HttpHeaders();
-        depositHttpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        depositHttpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        depositHttpHeaders.set("Token", token);
-
-        Map<String, Object> depositRequestParam = new HashMap<>();
-        depositRequestParam.put("deposit_id", stringDepositId);
-        depositRequestParam.put("min_amount", 2);
-        depositRequestParam.put("currency", "rub");
-
-        HttpEntity<Map<String, Object>> depositRequest = new HttpEntity<>(depositRequestParam, depositHttpHeaders);
-        ResponseEntity<String> depositResponse = restTemplate.postForEntity(depositUrl, depositRequest, String.class);
-
-        String bodyURL = depositResponse.getBody();
-        JSONObject jsonObject = new JSONObject(bodyURL);
+//        String stringDepositId = String.valueOf(currentDeposit.getDeposit());
+//        HttpHeaders depositHttpHeaders = new HttpHeaders();
+//        depositHttpHeaders.setContentType(MediaType.APPLICATION_JSON);
+//        depositHttpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+//        depositHttpHeaders.set("Token", token);
+//
+//        Map<String, Object> depositRequestParam = new HashMap<>();
+//        depositRequestParam.put("deposit_id", stringDepositId);
+//        depositRequestParam.put("min_amount", 2);
+//        depositRequestParam.put("currency", "rub");
+//
+//        HttpEntity<Map<String, Object>> depositRequest = new HttpEntity<>(depositRequestParam, depositHttpHeaders);
+//        ResponseEntity<String> depositResponse = restTemplate.postForEntity(depositUrl, depositRequest, String.class);
+//
+//        String bodyURL = depositResponse.getBody();
+//        JSONObject jsonObject = new JSONObject(bodyURL);
         HttpHeaders amountHttpHeaders = new HttpHeaders();
         amountHttpHeaders.setContentType(MediaType.APPLICATION_JSON);
         amountHttpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         amountHttpHeaders.set("Token", token);
-
-        Integer transactionId = (Integer) jsonObject.get("transaction_id");
+//
+//        Integer transactionId = (Integer) jsonObject.get("transaction_id");
         HttpEntity<Void> amountHttpEntity = new HttpEntity<>(amountHttpHeaders);
+        long transactionId = currentDeposit.getTransactionId();
         String finalAmountUrl = amountUrl + transactionId;
         ResponseEntity<String> amountResponse = restTemplate.exchange(finalAmountUrl, HttpMethod.GET, amountHttpEntity, String.class);
-
+// https://skinify.io/api/deposit-status?transaction_id=
         JSONObject infoJsonObject = new JSONObject(amountResponse.getBody());
         JSONObject deposit = (JSONObject) infoJsonObject.get("deposit");
         String status = (String) deposit.get("status");
 //        String stringUrl = (String) jsonObject.get("url");
 
-        Deposit currentDeposit = depositRepository.findById(depositId).orElseThrow(
-                () -> new EntityNotFoundException("Не найден deposit с id " + depositId));
+//        Deposit currentDeposit = depositRepository.findById(depositId).orElseThrow(
+//                () -> new EntityNotFoundException("Не найден deposit с id " + depositId));
         if (status.equals("success")) {
             String amount = (String) deposit.get("amount");
             Optional<Balance> balance = balanceRepository.findById(balanceId);

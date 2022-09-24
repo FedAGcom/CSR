@@ -29,6 +29,9 @@ public class Deposit {
     @Column(name = "status", nullable = false)
     private DepositStatus status;
 
+    @Column(name = "transaction_id", nullable = false)
+    private Long transactionId;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
