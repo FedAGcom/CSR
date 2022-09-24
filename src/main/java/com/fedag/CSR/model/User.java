@@ -12,6 +12,7 @@ import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -75,4 +76,7 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Balance balance;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    List<Deposit> deposits;
 }
