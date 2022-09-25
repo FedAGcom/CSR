@@ -22,6 +22,6 @@ public class WinChance {
     @Column(name = "item_id", insertable = false, updatable = false)
     private Long itemId;
 
-    @Column(name = "win_chance")
+    @Column(name = "win_chance", updatable = false)
     private Double winChance;
 }

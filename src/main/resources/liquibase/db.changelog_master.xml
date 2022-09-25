@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <!--changeSets-->
+    <include file="db_changelog/create_enum_types.sql" relativeToChangelogFile="true"/>
+    <include file="db_changelog/create_table_users.sql" relativeToChangelogFile="true"/>
+    <include file="db_changelog/create_table_balance.sql" relativeToChangelogFile="true"/>
+    <include file="db_changelog/create_table_pack.sql" relativeToChangelogFile="true"/>
+    <include file="db_changelog/create_table_item.sql" relativeToChangelogFile="true"/>
+    <include file="db_changelog/create_table_pack_item.sql" relativeToChangelogFile="true"/>
+    <include file="db_changelog/create_table_deposits.sql" relativeToChangelogFile="true" />
+    <include file="db_changelog/create_table_deposit_global.sql" relativeToChangelogFile="true" />
+    <include file="db_changelog/filling_in_all_tables.sql" relativeToChangelogFile="true"/>
+
+
+</databaseChangeLog>

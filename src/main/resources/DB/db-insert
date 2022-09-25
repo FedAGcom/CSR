@@ -7,7 +7,7 @@ VALUES ('Ivanov@mail.ru', 'Ivan', 'Ivanov', 'dfhj2k32', 'admin', '2020-10-27 02:
         ' https://steamcommunity.com/profiles/Petrov');
 
 INSERT INTO Balance (coins, user_id)
-VALUES (675, 10),
+VALUES (675, 1),
        (78, 11),
        (281, 12);
 

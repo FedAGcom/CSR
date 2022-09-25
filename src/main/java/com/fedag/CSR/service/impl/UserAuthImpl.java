@@ -2,6 +2,7 @@ package com.fedag.CSR.service.impl;
 
 import com.fedag.CSR.enums.Role;
 import com.fedag.CSR.email.EmailService;
+import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.model.User;
 import com.fedag.CSR.repository.UserRepository;
 import com.fedag.CSR.security.SteamAuthRequestDto;
@@ -32,6 +33,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -124,6 +126,11 @@ public class UserAuthImpl implements UserAuth {
             String token = jwtTokenProvider.createToken(user.getUserName(), user.getRole().name());
             user.setConfirmationToken(token);
             userRepository.save(user);
+
+            Optional<User> optional = userRepository.findUserByConfirmationToken(token);
+            User userForBalance = optional.get();
+            userForBalance.setBalance(new Balance(0.0, user));
+            userRepository.save(userForBalance);
 
             responseMap.put("error", false);
             responseMap.put("username", personaname);

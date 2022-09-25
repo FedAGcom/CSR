@@ -1,0 +1,93 @@
+INSERT INTO Users (email, firstname, lastname, password, role, created, steam_link,
+                   user_name, confirmation_token, enabled, steam_id, steam_avatar, steam_avatar_medium
+    , steam_avatar_full)
+VALUES ('Ivanov@mail.ru', 'Ivan', 'Ivanov', 'dfhj2k32', 'admin', '2020-10-27 02:00:00',
+        ' https://steamcommunity.com/profiles/Ivanov', 'user_name1', 'confirmation_token1',
+        true, 'steam_id1', 'steam_avatar1', 'steam_avatar1', 'steam_avatar1'),
+       ('Sidorov@mail.ru', 'Sidor', 'Sidorov', 'hlkl1sdgvl', 'user', '2021-01-16 12:23:37',
+        ' https://steamcommunity.com/profiles/Sidorov','user_name2', 'confirmation_token2',
+        true, 'steam_id2', 'steam_avatar2', 'steam_avatar2', 'steam_avatar2'),
+       ('Petrov@mail.ru', 'Petor', 'Petrov', 'asd123l', 'user', '2022-03-26 11:35:17',
+        ' https://steamcommunity.com/profiles/Petrov', 'user_name3', 'confirmation_token3',
+        true, 'steam_id3', 'steam_avatar3', 'steam_avatar3', 'steam_avatar3');
+
+INSERT INTO Balance (coins, user_id)
+VALUES (675, 1),
+       (78, 2),
+       (281, 3);
+
+INSERT INTO Pack (title, price)
+VALUES ('title1', 120),
+       ('title2', 10),
+       ('title3', 100);
+
+INSERT INTO item (type, title, rare, quality, price,
+                  balance_id, pack_id)
+VALUES
+    ('SMG', 'UMP-45 | Caramel', 'Common', 'Field-Tested', 420, null, 1),
+    ('SMG', 'UMP-45 | Caramel', 'Common', 'Factory New', 520, null, 1),
+    ('Shotgun', 'Nova | Moon in Libra', 'Common', 'Factory New', 180,null, 1),
+    ('Shotgun', 'Nova | Moon in Libra', 'Common', 'Battle-Scarred', 1801,null, 1),
+    ('Rifle', 'SG 553 | Bleached', 'Common', 'Factory New', 6, null, 1),
+    ('Rifle', 'SG 553 | Bleached', 'Common', 'Battle-Scarred', 5, null,1),
+    ('Shotgun', 'MAG-7 | Rust Coat', 'Common', 'Factory New', 3, null,1),
+    ('Shotgun', 'MAG-7 | Rust Coat', 'Common', 'Battle-Scarred', 2, null, 1),
+    ('SMG', 'P90 | Desert DDPAT', 'Common', 'Factory New', 2.60, null, 1),
+    ('SMG', 'P90 | Desert DDPAT', 'Common', 'Battle-Scarred', 2.50, null,1),
+    ('Sniper Rifle', 'SSG 08 | Jungle Dashed', 'Common', 'Factory New', 15, null,1),
+    ('Sniper Rifle', 'SSG 08 | Jungle Dashed', 'Common', 'Battle-Scarred', 14, null, 1),
+    ('Pistol', 'Tec-9 | Urban DDPAT', 'Common', 'Factory New', 1.12, null,  1),
+    ('Pistol', 'Tec-9 | Urban DDPAT', 'Common', 'Battle-Scarred', 1.02, null,  1),
+    ('Pistol', 'Tec-9 | Army Mesh', 'Common', 'Factory New', 0.97, null,  1),
+    ('Pistol', 'Tec-9 | Army Mesh', 'Common', 'Battle-Scarred', 0.87, null,  1),
+    ('Rifle', 'SG 553 | Army Sheen', 'Common', 'Factory New', 1.91, null,  1),
+    ('Sniper Rifle', 'SSG 08 | Prey', 'Common', 'Factory New', 4.23, null , 1),
+    ('Sniper Rifle', 'SSG 08 | Prey', 'Common', 'Battle-Scarred', 4.13, null , 1),
+    ('SMG', 'MP7 | Prey', 'Common', 'Factory New', 5.97, null,  1),
+    ('SMG', 'MP7 | Prey', 'Common', 'Battle-Scarred', 4.97, null, 1),
+    ('Shotgun', 'Sawed-Off | Forest DDPAT', 'Common', 'Factory New', 1.34, null,  1),
+    ('Shotgun', 'Sawed-Off | Forest DDPAT', 'Common', 'Battle-Scarred', 1.24, null,  1),
+    ('SMG', 'PP-Bizon | Anolis', 'Common', 'Factory New', 4.95, null,  1),
+    ('SMG', 'PP-Bizon | Anolis', 'Common', 'Battle-Scarred', 3.95, null,  1),
+    ('SMG', 'MP5-SD | Dirt Drop', 'Common', 'Factory New', 4.99, null,  1),
+    ('SMG', 'MP5-SD | Dirt Drop', 'Common', 'Battle-Scarred', 3.99, null,  1),
+    ('Shotgun', 'Sawed-Off | Parched', 'Common', 'Factory New', 4.05, null, 1),
+    ('Shotgun', 'Sawed-Off | Parched', 'Common', 'Battle-Scarred', 3.05, null,  1),
+    ('Pistol', 'P250 | Drought', 'Common', 'Minimal Wear', 3.66, null,  1),
+    ('Pistol', 'P250 | Drought', 'Common', 'Minimal Wear', 3.56, null,  1),
+    ('Rifle', 'Galil AR | Sage Spray', 'Common', 'Field-Tested', 1.38, null, 1),
+    ('Rifle', 'Galil AR | Sage Spray', 'Common', 'Field-Tested', 1.28, null, 1);
+
+INSERT INTO pack_item (pack_id, item_id, win_chance)
+VALUES
+    (1, 3, 2),
+    (1, 4, 2),
+    (1, 5, 7),
+    (1, 6, 7),
+    (1, 7, 7.2),
+    (1, 8, 7.2),
+    (1, 9, 8),
+    (1, 10, 8),
+    (1, 11, 3),
+    (1, 12, 3),
+    (1, 13, 4.5),
+    (1, 14, 4.5),
+    (1, 15, 5.7),
+    (1, 16, 5.7),
+    (1, 17, 6),
+    (1, 18, 5),
+    (1, 19, 5),
+    (1, 20, 5.5),
+    (1, 21, 5.5),
+    (1, 22, 6.2),
+    (1, 23, 6.2),
+    (1, 24, 6.3),
+    (1, 25, 6.3),
+    (1, 26, 5.5),
+    (1, 27, 5.5),
+    (1, 28, 5),
+    (1, 29, 5),
+    (1, 30, 5),
+    (1, 31, 5),
+    (1, 32, 4),
+    (1, 33, 4);

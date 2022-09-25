@@ -23,7 +23,7 @@ public class Pack {
     private String title;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private Double price;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
     private List<Item> items;
