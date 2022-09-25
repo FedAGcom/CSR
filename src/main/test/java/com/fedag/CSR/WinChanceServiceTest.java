@@ -31,27 +31,27 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class WinChanceServiceTest {
-
-    @Autowired
-    private WinChanceServiceImpl winChanceServiceImpl;
-
-    @Test
-    public void test() {
-        long id = 2L;
-        int counter = 0;
-        int counterLowestId = 0;
-        int counterHighestId = 0;
-        List<Long> list = new ArrayList<>();
-
-        for (int i = 0; i < 100_00; i++) {
-          long itemId =  winChanceServiceImpl.spinCase(id);
-          if (itemId == 131) counterLowestId++;
-          if (itemId == 132) counterHighestId++;
-          list.add(itemId);
-        }
-    }
-}
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//public class WinChanceServiceTest {
+//
+//    @Autowired
+//    private WinChanceServiceImpl winChanceServiceImpl;
+//
+//    @Test
+//    public void test() {
+//        long id = 2L;
+//        int counter = 0;
+//        int counterLowestId = 0;
+//        int counterHighestId = 0;
+//        List<Long> list = new ArrayList<>();
+//
+//        for (int i = 0; i < 100_00; i++) {
+////          long itemId =  winChanceServiceImpl.spinCase(id);
+//          if (itemId == 131) counterLowestId++;
+//          if (itemId == 132) counterHighestId++;
+//          list.add(itemId);
+//        }
+//    }
+//}
 

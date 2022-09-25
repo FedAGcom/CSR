@@ -14,20 +14,15 @@ import com.fedag.CSR.repository.ItemRepository;
 import com.fedag.CSR.repository.UserRepository;
 import com.fedag.CSR.service.ItemService;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Service
@@ -80,16 +75,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemResponse getItem(BigDecimal id) {
-        log.info("Получение одного предмета с id {}", id);
-        ItemResponse itemResponse = null;
-        Optional<Item> optional = itemRepository.findById(id);
+    public Item getItem(BigDecimal id) {
+        //ItemResponse itemResponse = null;
+        Item result = null;
+        Optional<com.fedag.CSR.model.Item> optional = itemRepository.findById(id);
         if (optional.isPresent()) {
-            Item item = optional.get();
-            itemResponse = itemMapper.modelToDto(item);
+            result = optional.get();
+//            itemResponse = itemMapper.modelToDto(item);
         }
         log.info("Предмет получен с id {}", id);
-        return itemResponse;
+        return result;
     }
 
     @Override

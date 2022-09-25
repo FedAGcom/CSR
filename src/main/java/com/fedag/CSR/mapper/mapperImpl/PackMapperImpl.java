@@ -9,6 +9,8 @@ import com.fedag.CSR.model.Item;
 import com.fedag.CSR.model.Pack;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
 
@@ -23,7 +25,7 @@ public class PackMapperImpl implements PackMapper {
         return new PackResponse()
                 .setId(pack.getId())
                 .setTitle(pack.getTitle())
-                .setPrice(pack.getPrice())
+                .setPrice(BigDecimal.valueOf(pack.getPrice()))
                 .setPackItemsId(pack.getItems()
                         .stream()
                         .map(Item::getItemId)

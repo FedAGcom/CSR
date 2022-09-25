@@ -4,6 +4,7 @@ package com.fedag.CSR.controller;
 import com.fedag.CSR.dto.request.ItemRequest;
 import com.fedag.CSR.dto.response.ItemResponse;
 import com.fedag.CSR.dto.update.ItemUpdate;
+import com.fedag.CSR.model.Item;
 import com.fedag.CSR.service.impl.ItemServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,7 +37,7 @@ public class ItemController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public ItemResponse getItem(@PathVariable BigDecimal id){
+    public Item getItem(@PathVariable BigDecimal id){
         return itemService.getItem(id);
     }
 
