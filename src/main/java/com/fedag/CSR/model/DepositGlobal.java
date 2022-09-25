@@ -20,7 +20,7 @@ public class DepositGlobal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "global_id", nullable = false)
+    @Column(name = "deposit_id", nullable = false)
     private Long global_id;
 
 }

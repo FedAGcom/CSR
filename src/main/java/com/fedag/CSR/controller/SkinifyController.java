@@ -17,7 +17,7 @@ public class SkinifyController {
     private final SkinifyServiceImpl skinifyService;
 
 
-    @PostMapping("/createDeposit")
+    @PostMapping("/create-deposit")
     @PreAuthorize("hasAuthority('user')")
     public ResponseEntity<?> createDepositPost(@RequestHeader("Authorization") String userToken) {
         String url = skinifyService.createDeposit(userToken);
@@ -26,7 +26,7 @@ public class SkinifyController {
     }
 
     @GetMapping("/check-status/{depositId}")
-    @PreAuthorize("hasAuthority('user')")
+//    @PreAuthorize("hasAnyAuthority())
     public ResponseEntity<DepositStatus> checkDepositStatus(@PathVariable Long depositId,
                                                             @RequestHeader("Authorization") String userToken) {
 

@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Balance {
 
-    public Balance(int coins, User user) {
+    public Balance(Double coins, User user) {
         this.coins = coins;
         this.user = user;
     }
@@ -31,7 +31,7 @@ public class Balance {
     private BigDecimal id;
 
     @Column(name = "coins")
-    private int coins;
+    private Double coins;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

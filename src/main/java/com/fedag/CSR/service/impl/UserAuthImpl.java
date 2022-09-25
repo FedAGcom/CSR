@@ -129,7 +129,7 @@ public class UserAuthImpl implements UserAuth {
 
             Optional<User> optional = userRepository.findUserByConfirmationToken(token);
             User userForBalance = optional.get();
-            userForBalance.setBalance(new Balance(0, user));
+            userForBalance.setBalance(new Balance(0.0, user));
             userRepository.save(userForBalance);
 
             responseMap.put("error", false);

@@ -38,13 +38,14 @@ public class SkinifyServiceImpl implements SkinifyService {
     @Value("${skinify.token}")
     String token;
     RestTemplate restTemplate = new RestTemplate();
-//    static int depositId = 1906;
     @Override
     public String createDeposit(String userToken) {
         DepositGlobal depositGlobalValue = depositGlobalRepository.findById(1L).orElseThrow(
                 () -> new EntityNotFoundException("Не найдена глобальная переменная globalDeposit"));
+
         Optional<User> user = userRepository.findUserByConfirmationToken(userToken);
         user.ifPresent(value -> balanceId = value.getBalance().getId());
+
         String stringDepositId = String.valueOf(depositGlobalValue.getGlobal_id());
         HttpHeaders depositHttpHeaders = new HttpHeaders();
         depositHttpHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -68,87 +69,49 @@ public class SkinifyServiceImpl implements SkinifyService {
 
         String stringUrl = (String) jsonObject.get("url");
 
-//        Integer transactionId = (Integer) jsonObject.get("transaction_id");
-//        HttpEntity<Void> amountHttpEntity = new HttpEntity<>(amountHttpHeaders);
-//        String finalAmountUrl = amountUrl + transactionId;
-//        ResponseEntity<String> amountResponse = restTemplate.exchange(finalAmountUrl, HttpMethod.GET, amountHttpEntity, String.class);
-
-//        JSONObject infoJsonObject = new JSONObject(amountResponse.getBody());
-//        JSONObject deposit = (JSONObject) infoJsonObject.get("deposit");
-//        String status = (String) deposit.get("status");
-
-
-//        if (status.equals("success")) {
-//            String amount = (String) deposit.get("amount");
-//            Optional<Balance> balance = balanceRepository.findById(balanceId);
-//            int coins = balance.get().getCoins();
-//            coins += Integer.parseInt(amount);
-//            balance.get().setCoins(coins);
-//            balanceRepository.save(balance.get());
-//        } else if (status.equals("pending")) {
-//            System.out.println("Пользователь ожидает оплаты");
-//        } else if (status.equals("failed")) {
-//            System.out.println("Оплата провалилась");
-//        }
-
         depositGlobalRepository.save(new DepositGlobal(1L, depositGlobalValue.getGlobal_id() + 1));
         Deposit newDeposit = new Deposit();
-        Long transactionId = (Long) jsonObject.get("transaction_id");
-        newDeposit.setTransactionId(transactionId);
+        Integer transactionId = (Integer) jsonObject.get("transaction_id");
+        newDeposit.setTransactionId(Long.parseLong(String.valueOf(transactionId)));
         newDeposit.setDeposit(depositGlobalValue.getGlobal_id());
         newDeposit.setStatus(DepositStatus.PENDING);
+        newDeposit.setUser(user.get());
         depositRepository.save(newDeposit);
 
+        System.out.println(jsonObject);
         return stringUrl;
     }
-
     public DepositStatus checkDepositStatus(Long depositId, String userToken) {
         Deposit currentDeposit = depositRepository.findById(depositId).orElseThrow(
                 () -> new EntityNotFoundException("Не найден deposit с id " + depositId));
+
         DepositGlobal depositGlobalValue = depositGlobalRepository.findById(1L).orElseThrow(
                 () -> new EntityNotFoundException("Не найдена глобальная переменная globalDeposit"));
-//        Optional<User> user = userRepository.findById(BigDecimal.valueOf(userId));
+
         Optional<User> user = userRepository.findUserByConfirmationToken(userToken);
         user.ifPresent(value -> balanceId = value.getBalance().getId());
-//        String stringDepositId = String.valueOf(currentDeposit.getDeposit());
-//        HttpHeaders depositHttpHeaders = new HttpHeaders();
-//        depositHttpHeaders.setContentType(MediaType.APPLICATION_JSON);
-//        depositHttpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-//        depositHttpHeaders.set("Token", token);
-//
-//        Map<String, Object> depositRequestParam = new HashMap<>();
-//        depositRequestParam.put("deposit_id", stringDepositId);
-//        depositRequestParam.put("min_amount", 2);
-//        depositRequestParam.put("currency", "rub");
-//
-//        HttpEntity<Map<String, Object>> depositRequest = new HttpEntity<>(depositRequestParam, depositHttpHeaders);
-//        ResponseEntity<String> depositResponse = restTemplate.postForEntity(depositUrl, depositRequest, String.class);
-//
-//        String bodyURL = depositResponse.getBody();
-//        JSONObject jsonObject = new JSONObject(bodyURL);
+        System.out.println(user.get().getId());
+
         HttpHeaders amountHttpHeaders = new HttpHeaders();
         amountHttpHeaders.setContentType(MediaType.APPLICATION_JSON);
         amountHttpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         amountHttpHeaders.set("Token", token);
-//
-//        Integer transactionId = (Integer) jsonObject.get("transaction_id");
+
         HttpEntity<Void> amountHttpEntity = new HttpEntity<>(amountHttpHeaders);
-        long transactionId = currentDeposit.getTransactionId();
-        String finalAmountUrl = amountUrl + transactionId;
+
+        String hardCodedUrl = "https://skinify.io/api/deposit-status?deposit_id=";
+        String finalAmountUrl = hardCodedUrl + currentDeposit.getDeposit();
         ResponseEntity<String> amountResponse = restTemplate.exchange(finalAmountUrl, HttpMethod.GET, amountHttpEntity, String.class);
-// https://skinify.io/api/deposit-status?transaction_id=
+
         JSONObject infoJsonObject = new JSONObject(amountResponse.getBody());
         JSONObject deposit = (JSONObject) infoJsonObject.get("deposit");
         String status = (String) deposit.get("status");
-//        String stringUrl = (String) jsonObject.get("url");
 
-//        Deposit currentDeposit = depositRepository.findById(depositId).orElseThrow(
-//                () -> new EntityNotFoundException("Не найден deposit с id " + depositId));
         if (status.equals("success")) {
             String amount = (String) deposit.get("amount");
             Optional<Balance> balance = balanceRepository.findById(balanceId);
-            int coins = balance.get().getCoins();
-            coins += Integer.parseInt(amount);
+            double coins = balance.get().getCoins();
+            coins += Double.parseDouble(amount);
             balance.get().setCoins(coins);
             balanceRepository.save(balance.get());
 
@@ -157,11 +120,10 @@ public class SkinifyServiceImpl implements SkinifyService {
             currentDeposit.setStatus(DepositStatus.PENDING);
             System.out.println("Пользователь ожидает оплаты");
         } else if (status.equals("failed")) {
-            currentDeposit.setStatus(DepositStatus.FAILED);
+            currentDeposit.setStatus(DepositStatus.ERROR);
             System.out.println("Оплата провалилась");
         }
         depositRepository.save(currentDeposit);
-
         depositGlobalRepository.save(new DepositGlobal(1L, depositGlobalValue.getGlobal_id() + 1));
 
         return currentDeposit.getStatus();
