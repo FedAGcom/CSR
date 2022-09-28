@@ -9,5 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface PackRepository extends JpaRepository<Pack, BigDecimal> {
-    Optional<Pack> findByTitle(String title);
 }

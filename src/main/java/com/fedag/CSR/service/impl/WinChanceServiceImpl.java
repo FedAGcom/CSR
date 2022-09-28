@@ -9,9 +9,12 @@ import com.fedag.CSR.service.ItemService;
 import com.fedag.CSR.service.PackService;
 import com.fedag.CSR.service.WinChanceService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.internal.util.SerializationHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -54,9 +57,17 @@ public class WinChanceServiceImpl implements WinChanceService {
                 if (value >= counterLeft && value <= counterRight) {
                     Long wonItemId = listWinChance.get(i).getItemId();
                     Item item = itemService.getItem(BigDecimal.valueOf(wonItemId));
-                    item.setPack(null);
-                    item.setBalance(balance);
-                    itemRepository.save(item);
+                    Item newItem = new Item();
+
+                    newItem.setItemId(BigDecimal.valueOf(itemRepository.findAll().size() + 1));
+                    newItem.setRare(item.getRare());
+                    newItem.setPrice(item.getPrice());
+                    newItem.setQuality(item.getQuality());
+                    newItem.setTitle(item.getTitle());
+                    newItem.setType(item.getType());
+                    newItem.setPack(null);
+                    newItem.setBalance(balance);
+                    itemRepository.save(newItem);
                     return listWinChance.get(i).getItemId();
                 }
                 counterLeft = counterRight;

@@ -23,7 +23,7 @@ public class ItemRequest {
 
     private BigDecimal balanceId;
 
-    private BigDecimal packId;
+    private BigDecimal pack_id;
 
     private String steam_id;
 }

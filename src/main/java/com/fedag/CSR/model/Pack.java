@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "pack")
-public class Pack {
+public class Pack implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

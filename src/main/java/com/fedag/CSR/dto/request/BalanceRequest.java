@@ -9,5 +9,5 @@ import java.util.List;
 public class BalanceRequest {
     private BigDecimal id;
     private int coins;
-    private List<BigDecimal> balanceItemsId;
+    private List<BigDecimal> itemId;
 }
