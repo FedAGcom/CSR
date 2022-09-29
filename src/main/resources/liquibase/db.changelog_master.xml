@@ -13,6 +13,7 @@
     <include file="db_changelog/create_table_pack_item.sql" relativeToChangelogFile="true"/>
     <include file="db_changelog/create_table_deposits.sql" relativeToChangelogFile="true" />
     <include file="db_changelog/create_table_deposit_global.sql" relativeToChangelogFile="true" />
+    <include file="db_changelog/create_table_items_won.sql" relativeToChangelogFile="true" />
     <include file="db_changelog/filling_in_all_tables.sql" relativeToChangelogFile="true"/>
 
 

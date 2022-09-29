@@ -10,14 +10,10 @@ import java.math.BigDecimal;
 
 public interface PackService {
     Page<Pack> findAll(Pageable pageable);
-
     @Transactional
     Pack create(Pack pack) throws IOException;
-
     void deletePackById(BigDecimal id);
-
     @Transactional
     void deleteById(BigDecimal id);
-
     Pack findById(BigDecimal id);
 }

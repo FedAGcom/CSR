@@ -79,4 +79,7 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     List<Deposit> deposits;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    public List<ItemsWon> itemsWon;
 }

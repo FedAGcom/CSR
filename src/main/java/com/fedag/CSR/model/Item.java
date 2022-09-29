@@ -46,6 +46,9 @@ public class Item implements Serializable {
     @JoinColumn(name = "pack_id")
     private Pack pack;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "items")
+    public List<ItemsWon> itemsWon;
+
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
 //    private List<WinChance> winChances;
 }

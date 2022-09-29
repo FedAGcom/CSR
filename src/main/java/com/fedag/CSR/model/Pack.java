@@ -1,5 +1,6 @@
 package com.fedag.CSR.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,8 +27,12 @@ public class Pack implements Serializable {
     @Column(name = "price")
     private Double price;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
     private List<Item> items;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "packs")
+    public List<ItemsWon> itemsWon;
 
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
 //    private List<WinChance> winChances;

@@ -29,8 +29,6 @@ public class PackServiceImpl implements PackService {
     private final PackRepository packRepository;
     private final ItemRepository itemRepository;
 
-    private final ObjectMapper mapper;
-
     @Override
     public Page<Pack> findAll(Pageable pageable) {
         log.info("Получение страницы с кейсами");

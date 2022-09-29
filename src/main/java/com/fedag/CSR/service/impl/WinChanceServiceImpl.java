@@ -6,6 +6,7 @@ import com.fedag.CSR.repository.ItemRepository;
 import com.fedag.CSR.repository.UserRepository;
 import com.fedag.CSR.repository.WinChanceRepository;
 import com.fedag.CSR.service.ItemService;
+import com.fedag.CSR.service.ItemsWonService;
 import com.fedag.CSR.service.PackService;
 import com.fedag.CSR.service.WinChanceService;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +23,12 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class WinChanceServiceImpl implements WinChanceService {
-
     private final WinChanceRepository winChanceRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final ItemService itemService;
     private final PackService packService;
-
+    private final ItemsWonService itemsWonService;
     @Override
     public Long spinCase(Long id, String userToken) {
         List<WinChance> listWinChance = winChanceRepository.getWinChanceByPackId(id);
@@ -58,6 +58,7 @@ public class WinChanceServiceImpl implements WinChanceService {
                     Long wonItemId = listWinChance.get(i).getItemId();
                     Item item = itemService.getItem(BigDecimal.valueOf(wonItemId));
                     Item newItem = new Item();
+                    ItemsWon itemsWon = new ItemsWon();
 
                     newItem.setItemId(BigDecimal.valueOf(itemRepository.findAll().size() + 1));
                     newItem.setRare(item.getRare());
@@ -67,7 +68,12 @@ public class WinChanceServiceImpl implements WinChanceService {
                     newItem.setType(item.getType());
                     newItem.setPack(null);
                     newItem.setBalance(balance);
-                    itemRepository.save(newItem);
+
+                    itemsWon.setUsers(user.get());
+                    itemsWon.setPacks(pack);
+                    itemsWon.setItems(newItem);
+                    itemsWonService.add(itemsWon);
+
                     return listWinChance.get(i).getItemId();
                 }
                 counterLeft = counterRight;
