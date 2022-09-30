@@ -24,10 +24,10 @@ public class WinChanceServiceTest {
     @Test
     public void testWinChanceService() {
         List<String> getIdPriceItem = new ArrayList<>();
-        long id = 1L;
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKQUNLIEJCVVRUTEFORCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjY0NTIwMjY1LCJleHAiOjE2NjUxMjUwNjV9.npdv5I6ttg-Irvd7UY2yJWM9KLJUjMZrtNww0OxZxNg";
+        BigDecimal id = BigDecimal.valueOf(21);
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLjgrjjg6fjg4vjg7wiLCJyb2xlIjoidXNlciIsImlhdCI6MTY2NDUzNjY2OSwiZXhwIjoxNjY1MTQxNDY5fQ.otmdhE4jvn3bkWnqvepu_MLTFsZAQuhc_3xVNLwvKJE";
         int round = 1_000;
-        double pricePack = 30;
+        double pricePack = 1500;
 
         double sumPayIng = pricePack * round;
         double sumPayOut = 0;
@@ -37,10 +37,10 @@ public class WinChanceServiceTest {
 
         while (round > 0) {
 
-            long itemId = winChanceServiceImpl.spinCase(id, token);
-            double priceItem = itemServiceImpl.getItem(BigDecimal.valueOf(itemId)).getPrice();
+            BigDecimal itemId = winChanceServiceImpl.spinCase(id, token);
+            double priceItem = itemServiceImpl.getItem(itemId).getPrice();
 
-            getIdPriceItem.add(String.format("Id item: %d price: %.2f", itemId, priceItem));
+            getIdPriceItem.add(String.format("Id item: %f price: %.2f", itemId, priceItem));
 
             sumPayOut += priceItem;
 

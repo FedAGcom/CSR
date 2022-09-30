@@ -52,9 +52,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item create(ItemRequest item) {
+    public Item create(Item item) {
         log.info("Создание предмета");
-        Item result = itemRepository.save(itemMapper.dtoToModel(item));
+        Item result = itemRepository.save(item);
         log.info("Предмет создан");
         return result;
     }

@@ -78,7 +78,7 @@ public class ItemController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAuthority('admin')")
-    public void createUser(@RequestBody ItemRequest item) {
+    public void createUser(@RequestBody Item item) {
         itemService.create(item);
     }
 

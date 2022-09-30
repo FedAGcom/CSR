@@ -7,6 +7,5 @@ CREATE TABLE Item
     quality      VARCHAR(256)   NOT NULL,
     price        DECIMAL(10, 2) NOT NULL,
     pack_id      BIGINT,
-    FOREIGN KEY (balance_id) REFERENCES Balance (id),
     FOREIGN KEY (pack_id) REFERENCES Pack (id)
 );

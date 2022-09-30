@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 public interface ItemService {
     Page<ItemResponse> getAllItems(Pageable pageable);
-    Item create(ItemRequest item);
+    Item create(Item item);
     Item updateItem(ItemUpdate item);
     void deleteItemById(BigDecimal id);
     Item getItem(BigDecimal id);

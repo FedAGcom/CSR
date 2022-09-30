@@ -34,6 +34,6 @@ public class Pack implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "packs")
     public List<ItemsWon> itemsWon;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
-//    private List<WinChance> winChances;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
+    private List<WinChance> winChances;
 }

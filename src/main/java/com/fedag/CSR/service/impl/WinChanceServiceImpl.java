@@ -1,5 +1,6 @@
 package com.fedag.CSR.service.impl;
 
+import com.fedag.CSR.dto.response.PackResponse;
 import com.fedag.CSR.exception.NotEnoughCoinsToBuyAPackException;
 import com.fedag.CSR.model.*;
 import com.fedag.CSR.repository.ItemRepository;
@@ -31,10 +32,12 @@ public class WinChanceServiceImpl implements WinChanceService {
     private final PackService packService;
     private final ItemsWonService itemsWonService;
     @Override
-    public Long spinCase(Long id, String userToken) {
+    public BigDecimal spinCase(BigDecimal id, String userToken) {
+
+        ItemsWon itemsWon = new ItemsWon();
         List<WinChance> listWinChance = winChanceRepository.getWinChanceByPackId(id);
         int total = 0;
-        Pack pack = packService.findById(BigDecimal.valueOf(id));
+        Pack pack = packService.findPackById(id);
 
         Optional<User> user = userRepository.findUserByConfirmationToken(userToken);
         Balance balance = user.get().getBalance();
@@ -56,10 +59,10 @@ public class WinChanceServiceImpl implements WinChanceService {
 
             for (int i = 0; i < listWinChance.size(); i++) {
                 if (value >= counterLeft && value <= counterRight) {
-                    Long wonItemId = listWinChance.get(i).getItemId();
-                    Item item = itemService.getItem(BigDecimal.valueOf(wonItemId));
+                    BigDecimal wonItemId = listWinChance.get(i).getItem().getItemId();
+                    Item item = itemService.getItem(wonItemId);
 
-                    ItemsWon itemsWon = new ItemsWon();
+
 
                     itemsWon.setUsers(user.get());
                     itemsWon.setPacks(pack);
@@ -69,15 +72,15 @@ public class WinChanceServiceImpl implements WinChanceService {
                     itemsWon.setPack_opening_timestamp(LocalDateTime.now());
                     itemsWonService.add(itemsWon);
 
-                    return listWinChance.get(i).getItemId();
+                    return listWinChance.get(i).getItem().getItemId();
                 }
                 counterLeft = counterRight;
                 counterRight = counterRight + listWinChance.get(i).getWinChance();
             }
-            Long wonItemId = listWinChance.get(listWinChance.size() - 1).getItemId();
-            Item item = itemService.getItem(BigDecimal.valueOf(wonItemId));
+            BigDecimal wonItemId = listWinChance.get(listWinChance.size() - 1).getItem().getItemId();
+            Item item = itemService.getItem(wonItemId);
             itemRepository.save(item);
-            return listWinChance.get(listWinChance.size() - 1).getItemId();
+            return listWinChance.get(listWinChance.size() - 1).getItem().getItemId();
         } else {
             throw new NotEnoughCoinsToBuyAPackException("There's not enough coins on your account.");
         }

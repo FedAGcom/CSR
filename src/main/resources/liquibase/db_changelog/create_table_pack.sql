@@ -2,5 +2,5 @@ CREATE TABLE Pack
 (
     id    BIGSERIAL PRIMARY KEY,
     title VARCHAR(256)   NOT NULL,
-    price DECIMAL(10, 2) NOT NULL
+    price DECIMAL(10, 2)
 );

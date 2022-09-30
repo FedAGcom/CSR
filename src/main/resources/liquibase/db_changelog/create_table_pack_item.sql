@@ -1,5 +1,6 @@
 CREATE TABLE pack_item
 (
+    id SERIAL PRIMARY KEY ,
     pack_id BIGINT NOT NULL,
     item_id BIGINT NOT NULL,
     win_chance DECIMAL(10,2) NOT NULL,
