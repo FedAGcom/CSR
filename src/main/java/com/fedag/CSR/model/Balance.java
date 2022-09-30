@@ -36,7 +36,4 @@ public class Balance {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "balance")
-    private List<Item> items = new ArrayList<>();
 }

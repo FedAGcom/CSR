@@ -1,57 +1,60 @@
 package com.fedag.CSR;
 
+import com.fedag.CSR.service.impl.ItemServiceImpl;
 import com.fedag.CSR.service.impl.WinChanceServiceImpl;
-
-
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-//
-//import static com.jayway.restassured.RestAssured.given;
-//
-//@ExtendWith(MockitoExtension.class)
-//public class WinChanceControllerTest {
-//
-//    @RepeatedTest(10)
-//    public void spinCaseTest() {
-//        Response response = given().
-//                when().get("http://localhost:8080/api/v1/spin/2")
-//                .then().contentType(ContentType.JSON)
-//                .extract().response();
-//
-//        System.out.println(response);
-//    }
-//}
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-//public class WinChanceServiceTest {
-//
-//    @Autowired
-//    private WinChanceServiceImpl winChanceServiceImpl;
-//
-//    @Test
-//    public void test() {
-//        long id = 2L;
-//        int counter = 0;
-//        int counterLowestId = 0;
-//        int counterHighestId = 0;
-//        List<Long> list = new ArrayList<>();
-//
-//        for (int i = 0; i < 100_00; i++) {
-////          long itemId =  winChanceServiceImpl.spinCase(id);
-//          if (itemId == 131) counterLowestId++;
-//          if (itemId == 132) counterHighestId++;
-//          list.add(itemId);
-//        }
-//    }
-//}
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Slf4j
+public class WinChanceServiceTest {
+    @Autowired
+    private WinChanceServiceImpl winChanceServiceImpl;
+    @Autowired
+    private ItemServiceImpl itemServiceImpl;
+
+    @Test
+    public void testWinChanceService() {
+        List<String> getIdPriceItem = new ArrayList<>();
+        long id = 1L;
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKQUNLIEJCVVRUTEFORCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjY0NTIwMjY1LCJleHAiOjE2NjUxMjUwNjV9.npdv5I6ttg-Irvd7UY2yJWM9KLJUjMZrtNww0OxZxNg";
+        int round = 1_000;
+        double pricePack = 30;
+
+        double sumPayIng = pricePack * round;
+        double sumPayOut = 0;
+
+        int appWin = 0;
+        int userWin = 0;
+
+        while (round > 0) {
+
+            long itemId = winChanceServiceImpl.spinCase(id, token);
+            double priceItem = itemServiceImpl.getItem(BigDecimal.valueOf(itemId)).getPrice();
+
+            getIdPriceItem.add(String.format("Id item: %d price: %.2f", itemId, priceItem));
+
+            sumPayOut += priceItem;
+
+            if (priceItem > pricePack) userWin++;
+            else appWin++;
+            round--;
+
+        }
+        getIdPriceItem.forEach(log::info);
+
+        log.info(sumPayIng > sumPayOut ? "App WIN" : "User WIN");
+        log.info(String.format("AppWin = %,d, UserWin = %,d", appWin, userWin));
+        log.info(String.format("Потрачено %,.2f. Выплачено %,.2f", sumPayIng, sumPayOut));
+    }
+}
+
 

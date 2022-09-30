@@ -24,8 +24,8 @@ public class ItemRepositoryImpl {
             con.setAutoCommit(false);
             PreparedStatement pstmt =
                     con.prepareStatement(
-                            "INSERT INTO item (type, title, rare, quality, price, balance_id, pack_id, steam_id)" +
-                                    " VALUES (?,?,?,?,?,?,?,?)");
+                            "INSERT INTO item (type, title, rare, quality, price, balance_id, pack_id)" +
+                                    " VALUES (?,?,?,?,?,?,?)");
 
             for (int i = 0; i < list.size(); i++) {
                 if(list.get(i).getPrice() != null && list.get(i).getQuality() != null) {
@@ -36,7 +36,6 @@ public class ItemRepositoryImpl {
                     pstmt.setDouble(5, list.get(i).getPrice());
                     pstmt.setInt(6, 4);
                     pstmt.setInt(7, 1);
-                    pstmt.setString(8, list.get(i).getSteamId());
                     pstmt.addBatch();
                 }
             }

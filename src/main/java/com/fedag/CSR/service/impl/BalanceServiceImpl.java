@@ -58,8 +58,6 @@ public class BalanceServiceImpl implements BalanceService {
     @Transactional
     public Balance create(Balance balance) {
         log.info("Создание баланса");
-        final List<Item> balanceItems = balance.getItems();
-        balance.setItems(balanceItems);
         Balance result = balanceRepository.save(balance);
         log.info("Баланс создан");
         return result;

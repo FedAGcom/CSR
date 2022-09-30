@@ -35,21 +35,11 @@ public class Item implements Serializable {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "steam_id")
-    private String steamId;
-
-    @ManyToOne
-    @JoinColumn(name = "balance_id")
-    private Balance balance;
-
     @ManyToOne
     @JoinColumn(name = "pack_id")
     private Pack pack;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "items")
     public List<ItemsWon> itemsWon;
-
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-//    private List<WinChance> winChances;
 }
 

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,21 +58,15 @@ public class WinChanceServiceImpl implements WinChanceService {
                 if (value >= counterLeft && value <= counterRight) {
                     Long wonItemId = listWinChance.get(i).getItemId();
                     Item item = itemService.getItem(BigDecimal.valueOf(wonItemId));
-                    Item newItem = new Item();
-                    ItemsWon itemsWon = new ItemsWon();
 
-                    newItem.setItemId(BigDecimal.valueOf(itemRepository.findAll().size() + 1));
-                    newItem.setRare(item.getRare());
-                    newItem.setPrice(item.getPrice());
-                    newItem.setQuality(item.getQuality());
-                    newItem.setTitle(item.getTitle());
-                    newItem.setType(item.getType());
-                    newItem.setPack(null);
-                    newItem.setBalance(balance);
+                    ItemsWon itemsWon = new ItemsWon();
 
                     itemsWon.setUsers(user.get());
                     itemsWon.setPacks(pack);
-                    itemsWon.setItems(newItem);
+                    itemsWon.setItems(item);
+                    itemsWon.setItem_price(item.getPrice());
+                    itemsWon.setPack_price(pack.getPrice());
+                    itemsWon.setPack_opening_timestamp(LocalDateTime.now());
                     itemsWonService.add(itemsWon);
 
                     return listWinChance.get(i).getItemId();
@@ -81,8 +76,6 @@ public class WinChanceServiceImpl implements WinChanceService {
             }
             Long wonItemId = listWinChance.get(listWinChance.size() - 1).getItemId();
             Item item = itemService.getItem(BigDecimal.valueOf(wonItemId));
-            item.setPack(null);
-            item.setBalance(balance);
             itemRepository.save(item);
             return listWinChance.get(listWinChance.size() - 1).getItemId();
         } else {

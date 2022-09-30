@@ -122,8 +122,6 @@ public class ItemServiceImpl implements ItemService {
             // формируем steam_id предмета
             String classId = childNode3.get("classid").toString();
             String instanceId = childNode3.get("instanceid").toString();
-            item.setSteamId(classId.substring(1, classId.length() - 1)
-                    + "_" + instanceId.substring(1, instanceId.length() - 1));
 
             // формируем имя предмета
             String name = childNode3.get("name").toString();
