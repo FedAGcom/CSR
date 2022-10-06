@@ -119,9 +119,8 @@ public class ItemServiceImpl implements ItemService {
             JsonNode childNode3 = iterator.next();
             Item item = new Item();
 
-            // формируем steam_id предмета
-            String classId = childNode3.get("classid").toString();
-            String instanceId = childNode3.get("instanceid").toString();
+            //добавление картинки предмета
+
 
             // формируем имя предмета
             String name = childNode3.get("name").toString();

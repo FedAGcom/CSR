@@ -24,10 +24,10 @@ public class WinChanceServiceTest {
     @Test
     public void testWinChanceService() {
         List<String> getIdPriceItem = new ArrayList<>();
-        BigDecimal id = BigDecimal.valueOf(21);
+        BigDecimal id = BigDecimal.valueOf(24);
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLjgrjjg6fjg4vjg7wiLCJyb2xlIjoidXNlciIsImlhdCI6MTY2NDUzNjY2OSwiZXhwIjoxNjY1MTQxNDY5fQ.otmdhE4jvn3bkWnqvepu_MLTFsZAQuhc_3xVNLwvKJE";
         int round = 1_000;
-        double pricePack = 1500;
+        double pricePack = 500;
 
         double sumPayIng = pricePack * round;
         double sumPayOut = 0;

@@ -18,8 +18,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -35,6 +37,8 @@ public class PackServiceImpl implements PackService {
     private final ItemService itemService;
     private final WinChanceRepository winChanceRepository;
     private final PackMapper packMapper;
+
+    private final RestTemplate restTemplate;
 
     @Override
     public Page<Pack> findAll(Pageable pageable) {
@@ -81,6 +85,28 @@ public class PackServiceImpl implements PackService {
             String[] urlArray = basedUrl.split(" ");
             String newUrl = String.join("%20", urlArray);
             newUrl.substring(0, newUrl.length() - 3);
+
+            //Формирование картинки предмета
+            String itemName = item.getTitle() + " (" + item.getQuality() + ")";
+            ResponseEntity<String> response = restTemplate
+                    .getForEntity("https://steamcommunity.com/market/listings/730/"
+                            + itemName + "/render?start=0&count=1&currency=3&language=english&format=json", String.class);
+            JSONObject jsonAssets = new JSONObject(response.getBody());
+            JSONObject jsonObjectAssets = (JSONObject) jsonAssets.get("assets");
+            String[] iconUrlArray = String.valueOf(jsonObjectAssets).split("\"icon_url\":\"");
+
+            int counter = 0;
+            StringBuilder sb = new StringBuilder();
+            while(iconUrlArray[1].charAt(counter) != 34) {
+                sb.append(iconUrlArray[1].charAt(counter));
+                counter++;
+            }
+
+            String iconUrlFromApi = iconUrlArray[1].substring(0, sb.length());
+            String finalIconUrl = "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
+            item.setIconItemId(finalIconUrl);
+            //System.out.println(finalIconUrl);
+
 
             URL url = new URL(newUrl);
             String json = IOUtils.toString(url, StandardCharsets.UTF_8);

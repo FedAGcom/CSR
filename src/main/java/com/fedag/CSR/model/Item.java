@@ -35,6 +35,9 @@ public class Item implements Serializable {
     @Column(name = "price", nullable = false)
     private Double price;
 
+    @Column(name = "icon_item_id")
+    private String iconItemId;
+
     @ManyToOne
     @JoinColumn(name = "pack_id")
     private Pack pack;
