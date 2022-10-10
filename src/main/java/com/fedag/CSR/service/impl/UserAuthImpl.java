@@ -67,7 +67,8 @@ public class UserAuthImpl implements UserAuth {
         user.setConfirmationToken(token);
         userRepository.save(user);
 
-        String link = "http://5.101.51.35:8080/api/v1/activate/confirm?token=" + token;
+        String link = "http://5.101.51.35:80/api/v1/activate/confirm?token=" + token;
+//        String link = "http://localhost:80/api/v1/activate/confirm?token=" + token;
         emailService.send(registrationRequest.getEmail(), registrationRequest.getFirstName(), link);
 
         responseMap.put("error", false);
