@@ -124,6 +124,5 @@ public class AuthController {
             throw new RuntimeException(e);
         }
     }
-
 }
 

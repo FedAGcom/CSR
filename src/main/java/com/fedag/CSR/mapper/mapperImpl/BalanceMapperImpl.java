@@ -6,6 +6,7 @@ import com.fedag.CSR.dto.response.BalanceResponse;
 import com.fedag.CSR.mapper.BalanceMapper;
 import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.model.Item;
+import com.fedag.CSR.model.ItemsWon;
 import com.fedag.CSR.service.ItemsWonService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
@@ -50,9 +51,9 @@ public class BalanceMapperImpl implements BalanceMapper {
 
     private void mapSpecificFields(Balance source, BalanceResponse destination) {
         List<BigDecimal> listInt = new ArrayList<>();
-//        for (Item i: source.getItems()){
-//            listInt.add(i.getItemId());
-//        }
+        for (ItemsWon i: source.getItemsWon()){
+            listInt.add(i.getItems().getItemId());
+        }
         destination.setBalanceItemsId(listInt);
     }
     public BalanceResponse modelToDto(Balance balance) {
