@@ -25,6 +25,10 @@ public class ItemsWon {
     private Pack packs;
 
     @ManyToOne
+    @JoinColumn(name = "balance_id")
+    private Balance balances;
+
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item items;
 

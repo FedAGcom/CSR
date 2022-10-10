@@ -62,13 +62,12 @@ public class WinChanceServiceImpl implements WinChanceService {
                     BigDecimal wonItemId = listWinChance.get(i).getItem().getItemId();
                     Item item = itemService.getItem(wonItemId);
 
-
-
                     itemsWon.setUsers(user.get());
                     itemsWon.setPacks(pack);
                     itemsWon.setItems(item);
                     itemsWon.setItem_price(item.getPrice());
                     itemsWon.setPack_price(pack.getPrice());
+                    itemsWon.setBalances(balance);
                     itemsWon.setPack_opening_timestamp(LocalDateTime.now());
                     itemsWonService.add(itemsWon);
 

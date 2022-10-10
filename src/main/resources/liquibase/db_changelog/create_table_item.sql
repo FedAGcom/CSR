@@ -7,5 +7,6 @@ CREATE TABLE Item
     quality      VARCHAR(256)   NOT NULL,
     price        DECIMAL(10, 2) NOT NULL,
     pack_id      BIGINT,
+    icon_item_id VARCHAR,
     FOREIGN KEY (pack_id) REFERENCES Pack (id)
 );
