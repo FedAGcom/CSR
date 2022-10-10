@@ -5,7 +5,7 @@ CREATE TABLE Users
     firstName           VARCHAR(256),
     lastName            VARCHAR(256),
     password            VARCHAR(256),
-    role                role,
+    role                VARCHAR(256),
     created             timestamp with time zone,
     steam_link          VARCHAR(256) NOT NULL,
     user_name           VARCHAR(256) NOT NULL,

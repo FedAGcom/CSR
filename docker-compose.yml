@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  # Application
+  csr:
+    image: maxirage/csr:latest
+    container_name: CSRapp
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 8080:8080
+    depends_on:
+      - database-postgres
+
+  #  PostgreSQL
+  database-postgres:
+    image: postgres:14
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=csrDocker
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - 5433:5432

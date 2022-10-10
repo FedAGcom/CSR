@@ -24,10 +24,10 @@ public class WinChanceServiceTest {
     @Test
     public void testWinChanceService() {
         List<String> getIdPriceItem = new ArrayList<>();
-        BigDecimal id = BigDecimal.valueOf(24);
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLjgrjjg6fjg4vjg7wiLCJyb2xlIjoidXNlciIsImlhdCI6MTY2NDUzNjY2OSwiZXhwIjoxNjY1MTQxNDY5fQ.otmdhE4jvn3bkWnqvepu_MLTFsZAQuhc_3xVNLwvKJE";
-        int round = 1_000;
-        double pricePack = 500;
+        BigDecimal id = BigDecimal.valueOf(1);
+        String token = "confirmation_token1";
+        int round = 1;
+        double pricePack = 150;
 
         double sumPayIng = pricePack * round;
         double sumPayOut = 0;
@@ -40,7 +40,7 @@ public class WinChanceServiceTest {
             BigDecimal itemId = winChanceServiceImpl.spinCase(id, token);
             double priceItem = itemServiceImpl.getItem(itemId).getPrice();
 
-            getIdPriceItem.add(String.format("Id item: %f price: %.2f", itemId, priceItem));
+            getIdPriceItem.add(String.format("Id item: %.0f price: %.2f", itemId, priceItem));
 
             sumPayOut += priceItem;
 
@@ -56,5 +56,3 @@ public class WinChanceServiceTest {
         log.info(String.format("Потрачено %,.2f. Выплачено %,.2f", sumPayIng, sumPayOut));
     }
 }
-
-
