@@ -35,7 +35,7 @@ agent any
         stage("Create docker image") {
             steps {
                 echo " ============== start building image =================="
-                sh 'chmod --recursive ugo+xwr /var/lib/jenkins/workspace/csr/postgres-data/pg_stat_tmp'
+                sh 'sudo chmod --recursive ugo+xwr /var/lib/jenkins/workspace/csr/postgres-data/pg_stat_tmp'
                 sh 'docker build -t maxirage/csr:latest . '
             }
         }
