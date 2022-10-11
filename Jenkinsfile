@@ -15,13 +15,13 @@ agent any
                 sh 'docker-compose up -d'
             }
         }
-        stage('Build mvn project') {
-            steps {
-                echo " ============== build mvn project =================="
-//                sleep(time: 20, unit: "SECONDS")
-                sh 'mvn clean install'
-            }
-        }
+//        stage('Build mvn project') {
+//            steps {
+//                echo " ============== build mvn project =================="
+////                sleep(time: 20, unit: "SECONDS")
+//                sh 'mvn clean install'
+//            }
+//        }
         stage("Docker login") {
             steps {
                 echo " ============== docker login =================="
