@@ -22,33 +22,33 @@ agent any
                 sh 'mvn clean install'
             }
         }
-//        stage("Docker login") {
-//            steps {
-//                echo " ============== docker login =================="
-//                withCredentials([usernamePassword(credentialsId: 'docker_hub_maxirage', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-//                    sh """
-//                    docker login -u $USERNAME -p $PASSWORD
-//                    """
-//                }
-//            }
-//        }
-//        stage("Create docker image") {
-//            steps {
-//                echo " ============== start building image =================="
-//                sh 'docker build -t maxirage/csr:latest . '
-//            }
-//        }
-//        stage("Docker push") {
-//            steps {
-//                echo " ============== start pushing image =================="
-//                sh 'docker push maxirage/csr:latest'
-//            }
-//        }
-//        stage("Run app") {
-//            steps {
-//                echo " ============== start app =================="
-//                sh 'docker-compose up -d --build'
-//            }
-//        }
+        stage("Docker login") {
+            steps {
+                echo " ============== docker login =================="
+                withCredentials([usernamePassword(credentialsId: 'docker_hub_maxirage', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh """
+                    docker login -u $USERNAME -p $PASSWORD
+                    """
+                }
+            }
+        }
+        stage("Create docker image") {
+            steps {
+                echo " ============== start building image =================="
+                sh 'docker build -t maxirage/csr:latest . '
+            }
+        }
+        stage("Docker push") {
+            steps {
+                echo " ============== start pushing image =================="
+                sh 'docker push maxirage/csr:latest'
+            }
+        }
+        stage("Run app") {
+            steps {
+                echo " ============== start app =================="
+                sh 'docker-compose up -d --build'
+            }
+        }
     }
 }
