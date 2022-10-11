@@ -35,8 +35,8 @@ agent any
         stage("Create docker image") {
             steps {
                 echo " ============== start building image =================="
-                sh 'docker build -t maxirage/csr:latest . '
                 sh 'chmod --recursive ugo+xwr pg_stat_tmp'
+                sh 'docker build -t maxirage/csr:latest . '
             }
         }
         stage("Docker push") {
