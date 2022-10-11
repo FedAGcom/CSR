@@ -12,18 +12,16 @@ agent any
         stage ("Docker-compose") {
             steps {
                 echo " ============== start docker-compose =================="
-                infra.withDockerCredentials {
-                    sh "docker-compose up -d"
-                }
+                sh 'docker-compose up -d'
             }
         }
-//        stage('Build mvn project') {
-//            steps {
-//                echo " ============== build mvn project =================="
-////                sleep(time: 20, unit: "SECONDS")
-//                sh 'mvn clean install'
-//            }
-//        }
+        stage('Build mvn project') {
+            steps {
+                echo " ============== build mvn project =================="
+//                sleep(time: 20, unit: "SECONDS")
+                sh 'mvn clean install'
+            }
+        }
 //        stage("Docker login") {
 //            steps {
 //                echo " ============== docker login =================="
