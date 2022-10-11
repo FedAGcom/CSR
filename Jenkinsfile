@@ -12,21 +12,21 @@ agent any
         stage ("Docker-compose") {
             steps {
                 echo " ============== start docker-compose =================="
-                bash 'docker-compose up -d'
+                sudo 'docker-compose up -d'
             }
         }
         stage('Build mvn project') {
             steps {
                 echo " ============== build mvn project =================="
 //                sleep(time: 20, unit: "SECONDS")
-                bash 'mvn clean install'
+                sudo 'mvn clean install'
             }
         }
         stage("Docker login") {
             steps {
                 echo " ============== docker login =================="
                 withCredentials([usernamePassword(credentialsId: 'docker_hub_maxirage', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    bash """
+                    sudo """
                     docker login -u $USERNAME -p $PASSWORD
                     """
                 }
@@ -35,19 +35,19 @@ agent any
         stage("Create docker image") {
             steps {
                 echo " ============== start building image =================="
-                bash 'docker build -t maxirage/csr:latest . '
+                sudo 'docker build -t maxirage/csr:latest . '
             }
         }
         stage("Docker push") {
             steps {
                 echo " ============== start pushing image =================="
-                bash 'docker push maxirage/csr:latest'
+                sudo 'docker push maxirage/csr:latest'
             }
         }
         stage("Run app") {
             steps {
                 echo " ============== start app =================="
-                bash 'docker-compose up -d --build'
+                sudo 'docker-compose up -d --build'
             }
         }
     }
