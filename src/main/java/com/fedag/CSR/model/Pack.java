@@ -27,6 +27,12 @@ public class Pack implements Serializable {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "pack_image")
+    private byte[] image;
+
+    @Column(name = "image_type")
+    private String imageType;
+
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pack")
     private List<Item> items;

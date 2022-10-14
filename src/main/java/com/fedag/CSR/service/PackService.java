@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -15,7 +17,7 @@ import java.math.BigDecimal;
 public interface PackService {
     Page<Pack> findAll(Pageable pageable);
     @Transactional
-    Pack create(String pack) throws IOException;
+    Pack create(String pack, MultipartFile file) throws IOException;
     void deletePackById(BigDecimal id);
     @Transactional
     void deleteById(BigDecimal id);

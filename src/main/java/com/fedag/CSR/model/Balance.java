@@ -39,4 +39,5 @@ public class Balance {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "balances")
     public List<ItemsWon> itemsWon;
+
 }

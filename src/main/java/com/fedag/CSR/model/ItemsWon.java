@@ -1,5 +1,6 @@
 package com.fedag.CSR.model;
 
+import com.fedag.CSR.enums.ItemsWonStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -41,4 +42,10 @@ public class ItemsWon {
     @Column(name = "pack_opening_timestamp")
     private LocalDateTime pack_opening_timestamp;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "item_won_status", nullable = false)
+    private ItemsWonStatus itemsWonStatus;
+
+    @Column(name = "item_won_sailed_time")
+    private LocalDateTime itemWonSailedTime;
 }

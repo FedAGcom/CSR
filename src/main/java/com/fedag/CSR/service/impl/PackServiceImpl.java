@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -50,12 +51,16 @@ public class PackServiceImpl implements PackService {
 
     @Override
     @Transactional
-    public Pack create(String pack) throws IOException {
+    public Pack create(String pack, MultipartFile file) throws IOException {
         log.info("Создание кейса");
 
         JSONObject jsonObject = new JSONObject(pack);
 
         Pack result = new Pack();
+
+        result.setImage(file.getBytes());
+        result.setImageType(file.getContentType());
+
         Double price = jsonObject.getDouble("price");
         result.setPrice(price);
         result.setTitle((String) jsonObject.get("title"));
@@ -105,8 +110,6 @@ public class PackServiceImpl implements PackService {
             String iconUrlFromApi = iconUrlArray[1].substring(0, sb.length());
             String finalIconUrl = "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
             item.setIconItemId(finalIconUrl);
-            //System.out.println(finalIconUrl);
-
 
             URL url = new URL(newUrl);
             String json = IOUtils.toString(url, StandardCharsets.UTF_8);

@@ -18,9 +18,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.lang.management.MemoryUsage;
 import java.math.BigDecimal;
 
 @RestController
@@ -68,8 +70,8 @@ public class PackController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public void createPack(@RequestBody String pack) throws IOException {
-        packService.create(pack);
+    public void createPack(@RequestBody String pack, @RequestPart MultipartFile file) throws IOException {
+        packService.create(pack, file);
     }
 
     @DeleteMapping("/{id}")

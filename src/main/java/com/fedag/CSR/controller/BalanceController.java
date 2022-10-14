@@ -126,4 +126,17 @@ public class BalanceController {
         balanceService.deleteById(id);
         return ResponseEntity.ok().body("Balance with ID = " + id + " was deleted.");
     }
+
+    @PostMapping("/soldAllItems/{id}")
+    @ApiOperation(value = "Продажа всех предметов по id баланса")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Предметы проданы",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    public ResponseEntity<?> soldAllItemsByBalanceId(@PathVariable BigDecimal id){
+        return ResponseEntity.ok().body("Продано предметов на сумму: " + balanceService.soldAllItemsByBalanceId(id));
+    }
 }
