@@ -7,6 +7,7 @@ import com.fedag.CSR.mapper.BalanceMapper;
 import com.fedag.CSR.model.Item;
 import com.fedag.CSR.model.ItemsWon;
 import com.fedag.CSR.repository.BalanceRepository;
+import com.fedag.CSR.repository.ItemsWonRepository;
 import com.fedag.CSR.service.BalanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,8 @@ public class BalanceServiceImpl implements BalanceService {
 
     private final BalanceRepository balanceRepository;
     private final BalanceMapper balanceMapper;
+
+    private final ItemsWonRepository itemsWonRepository;
 
 
     @Override
@@ -103,6 +106,7 @@ public class BalanceServiceImpl implements BalanceService {
                 i.setItemWonSailedTime(LocalDateTime.now());
                 listItems.add(i);
                 profit = profit + i.getItem_price();
+                itemsWonRepository.save(i);
             }
         }
         result.setCoins(result.getCoins() + profit);
