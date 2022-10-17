@@ -10,6 +10,12 @@ import java.util.List;
 
 public interface PackMapper {
     PackResponse toResponse(Pack pack);
+
     Pack fromRequest(PackRequest packRequest);
+
     Pack fromRequestUpdate(PackUpdate packUpdate);
+
+    public Page<PackResponse> modelToDto(Page<Pack> packPage);
+
+    PackResponse modelToDto(Pack pack);
 }

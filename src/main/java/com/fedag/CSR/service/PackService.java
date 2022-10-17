@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 public interface PackService {
-    Page<Pack> findAll(Pageable pageable);
+    Page<PackResponse> findAll(Pageable pageable);
     @Transactional
     Pack create(String pack, MultipartFile file) throws IOException;
     void deletePackById(BigDecimal id);

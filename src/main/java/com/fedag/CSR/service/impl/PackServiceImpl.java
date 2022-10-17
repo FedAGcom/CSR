@@ -1,12 +1,10 @@
 package com.fedag.CSR.service.impl;
 
 import com.fedag.CSR.dto.response.PackResponse;
-import com.fedag.CSR.exception.EntityNotFoundException;
 import com.fedag.CSR.mapper.PackMapper;
 import com.fedag.CSR.model.Item;
 import com.fedag.CSR.model.Pack;
 import com.fedag.CSR.model.WinChance;
-import com.fedag.CSR.repository.ItemRepository;
 import com.fedag.CSR.repository.PackRepository;
 import com.fedag.CSR.repository.WinChanceRepository;
 import com.fedag.CSR.service.ItemService;
@@ -38,16 +36,7 @@ public class PackServiceImpl implements PackService {
     private final ItemService itemService;
     private final WinChanceRepository winChanceRepository;
     private final PackMapper packMapper;
-
     private final RestTemplate restTemplate;
-
-    @Override
-    public Page<Pack> findAll(Pageable pageable) {
-        log.info("Получение страницы с кейсами");
-        Page<Pack> result = packRepository.findAll(pageable);
-        log.info("Страница с кейсами получена");
-        return result;
-    }
 
     @Override
     @Transactional
@@ -102,7 +91,7 @@ public class PackServiceImpl implements PackService {
 
             int counter = 0;
             StringBuilder sb = new StringBuilder();
-            while(iconUrlArray[1].charAt(counter) != 34) {
+            while (iconUrlArray[1].charAt(counter) != 34) {
                 sb.append(iconUrlArray[1].charAt(counter));
                 counter++;
             }
@@ -145,7 +134,7 @@ public class PackServiceImpl implements PackService {
         log.info("Получение кейса c Id: {}", id);
         PackResponse packResponse = null;
         Optional<Pack> optional = packRepository.findById(id);
-        if(optional.isPresent()){
+        if (optional.isPresent()) {
             Pack pack = optional.get();
             packResponse = packMapper.toResponse(pack);
         }
@@ -153,10 +142,18 @@ public class PackServiceImpl implements PackService {
     }
 
     @Override
+    public Page<PackResponse> findAll(Pageable pageable) {
+        log.info("Получение страницы с кейсами");
+        Page<PackResponse> result = packMapper.modelToDto(packRepository.findAll(pageable));
+        log.info("Страница с кейсами получена");
+        return result;
+    }
+
+    @Override
     public Pack findPackById(BigDecimal id) {
-        Optional<Pack> optional =  packRepository.findById(id);
+        Optional<Pack> optional = packRepository.findById(id);
         Pack result = null;
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             result = optional.get();
         }
         return result;
