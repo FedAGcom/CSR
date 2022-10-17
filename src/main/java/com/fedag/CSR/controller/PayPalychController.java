@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@CrossOrigin(origins = "http://5.101.51.15/", maxAge = 3600)
+@CrossOrigin(origins = "*")
 @Controller
 @RequestMapping("/shop-verification-ZqmaWxg7l9")
 public class PayPalychController {

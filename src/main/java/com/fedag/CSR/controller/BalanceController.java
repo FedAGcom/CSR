@@ -35,7 +35,7 @@ import static org.springframework.http.HttpStatus.*;
  * @version 1.1
  * @since 2022-09-01
  */
-@CrossOrigin(origins = "http://5.101.51.15/", maxAge = 3600)
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/balances")
 @RequiredArgsConstructor
