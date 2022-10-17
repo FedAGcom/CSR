@@ -12,6 +12,7 @@ agent any
         stage ("Docker-compose") {
             steps {
                 echo " ============== start docker-compose =================="
+                sh 'sudo chmod ugo+xwr /var/run/docker.sock'
                 sh 'docker-compose up -d'
             }
         }
