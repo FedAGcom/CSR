@@ -33,6 +33,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://5.101.51.15/", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor

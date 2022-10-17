@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
-
+@CrossOrigin(origins = "http://5.101.51.15/", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
