@@ -20,9 +20,9 @@ agent any
             steps {
                 echo " ============== build mvn project =================="
 //                sleep(time: 20, unit: "SECONDS")
-//                sh 'mvn clean install'
+                sh 'mvn clean install'
 //                sh 'mvn liquibase:dropAll'
-                sh 'mvn liquibase:update'
+//                sh 'mvn liquibase:update'
             }
         }
         stage("Docker login") {
