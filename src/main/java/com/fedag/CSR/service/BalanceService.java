@@ -20,4 +20,6 @@ public interface BalanceService {
     Balance create(Balance companyDto);
     Balance update(BigDecimal id, Balance companyDto);
     void deleteById(BigDecimal id);
+
+    Double soldAllItemsByBalanceId(BigDecimal id);
 }

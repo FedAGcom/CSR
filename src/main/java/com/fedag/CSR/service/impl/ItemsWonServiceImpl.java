@@ -1,22 +1,29 @@
 package com.fedag.CSR.service.impl;
 
-import com.fedag.CSR.model.Balance;
-import com.fedag.CSR.model.Item;
-import com.fedag.CSR.model.ItemsWon;
-import com.fedag.CSR.repository.BalanceRepository;
-import com.fedag.CSR.repository.ItemRepository;
-import com.fedag.CSR.repository.ItemsWonRepository;
-import com.fedag.CSR.repository.UserRepository;
+import com.fedag.CSR.enums.ItemsWonStatus;
+import com.fedag.CSR.exception.EntityNotFoundException;
+import com.fedag.CSR.model.*;
+import com.fedag.CSR.repository.*;
 import com.fedag.CSR.service.ItemsWonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ItemsWonServiceImpl implements ItemsWonService {
     private final ItemsWonRepository itemsWonRepository;
+
+    private final BalanceRepository balanceRepository;
+
+    private final UserRepository userRepository;
+
 
     @Override
     public void add(ItemsWon itemWon) {
@@ -26,7 +33,33 @@ public class ItemsWonServiceImpl implements ItemsWonService {
     }
 
     @Override
-    public ItemsWon findById(Long id) {
-        return null;
+    public void sellAllItemsByBalanceId(BigDecimal id) {
+        List<ItemsWon> itemsWonList = itemsWonRepository.findAllByBalancesId(id);
+        Double profit = 0.0;
+        for (int i = 0; i < itemsWonList.size(); i++){
+            ItemsWon itemsWon = itemsWonList.get(i);
+            profit += itemsWon.getItem_price();
+            itemsWon.setItemsWonStatus(ItemsWonStatus.SOLD);
+            itemsWon.setItemWonSailedTime(LocalDateTime.now());
+            itemsWonRepository.save(itemsWon);
+        }
+        Optional<Balance> balance = balanceRepository.findById(id);
+        Double currentAmountOfCoins = balance.get().getCoins();
+        balance.get().setCoins(currentAmountOfCoins + profit);
+        balanceRepository.save(balance.get());
+    }
+
+    @Override
+    public void sellAnItemWonByUserIdAndItemId(BigDecimal itemId, String userToken){
+        Optional<User> user = userRepository.findUserByConfirmationToken(userToken);
+        BigDecimal userId = user.get().getId();
+        ItemsWon itemsWon = itemsWonRepository.findItemsWonByUsersIdAndItemsItemId(userId, itemId);
+        itemsWon.setItemsWonStatus(ItemsWonStatus.SOLD);
+        itemsWon.setItemWonSailedTime(LocalDateTime.now());
+        Balance balance = itemsWon.getBalances();
+        balance.setCoins(balance.getCoins() + itemsWon.getItem_price());
+
+        itemsWonRepository.save(itemsWon);
+        balanceRepository.save(balance);
     }
 }

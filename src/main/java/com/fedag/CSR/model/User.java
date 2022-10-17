@@ -4,9 +4,7 @@ package com.fedag.CSR.model;
 import com.fedag.CSR.enums.Role;
 import com.vladmihalcea.hibernate.type.basic.PostgreSQLEnumType;
 import io.swagger.annotations.ApiModel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
@@ -14,7 +12,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -24,6 +21,8 @@ import java.util.List;
         typeClass = PostgreSQLEnumType.class
 )
 @ApiModel(description = "The details about the user.")
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

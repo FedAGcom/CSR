@@ -1,6 +1,7 @@
 package com.fedag.CSR.service.impl;
 
 import com.fedag.CSR.dto.response.PackResponse;
+import com.fedag.CSR.enums.ItemsWonStatus;
 import com.fedag.CSR.exception.NotEnoughCoinsToBuyAPackException;
 import com.fedag.CSR.model.*;
 import com.fedag.CSR.repository.ItemRepository;
@@ -69,6 +70,7 @@ public class WinChanceServiceImpl implements WinChanceService {
                     itemsWon.setPack_price(pack.getPrice());
                     itemsWon.setBalances(balance);
                     itemsWon.setPack_opening_timestamp(LocalDateTime.now());
+                    itemsWon.setItemsWonStatus(ItemsWonStatus.ON_BALANCE);
                     itemsWonService.add(itemsWon);
 
                     return listWinChance.get(i).getItem().getItemId();

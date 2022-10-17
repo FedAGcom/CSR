@@ -1,7 +1,9 @@
 package com.fedag.CSR.model;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,9 +17,10 @@ import java.util.List;
  * @author Kirill Soklakov
  * @version 1.1
  */
-@Data
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 public class Balance {
 
     public Balance(Double coins, User user) {
@@ -39,4 +42,5 @@ public class Balance {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "balances")
     public List<ItemsWon> itemsWon;
+
 }
