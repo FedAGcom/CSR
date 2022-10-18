@@ -49,7 +49,7 @@ public class PackController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public Page<PackResponse> getAllPacks(@PageableDefault(size = 5) Pageable pageable) {
+    public Page<PackResponse> getAllPacks(@PageableDefault(size = 125) Pageable pageable) {
         return packService.findAll(pageable);
     }
 
