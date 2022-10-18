@@ -62,7 +62,7 @@ public class PackController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public void createPack(@RequestBody String pack, @RequestPart MultipartFile file) throws IOException {
+    public void createPack(@RequestPart String pack, @RequestPart MultipartFile file) throws IOException {
         packService.create(pack, file);
     }
 
