@@ -3,7 +3,6 @@ package com.fedag.CSR.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fedag.CSR.dto.request.ItemRequest;
 import com.fedag.CSR.dto.response.ItemResponse;
 import com.fedag.CSR.dto.update.ItemUpdate;
 import com.fedag.CSR.exception.EntityNotFoundException;

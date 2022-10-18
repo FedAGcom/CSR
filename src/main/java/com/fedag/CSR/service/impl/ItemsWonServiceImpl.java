@@ -1,7 +1,6 @@
 package com.fedag.CSR.service.impl;
 
 import com.fedag.CSR.enums.ItemsWonStatus;
-import com.fedag.CSR.exception.EntityNotFoundException;
 import com.fedag.CSR.model.*;
 import com.fedag.CSR.repository.*;
 import com.fedag.CSR.service.ItemsWonService;
@@ -33,11 +32,10 @@ public class ItemsWonServiceImpl implements ItemsWonService {
     }
 
     @Override
-    public void sellAllItemsByBalanceId(BigDecimal id) {
-        List<ItemsWon> itemsWonList = itemsWonRepository.findAllByBalancesId(id);
+    public void sellAllItemsByBalanceIdAndItemsWonStatus(BigDecimal id) {
+        List<ItemsWon> itemsWonList = itemsWonRepository.findAllByBalancesIdAndItemsWonStatus(id, ItemsWonStatus.ON_BALANCE);
         Double profit = 0.0;
-        for (int i = 0; i < itemsWonList.size(); i++){
-            ItemsWon itemsWon = itemsWonList.get(i);
+        for (ItemsWon itemsWon : itemsWonList) {
             profit += itemsWon.getItem_price();
             itemsWon.setItemsWonStatus(ItemsWonStatus.SOLD);
             itemsWon.setItemWonSailedTime(LocalDateTime.now());
@@ -53,7 +51,7 @@ public class ItemsWonServiceImpl implements ItemsWonService {
     public void sellAnItemWonByUserIdAndItemId(BigDecimal itemId, String userToken){
         Optional<User> user = userRepository.findUserByConfirmationToken(userToken);
         BigDecimal userId = user.get().getId();
-        ItemsWon itemsWon = itemsWonRepository.findItemsWonByUsersIdAndItemsItemId(userId, itemId);
+        ItemsWon itemsWon = itemsWonRepository.findTopItemsWonByUsersIdAndItemsItemIdAndItemsWonStatus(userId, itemId, ItemsWonStatus.ON_BALANCE);
         itemsWon.setItemsWonStatus(ItemsWonStatus.SOLD);
         itemsWon.setItemWonSailedTime(LocalDateTime.now());
         Balance balance = itemsWon.getBalances();

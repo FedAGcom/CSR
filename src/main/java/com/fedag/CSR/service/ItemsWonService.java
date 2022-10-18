@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public interface ItemsWonService {
     void add(ItemsWon itemWon);
 
-    void sellAllItemsByBalanceId(BigDecimal id);
+    void sellAllItemsByBalanceIdAndItemsWonStatus(BigDecimal id);
 
     void sellAnItemWonByUserIdAndItemId(BigDecimal itemId, String userToken);
 }

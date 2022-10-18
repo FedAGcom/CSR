@@ -47,7 +47,14 @@ public class PackMapperImpl implements PackMapper {
                 .map(new Function<Pack, PackResponse>() {
                     @Override
                     public PackResponse apply(Pack entity) {
-                        return modelToDto(entity);
+                        return modelToDto(entity)
+                                .setId(entity.getId())
+                                .setTitle(entity.getTitle())
+                                .setPrice(BigDecimal.valueOf(entity.getPrice()))
+                                .setPackItemsId(entity.getItems()
+                                        .stream()
+                                        .map(Item::getItemId)
+                                        .collect(Collectors.toList()));
                     }
                 });
     }
