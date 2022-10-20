@@ -1,5 +1,6 @@
 package com.fedag.CSR.dto.response;
 
+import com.fedag.CSR.model.Item;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,6 @@ public class PackResponse {
     private BigDecimal id;
     private String title;
     private BigDecimal price;
-    private List<BigDecimal> packItemsId;
+    private List<ItemResponse> packItemsList;
 }
 

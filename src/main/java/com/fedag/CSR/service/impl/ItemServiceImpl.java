@@ -51,6 +51,19 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public ItemResponse findById(BigDecimal id) {
+        log.info("Получение предмета c Id: {}", id);
+        ItemResponse itemResponse = null;
+        Optional<Item> optional = itemRepository.findById(id);
+        if (optional.isPresent()) {
+            Item item = optional.get();
+            itemResponse = itemMapper.modelToDto(item);
+        }
+        log.info("Предмет получен с id {}", id);
+        return itemResponse;
+    }
+
+    @Override
     public Item create(Item item) {
         log.info("Создание предмета");
         Item result = itemRepository.save(item);

@@ -1,7 +1,5 @@
 package com.fedag.CSR.controller;
 
-
-import com.fedag.CSR.dto.request.ItemRequest;
 import com.fedag.CSR.dto.response.ItemResponse;
 import com.fedag.CSR.dto.update.ItemUpdate;
 import com.fedag.CSR.model.Item;
@@ -15,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +37,8 @@ public class ItemController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public Item getItem(@PathVariable BigDecimal id){
-        return itemService.getItem(id);
+    public ResponseEntity<?> getItem(@PathVariable BigDecimal id){
+        return ResponseEntity.ok().body(itemService.findById(id));
     }
 
     @GetMapping
@@ -51,7 +50,7 @@ public class ItemController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public Page<ItemResponse> getAllItems(@PageableDefault(size = 5) Pageable pageable) {
+    public Page<ItemResponse> getAllItems(@PageableDefault(size = 125) Pageable pageable) {
         Page<ItemResponse> page = itemService.getAllItems(pageable);
         System.out.println(page.getTotalElements());
         return itemService.getAllItems(pageable);

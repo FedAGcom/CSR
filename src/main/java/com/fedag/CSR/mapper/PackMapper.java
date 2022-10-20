@@ -6,8 +6,6 @@ import com.fedag.CSR.dto.update.PackUpdate;
 import com.fedag.CSR.model.Pack;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 public interface PackMapper {
     PackResponse toResponse(Pack pack);
 

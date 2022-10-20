@@ -1,6 +1,5 @@
 package com.fedag.CSR.service;
 
-import com.fedag.CSR.dto.request.ItemRequest;
 import com.fedag.CSR.dto.response.ItemResponse;
 import com.fedag.CSR.dto.update.ItemUpdate;
 import com.fedag.CSR.model.Item;
@@ -15,6 +14,7 @@ public interface ItemService {
     Item updateItem(ItemUpdate item);
     void deleteItemById(BigDecimal id);
     Item getItem(BigDecimal id);
+    ItemResponse findById(BigDecimal id);
 
     void addAllItems(BigDecimal id);
 }
