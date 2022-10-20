@@ -27,7 +27,7 @@ public class Pack implements Serializable {
     private Double price;
 
     @Column(name = "pack_image")
-    private byte[] image;
+    private String image;
 
     @Column(name = "image_type")
     private String imageType;

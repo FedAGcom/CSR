@@ -22,5 +22,5 @@ public class ItemResponse {
 
     private double price;
 
-    private String steam_id;
+    private String iconItemId;
 }

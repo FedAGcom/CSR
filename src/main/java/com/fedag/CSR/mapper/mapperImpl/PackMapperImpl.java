@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -36,11 +35,13 @@ public class PackMapperImpl implements PackMapper {
                 .setId(pack.getId())
                 .setTitle(pack.getTitle())
                 .setPrice(BigDecimal.valueOf(pack.getPrice()))
+                .setImage(pack.getImage())
+                .setImageType(pack.getImageType())
                 .setPackItemsList(pack.getItems()
                         .stream()
                         .map(item -> itemService.findById(item.getItemId()))
                         .collect(Collectors.toList()));
-    }
+}
 
     @Override
     public Page<PackResponse> modelToDto(Page<Pack> packPage) {
@@ -49,9 +50,6 @@ public class PackMapperImpl implements PackMapper {
                     @Override
                     public PackResponse apply(Pack pack) {
                         return modelToDto(pack)
-                                .setId(pack.getId())
-                                .setTitle(pack.getTitle())
-                                .setPrice(BigDecimal.valueOf(pack.getPrice()))
                                 .setPackItemsList(pack.getItems()
                                         .stream()
                                         .map(item -> itemService.findById(item.getItemId()))

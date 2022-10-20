@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -47,7 +47,7 @@ public class PackServiceImpl implements PackService {
 
         Pack result = new Pack();
 
-        result.setImage(file.getBytes());
+        result.setImage(Base64.toBase64String(file.getBytes()));
         result.setImageType(file.getContentType());
 
         Double price = jsonObject.getDouble("price");
@@ -158,6 +158,4 @@ public class PackServiceImpl implements PackService {
         }
         return result;
     }
-
-
 }

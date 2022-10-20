@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 
 @CrossOrigin(origins = "*")
@@ -36,7 +36,7 @@ public class PackController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public ResponseEntity<?> getPack(@PathVariable BigDecimal id){
+    public ResponseEntity<?> getPack(@PathVariable BigDecimal id) {
         return ResponseEntity.ok().body(packService.findById(id));
     }
 
@@ -78,5 +78,21 @@ public class PackController {
     @PreAuthorize("hasAuthority('admin')")
     public void delete(@PathVariable BigDecimal id) {
         packService.deletePackById(id);
+    }
+
+    //Тестовый метод на контроллер для проверки работы картинок Pack
+    @GetMapping("test-image/{id}")
+    @ApiOperation(value = "Получение картинки кейса",
+            notes = "Предоставьте id кейса")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Картинка кейса получена",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+//    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    public String getImage(@PathVariable BigDecimal id) {
+        PackResponse packResponse = packService.findById(id);
+        return "<img src='data:" + packResponse.getImageType() + ";base64," + packResponse.getImage() + "'/>";
     }
 }
