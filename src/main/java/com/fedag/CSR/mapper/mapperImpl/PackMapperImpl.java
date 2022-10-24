@@ -68,24 +68,4 @@ public class PackMapperImpl implements PackMapper {
         return objectMapper.convertValue(packUpdate, Pack.class);
     }
 
-    @Override
-    public Pack merge(Pack source, Pack target) {
-        if (source.getTitle() != null) {
-            target.setTitle(source.getTitle());
-        }
-        if (source.getPrice() != null) {
-            target.setPrice(source.getPrice());
-        }
-        if (source.getImage() != null) {
-            target.setImage(source.getImage());
-        }
-        if (source.getImageType() != null){
-            target.setImageType(source.getImageType());
-        }
-        if (source.getItems() != null){
-            target.setItems(source.getItems());
-        }
-
-        return target;
-    }
 }

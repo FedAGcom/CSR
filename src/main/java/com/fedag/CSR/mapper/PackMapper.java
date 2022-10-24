@@ -17,5 +17,4 @@ public interface PackMapper {
 
     PackResponse modelToDto(Pack pack);
 
-    Pack merge(Pack source, Pack target);
 }
