@@ -16,10 +16,10 @@ VALUES (675, 1),
        (78, 2),
        (281, 3);
 
-INSERT INTO Pack (title, price)
-VALUES ('title1', 120),
-       ('title2', 10),
-       ('title3', 100);
+INSERT INTO Pack (title, price, status)
+VALUES ('title1', 120, 'USED'),
+       ('title2', 10, 'USED'),
+       ('title3', 110, 'USED');
 
 INSERT INTO item (type, title, rare, quality, price, pack_id)
 VALUES ('SMG', 'UMP-45 | Caramel', 'Common', 'Field-Tested', 420, 1),

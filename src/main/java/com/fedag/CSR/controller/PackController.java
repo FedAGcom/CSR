@@ -1,6 +1,9 @@
 package com.fedag.CSR.controller;
 
+import com.fedag.CSR.dto.request.PackRequest;
 import com.fedag.CSR.dto.response.PackResponse;
+import com.fedag.CSR.dto.update.PackUpdate;
+import com.fedag.CSR.mapper.PackMapper;
 import com.fedag.CSR.service.PackService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,8 +18,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 import java.io.*;
 import java.math.BigDecimal;
+import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -25,6 +33,7 @@ import java.math.BigDecimal;
 public class PackController {
 
     private final PackService packService;
+    private final PackMapper packMapper;
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Получение кейса по id.",
@@ -94,5 +103,10 @@ public class PackController {
     public String getImage(@PathVariable BigDecimal id) {
         PackResponse packResponse = packService.findById(id);
         return "<img src='data:" + packResponse.getImageType() + ";base64," + packResponse.getImage() + "'/>";
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updatePack(@RequestPart String pack, @RequestPart MultipartFile file) throws IOException {
+        return ResponseEntity.ok().body(packService.updatePack(pack, file));
     }
 }

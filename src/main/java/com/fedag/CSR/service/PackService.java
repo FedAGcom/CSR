@@ -23,4 +23,6 @@ public interface PackService {
     void deleteById(BigDecimal id);
     PackResponse findById(BigDecimal id);
     Pack findPackById(BigDecimal id);
+
+    Pack updatePack(String pack, MultipartFile file) throws IOException;
 }

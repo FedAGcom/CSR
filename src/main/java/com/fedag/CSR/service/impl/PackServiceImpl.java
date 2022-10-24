@@ -1,10 +1,12 @@
 package com.fedag.CSR.service.impl;
 
 import com.fedag.CSR.dto.response.PackResponse;
+import com.fedag.CSR.enums.PackStatus;
 import com.fedag.CSR.mapper.PackMapper;
 import com.fedag.CSR.model.Item;
 import com.fedag.CSR.model.Pack;
 import com.fedag.CSR.model.WinChance;
+import com.fedag.CSR.repository.ItemRepository;
 import com.fedag.CSR.repository.PackRepository;
 import com.fedag.CSR.repository.WinChanceRepository;
 import com.fedag.CSR.service.ItemService;
@@ -26,6 +28,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -45,16 +49,14 @@ public class PackServiceImpl implements PackService {
 
         JSONObject jsonObject = new JSONObject(pack);
 
-        Pack result = new Pack();
-
-        result.setImage(Base64.toBase64String(file.getBytes()));
-        result.setImageType(file.getContentType());
+        Pack newPack = createImage(file, new Pack());
 
         Double price = jsonObject.getDouble("price");
-        result.setPrice(price);
-        result.setTitle((String) jsonObject.get("title"));
+        newPack.setPrice(price);
+        newPack.setTitle((String) jsonObject.get("title"));
+        newPack.setStatus(PackStatus.USED);
         JSONArray itemsArray = jsonObject.getJSONArray("items");
-        packRepository.save(result);
+        packRepository.save(newPack);
 
         for (int i = 0; i < itemsArray.length(); i++) {
 
@@ -62,54 +64,28 @@ public class PackServiceImpl implements PackService {
             WinChance winChance = new WinChance();
             JSONObject arrayJson = itemsArray.getJSONObject(i);
 
-            item.setPack(result);
+            item.setPack(newPack);
             item.setType(arrayJson.getString("type"));
             item.setTitle(arrayJson.getString("title"));
             item.setRare(arrayJson.getString("rare"));
             item.setQuality(arrayJson.getString("quality"));
 
             winChance.setItem(item);
-            winChance.setPack(result);
+            winChance.setPack(newPack);
             winChance.setWinChance(arrayJson.getDouble("winchance"));
 
-            String hashName = item.getTitle() + " (" + item.getQuality() + ")";
-
-            String basedUrl = "https://steamcommunity.com/market/priceoverview/?appid=730&currency=5&market_hash_name="
-                    + hashName;
-            String[] urlArray = basedUrl.split(" ");
-            String newUrl = String.join("%20", urlArray);
-            newUrl.substring(0, newUrl.length() - 3);
-
-            //Формирование картинки предмета
-            String itemName = item.getTitle() + " (" + item.getQuality() + ")";
-            ResponseEntity<String> response = restTemplate
-                    .getForEntity("https://steamcommunity.com/market/listings/730/"
-                            + itemName + "/render?start=0&count=1&currency=3&language=english&format=json", String.class);
-            JSONObject jsonAssets = new JSONObject(response.getBody());
-            JSONObject jsonObjectAssets = (JSONObject) jsonAssets.get("assets");
-            String[] iconUrlArray = String.valueOf(jsonObjectAssets).split("\"icon_url\":\"");
-
-            int counter = 0;
-            StringBuilder sb = new StringBuilder();
-            while (iconUrlArray[1].charAt(counter) != 34) {
-                sb.append(iconUrlArray[1].charAt(counter));
-                counter++;
-            }
-
-            String iconUrlFromApi = iconUrlArray[1].substring(0, sb.length());
-            String finalIconUrl = "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
-            item.setIconItemId(finalIconUrl);
-
-            URL url = new URL(newUrl);
-            String json = IOUtils.toString(url, StandardCharsets.UTF_8);
-            JSONObject jsonObjectForPrice = new JSONObject(json);
-            String medianPrice = (String) jsonObjectForPrice.get("median_price");
+            String medianPrice = getItemPriceFromSteam(item);
             item.setPrice(Double.valueOf(medianPrice.substring(0, medianPrice.length() - 5).replace(",", ".")));
+            //Формирование картинки предмета
+            String itemIcon = getItemIcon(item);
+            item.setIconItemId(itemIcon);
             itemService.create(item);
             winChanceRepository.saveAndFlush(winChance);
         }
-        return result;
+        return newPack;
     }
+
+
 
 
     @Override
@@ -157,5 +133,66 @@ public class PackServiceImpl implements PackService {
             result = optional.get();
         }
         return result;
+    }
+
+    @Override
+    @Transactional
+    public Pack updatePack(String pack, MultipartFile multipartFile) throws IOException {
+        log.info("Создание кейса");
+
+        JSONObject jsonObject = new JSONObject(pack);
+
+        BigDecimal id = jsonObject.getBigDecimal("id");
+
+        Optional<Pack> oldPack = packRepository.findById(id);
+        if (oldPack.isPresent()) {
+            Pack newPack = oldPack.get();
+            newPack.setStatus(PackStatus.OUT_DATE);
+        }
+        return create(pack, multipartFile);
+    }
+
+    public Pack createImage(MultipartFile file, Pack result) throws IOException {
+        result.setImage(Base64.toBase64String(file.getBytes()));
+        result.setImageType(file.getContentType());
+        return result;
+    }
+
+    public String getItemIcon(Item item) {
+        String itemName = item.getTitle() + " (" + item.getQuality() + ")";
+        ResponseEntity<String> response = restTemplate
+                .getForEntity("https://steamcommunity.com/market/listings/730/"
+                        + itemName + "/render?start=0&count=1&currency=3&language=english&format=json", String.class);
+        JSONObject jsonAssets = new JSONObject(response.getBody());
+        JSONObject jsonObjectAssets = (JSONObject) jsonAssets.get("assets");
+        String[] iconUrlArray = String.valueOf(jsonObjectAssets).split("\"icon_url\":\"");
+
+        int counter = 0;
+        StringBuilder sb = new StringBuilder();
+        while (iconUrlArray[1].charAt(counter) != 34) {
+            sb.append(iconUrlArray[1].charAt(counter));
+            counter++;
+        }
+
+        String iconUrlFromApi = iconUrlArray[1].substring(0, sb.length());
+        String finalIconUrl = "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
+        return finalIconUrl;
+    }
+
+    public String getItemPriceFromSteam(Item item) throws IOException {
+        String hashName = item.getTitle() + " (" + item.getQuality() + ")";
+
+        String basedUrl = "https://steamcommunity.com/market/priceoverview/?appid=730&currency=5&market_hash_name="
+                + hashName;
+        String[] urlArray = basedUrl.split(" ");
+        String newUrl = String.join("%20", urlArray);
+        newUrl.substring(0, newUrl.length() - 3);
+
+
+        URL url = new URL(newUrl);
+        String json = IOUtils.toString(url, StandardCharsets.UTF_8);
+        JSONObject jsonObjectForPrice = new JSONObject(json);
+        String medianPrice = (String) jsonObjectForPrice.get("median_price");
+        return medianPrice;
     }
 }

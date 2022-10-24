@@ -1,14 +1,18 @@
 package com.fedag.CSR.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
+@Schema(name = "Предмет", description = "Информация о предмете")
 public class ItemResponse {
     private BigDecimal id;
 
@@ -23,4 +27,6 @@ public class ItemResponse {
     private double price;
 
     private String iconItemId;
+
+//    private Double winChance;
 }

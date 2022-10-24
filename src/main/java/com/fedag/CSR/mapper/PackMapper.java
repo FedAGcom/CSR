@@ -16,4 +16,6 @@ public interface PackMapper {
     public Page<PackResponse> modelToDto(Page<Pack> packPage);
 
     PackResponse modelToDto(Pack pack);
+
+    Pack merge(Pack source, Pack target);
 }

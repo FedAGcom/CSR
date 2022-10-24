@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fedag.CSR.dto.request.PackRequest;
 import com.fedag.CSR.dto.response.PackResponse;
 import com.fedag.CSR.dto.update.PackUpdate;
+import com.fedag.CSR.enums.PackStatus;
 import com.fedag.CSR.mapper.PackMapper;
 import com.fedag.CSR.model.Pack;
+import com.fedag.CSR.repository.PackRepository;
 import com.fedag.CSR.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -49,13 +51,13 @@ public class PackMapperImpl implements PackMapper {
                 .map(new Function<Pack, PackResponse>() {
                     @Override
                     public PackResponse apply(Pack pack) {
-                        return modelToDto(pack)
-                                .setPackItemsList(pack.getItems()
-                                        .stream()
-                                        .map(item -> itemService.findById(item.getItemId()))
-                                        .collect(Collectors.toList()));
-                    }
-                });
+                            return modelToDto(pack)
+                                    .setPackItemsList(pack.getItems()
+                                            .stream()
+                                            .map(item -> itemService.findById(item.getItemId()))
+                                            .collect(Collectors.toList()));
+                }
+        });
     }
 
     public Pack fromRequest(PackRequest packRequest) {
@@ -66,4 +68,24 @@ public class PackMapperImpl implements PackMapper {
         return objectMapper.convertValue(packUpdate, Pack.class);
     }
 
+    @Override
+    public Pack merge(Pack source, Pack target) {
+        if (source.getTitle() != null) {
+            target.setTitle(source.getTitle());
+        }
+        if (source.getPrice() != null) {
+            target.setPrice(source.getPrice());
+        }
+        if (source.getImage() != null) {
+            target.setImage(source.getImage());
+        }
+        if (source.getImageType() != null){
+            target.setImageType(source.getImageType());
+        }
+        if (source.getItems() != null){
+            target.setItems(source.getItems());
+        }
+
+        return target;
+    }
 }
