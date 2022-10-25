@@ -17,8 +17,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -29,8 +31,10 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -107,8 +111,13 @@ public class PackServiceImpl implements PackService {
     public Page<PackResponse> findAll(Pageable pageable) {
         log.info("Получение страницы с кейсами");
         Page<PackResponse> result = packMapper.modelToDto(packRepository.findAll(pageable));
+        List<PackResponse> listPacks = result.getContent()
+                .stream()
+                .filter(pack -> pack.getStatus() == PackStatus.USED)
+                .collect(Collectors.toList());
+        Page<PackResponse> page = new PageImpl<>(listPacks);
         log.info("Страница с кейсами получена");
-        return result;
+        return page;
     }
 
     @Override
@@ -126,7 +135,7 @@ public class PackServiceImpl implements PackService {
         log.info("Получение кейса c Id: {}", id);
         PackResponse packResponse = null;
         Optional<Pack> optional = packRepository.findById(id);
-        if (optional.isPresent()) {
+        if (optional.isPresent() && optional.get().getStatus() == PackStatus.USED) {
             Pack pack = optional.get();
             packResponse = packMapper.toResponse(pack);
         }
@@ -148,7 +157,18 @@ public class PackServiceImpl implements PackService {
             Pack newPack = oldPack.get();
             if (newPack.getStatus() == PackStatus.USED) {
                 newPack.setStatus(PackStatus.OUT_DATE);
-                create(pack, multipartFile);
+
+                if (multipartFile.isEmpty()) {
+
+                    MultipartFile oldMultipartFile
+                            = new MockMultipartFile("newFile",
+                            null,
+                            newPack.getImageType(),
+                            Base64.decode(newPack.getImage()));
+                    create(pack, oldMultipartFile);
+
+                } else create(pack, multipartFile);
+
                 responseMap.put("error", false);
                 responseMap.put("message", "Pack updated Successfully");
             } else {
@@ -183,8 +203,7 @@ public class PackServiceImpl implements PackService {
         }
 
         String iconUrlFromApi = iconUrlArray[1].substring(0, sb.length());
-        String finalIconUrl = "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
-        return finalIconUrl;
+        return "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
     }
 
     public String getItemPriceFromSteam(Item item) throws IOException {
@@ -196,11 +215,9 @@ public class PackServiceImpl implements PackService {
         String newUrl = String.join("%20", urlArray);
         newUrl.substring(0, newUrl.length() - 3);
 
-
         URL url = new URL(newUrl);
         String json = IOUtils.toString(url, StandardCharsets.UTF_8);
         JSONObject jsonObjectForPrice = new JSONObject(json);
-        String medianPrice = (String) jsonObjectForPrice.get("median_price");
-        return medianPrice;
+        return (String) jsonObjectForPrice.get("median_price");
     }
 }

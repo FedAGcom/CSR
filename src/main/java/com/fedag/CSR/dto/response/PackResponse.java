@@ -1,5 +1,6 @@
 package com.fedag.CSR.dto.response;
 
+import com.fedag.CSR.enums.PackStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class PackResponse {
     private List<ItemResponse> packItemsList;
     private String image;
     private String ImageType;
+    private PackStatus status;
 }
 

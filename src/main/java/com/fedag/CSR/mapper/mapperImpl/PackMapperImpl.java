@@ -56,7 +56,7 @@ public class PackMapperImpl implements PackMapper {
                                             .stream()
                                             .map(item -> itemService.findById(item.getItemId()))
                                             .collect(Collectors.toList()));
-                }
+                        }
         });
     }
 
