@@ -1,8 +1,6 @@
 package com.fedag.CSR.controller;
 
-import com.fedag.CSR.dto.request.PackRequest;
 import com.fedag.CSR.dto.response.PackResponse;
-import com.fedag.CSR.dto.update.PackUpdate;
 import com.fedag.CSR.mapper.PackMapper;
 import com.fedag.CSR.service.PackService;
 import io.swagger.annotations.ApiOperation;
@@ -19,12 +17,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import java.io.*;
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -47,6 +41,18 @@ public class PackController {
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ResponseEntity<?> getPack(@PathVariable BigDecimal id) {
         return ResponseEntity.ok().body(packService.findById(id));
+    }
+
+    @PutMapping
+    @ApiOperation(value = "Обновление кейса по id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Кейс обновлён",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+    public ResponseEntity<?> updatePack(@RequestPart String pack, @RequestPart MultipartFile file) throws IOException {
+        return ResponseEntity.ok().body(packService.updatePack(pack, file));
     }
 
     @GetMapping
@@ -103,10 +109,5 @@ public class PackController {
     public String getImage(@PathVariable BigDecimal id) {
         PackResponse packResponse = packService.findById(id);
         return "<img src='data:" + packResponse.getImageType() + ";base64," + packResponse.getImage() + "'/>";
-    }
-
-    @PutMapping
-    public ResponseEntity<?> updatePack(@RequestPart String pack, @RequestPart MultipartFile file) throws IOException {
-        return ResponseEntity.ok().body(packService.updatePack(pack, file));
     }
 }

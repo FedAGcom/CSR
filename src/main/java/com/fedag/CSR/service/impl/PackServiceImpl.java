@@ -6,7 +6,6 @@ import com.fedag.CSR.mapper.PackMapper;
 import com.fedag.CSR.model.Item;
 import com.fedag.CSR.model.Pack;
 import com.fedag.CSR.model.WinChance;
-import com.fedag.CSR.repository.ItemRepository;
 import com.fedag.CSR.repository.PackRepository;
 import com.fedag.CSR.repository.WinChanceRepository;
 import com.fedag.CSR.service.ItemService;
@@ -24,12 +23,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -86,8 +86,6 @@ public class PackServiceImpl implements PackService {
     }
 
 
-
-
     @Override
     public void deletePackById(BigDecimal id) {
         log.info("Удаление кейса.");
@@ -103,18 +101,6 @@ public class PackServiceImpl implements PackService {
 
         packRepository.deleteById(id);
         log.info("Кейс с Id: {} удален", id);
-    }
-
-    @Override
-    public PackResponse findById(BigDecimal id) {
-        log.info("Получение кейса c Id: {}", id);
-        PackResponse packResponse = null;
-        Optional<Pack> optional = packRepository.findById(id);
-        if (optional.isPresent()) {
-            Pack pack = optional.get();
-            packResponse = packMapper.toResponse(pack);
-        }
-        return packResponse;
     }
 
     @Override
@@ -136,9 +122,22 @@ public class PackServiceImpl implements PackService {
     }
 
     @Override
-    @Transactional
-    public Pack updatePack(String pack, MultipartFile multipartFile) throws IOException {
-        log.info("Создание кейса");
+    public PackResponse findById(BigDecimal id) {
+        log.info("Получение кейса c Id: {}", id);
+        PackResponse packResponse = null;
+        Optional<Pack> optional = packRepository.findById(id);
+        if (optional.isPresent()) {
+            Pack pack = optional.get();
+            packResponse = packMapper.toResponse(pack);
+        }
+        return packResponse;
+    }
+
+    @Override
+    @Transactional()
+    public Map<String, Object> updatePack(String pack, MultipartFile multipartFile) throws IOException {
+        log.info("Обновление кейса");
+        Map<String, Object> responseMap = new HashMap<>();
 
         JSONObject jsonObject = new JSONObject(pack);
 
@@ -147,9 +146,18 @@ public class PackServiceImpl implements PackService {
         Optional<Pack> oldPack = packRepository.findById(id);
         if (oldPack.isPresent()) {
             Pack newPack = oldPack.get();
-            newPack.setStatus(PackStatus.OUT_DATE);
+            if (newPack.getStatus() == PackStatus.USED) {
+                newPack.setStatus(PackStatus.OUT_DATE);
+                create(pack, multipartFile);
+                responseMap.put("error", false);
+                responseMap.put("message", "Pack updated Successfully");
+            } else {
+                responseMap.put("error", true);
+                responseMap.put("message", "Something went wrong");
+            }
+
         }
-        return create(pack, multipartFile);
+        return responseMap;
     }
 
     public Pack createImage(MultipartFile file, Pack result) throws IOException {

@@ -4,7 +4,6 @@ import com.fedag.CSR.enums.ItemsWonStatus;
 import com.fedag.CSR.exception.EntityNotFoundException;
 import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.mapper.BalanceMapper;
-import com.fedag.CSR.model.Item;
 import com.fedag.CSR.model.ItemsWon;
 import com.fedag.CSR.repository.BalanceRepository;
 import com.fedag.CSR.repository.ItemsWonRepository;
@@ -38,9 +37,7 @@ public class BalanceServiceImpl implements BalanceService {
 
     private final BalanceRepository balanceRepository;
     private final BalanceMapper balanceMapper;
-
     private final ItemsWonRepository itemsWonRepository;
-
 
     @Override
     public Balance findById(BigDecimal id) {

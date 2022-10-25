@@ -47,4 +47,3 @@ public class Item implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
     public List<WinChance> winChances;
 }
-
