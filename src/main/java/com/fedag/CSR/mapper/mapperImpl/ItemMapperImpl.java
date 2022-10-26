@@ -31,7 +31,7 @@ public class ItemMapperImpl implements ItemMapper {
                 .setQuality(item.getQuality())
                 .setPrice(item.getPrice())
                 .setIconItemId(item.getIconItemId())
-                .setWinChance(item.getWinChances()
+                .setWinсhance(item.getWinChances()
                         .stream()
                         .map(WinChance::getWinChance)
                         .findFirst().orElse((double) 0));
