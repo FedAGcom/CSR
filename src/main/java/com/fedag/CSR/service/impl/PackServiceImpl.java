@@ -15,16 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -48,17 +45,18 @@ public class PackServiceImpl implements PackService {
 
     @Override
     @Transactional
-    public Pack create(String pack, MultipartFile file) throws IOException {
+    public Pack create(String pack) throws IOException {
         log.info("Создание кейса");
 
         JSONObject jsonObject = new JSONObject(pack);
 
-        Pack newPack = createImage(file, new Pack());
+//        Pack newPack = createImage(file, new Pack());
+        Pack newPack = new Pack();
 
-        Double price = jsonObject.getDouble("price");
-        newPack.setPrice(price);
+        newPack.setPrice(jsonObject.getDouble("price"));
         newPack.setTitle((String) jsonObject.get("title"));
         newPack.setStatus(PackStatus.USED);
+        newPack.setImage((String) jsonObject.get("file"));
         JSONArray itemsArray = jsonObject.getJSONArray("items");
         packRepository.save(newPack);
 
@@ -144,7 +142,7 @@ public class PackServiceImpl implements PackService {
 
     @Override
     @Transactional()
-    public Map<String, Object> updatePack(String pack, MultipartFile multipartFile) throws IOException {
+    public Map<String, Object> updatePack(String pack) throws IOException {
         log.info("Обновление кейса");
         Map<String, Object> responseMap = new HashMap<>();
 
@@ -158,16 +156,18 @@ public class PackServiceImpl implements PackService {
             if (newPack.getStatus() == PackStatus.USED) {
                 newPack.setStatus(PackStatus.OUT_DATE);
 
-                if (multipartFile.isEmpty()) {
-
-                    MultipartFile oldMultipartFile
-                            = new MockMultipartFile("newFile",
-                            null,
-                            newPack.getImageType(),
-                            Base64.decode(newPack.getImage()));
-                    create(pack, oldMultipartFile);
-
-                } else create(pack, multipartFile);
+                // создание картинки из БД по изменяемому кейсу
+//                if (multipartFile.isEmpty()) {
+//
+//                    MultipartFile oldMultipartFile
+//                            = new MockMultipartFile("newFile",
+//                            null,
+//                            newPack.getImageType(),
+//                            Base64.decode(newPack.getImage()));
+//                    create(pack, oldMultipartFile);
+//
+//                } else
+                create(pack);
 
                 responseMap.put("error", false);
                 responseMap.put("message", "Pack updated Successfully");
@@ -179,12 +179,12 @@ public class PackServiceImpl implements PackService {
         }
         return responseMap;
     }
-
-    public Pack createImage(MultipartFile file, Pack result) throws IOException {
-        result.setImage(Base64.toBase64String(file.getBytes()));
-        result.setImageType(file.getContentType());
-        return result;
-    }
+    // Кодировка картинки в БД (если потребуется)
+//    public Pack createImage(MultipartFile file, Pack result) throws IOException {
+//        result.setImage(Base64.toBase64String(file.getBytes()));
+//        result.setImageType(file.getContentType());
+//        return result;
+//    }
 
     public String getItemIcon(Item item) {
         String itemName = item.getTitle() + " (" + item.getQuality() + ")";

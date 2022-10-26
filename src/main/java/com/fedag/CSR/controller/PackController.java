@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -49,8 +48,8 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    public ResponseEntity<?> updatePack(@RequestPart String pack, @RequestPart MultipartFile file) throws IOException {
-        return ResponseEntity.ok().body(packService.updatePack(pack, file));
+    public ResponseEntity<?> updatePack(@RequestBody String pack) throws IOException {
+        return ResponseEntity.ok().body(packService.updatePack(pack));
     }
 
     @GetMapping
@@ -75,8 +74,8 @@ public class PackController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public void createPack(@RequestPart String pack, @RequestPart MultipartFile file) throws IOException {
-        packService.create(pack, file);
+    public void createPack(@RequestBody String pack) throws IOException {
+        packService.create(pack);
     }
 
     @DeleteMapping("/{id}")

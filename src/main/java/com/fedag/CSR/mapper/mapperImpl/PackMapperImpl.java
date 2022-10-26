@@ -38,7 +38,7 @@ public class PackMapperImpl implements PackMapper {
                 .setTitle(pack.getTitle())
                 .setPrice(BigDecimal.valueOf(pack.getPrice()))
                 .setImage(pack.getImage())
-                .setImageType(pack.getImageType())
+//                .setImageType(pack.getImageType())
                 .setPackItemsList(pack.getItems()
                         .stream()
                         .map(item -> itemService.findById(item.getItemId()))

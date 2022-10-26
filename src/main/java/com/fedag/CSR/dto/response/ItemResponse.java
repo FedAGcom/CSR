@@ -28,5 +28,5 @@ public class ItemResponse {
 
     private String iconItemId;
 
-    private Double winсhance;
+    private Double winchance;
 }

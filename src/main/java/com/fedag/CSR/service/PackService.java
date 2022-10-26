@@ -5,7 +5,6 @@ import com.fedag.CSR.model.Pack;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -15,7 +14,7 @@ public interface PackService {
     Page<PackResponse> findAll(Pageable pageable);
 
     @Transactional
-    Pack create(String pack, MultipartFile file) throws IOException;
+    Pack create(String pack) throws IOException;
 
     void deletePackById(BigDecimal id);
 
@@ -26,5 +25,5 @@ public interface PackService {
 
     Pack findPackById(BigDecimal id);
 
-    Map<String, Object> updatePack(String pack, MultipartFile file) throws IOException;
+    Map<String, Object> updatePack(String pack) throws IOException;
 }

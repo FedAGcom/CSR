@@ -31,8 +31,8 @@ public class Pack implements Serializable {
     @Column(name = "pack_image")
     private String image;
 
-    @Column(name = "image_type")
-    private String imageType;
+//    @Column(name = "image_type")
+//    private String imageType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
