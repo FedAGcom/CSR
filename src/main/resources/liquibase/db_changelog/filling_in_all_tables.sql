@@ -57,7 +57,9 @@ VALUES ('SMG', 'UMP-45 | Caramel', 'Common', 'Field-Tested', 420, 1),
        ('Rifle', 'Galil AR | Sage Spray', 'Common', 'Field-Tested', 1.28, 1);
 
 INSERT INTO pack_item (pack_id, item_id, win_chance)
-VALUES (1, 3, 2),
+VALUES (1, 1, 2),
+       (1, 2, 2),
+       (1, 3, 2),
        (1, 4, 2),
        (1, 5, 7),
        (1, 6, 7),
