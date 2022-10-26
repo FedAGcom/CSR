@@ -1,7 +1,6 @@
 package com.fedag.CSR.controller;
 
 import com.fedag.CSR.dto.response.PackResponse;
-import com.fedag.CSR.mapper.PackMapper;
 import com.fedag.CSR.service.PackService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,7 +26,6 @@ import java.math.BigDecimal;
 public class PackController {
 
     private final PackService packService;
-    private final PackMapper packMapper;
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Получение кейса по id.",

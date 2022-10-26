@@ -15,6 +15,5 @@ public interface ItemService {
     void deleteItemById(BigDecimal id);
     Item getItem(BigDecimal id);
     ItemResponse findById(BigDecimal id);
-
     void addAllItems(BigDecimal id);
 }
