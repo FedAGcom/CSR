@@ -21,8 +21,6 @@ agent any
                 echo " ============== build mvn project =================="
 //                sleep(time: 20, unit: "SECONDS")
                 sh 'mvn clean install'
-//                sh 'mvn liquibase:dropAll'
-//                sh 'mvn liquibase:update'
             }
         }
         stage("Docker login") {
@@ -38,8 +36,8 @@ agent any
         stage("Create docker image") {
             steps {
                 echo " ============== start building image =================="
-                sh 'sudo chmod --recursive ugo+xwr /var/lib/jenkins/workspace/csr/postgres-data/'
-                sh 'sudo chmod --recursive ugo+xwr /var/lib/jenkins/workspace/csr/postgres-data/pg_stat_tmp'
+//                sh 'sudo chmod --recursive ugo+xwr /var/lib/jenkins/workspace/csr/postgres-data/'
+//                sh 'sudo chmod --recursive ugo+xwr /var/lib/jenkins/workspace/csr/postgres-data/pg_stat_tmp'
                 sh 'docker build -t maxirage/csr:latest . '
             }
         }
