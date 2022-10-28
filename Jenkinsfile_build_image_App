@@ -9,13 +9,6 @@ agent any
     }
 
     stages {
-        stage ("Docker-compose") {
-            steps {
-                echo " ============== start docker-compose =================="
-                sh 'sudo chmod ugo+xwr /var/run/docker.sock'
-                sh 'docker-compose up -d'
-            }
-        }
         stage('Build mvn project') {
             steps {
                 echo " ============== build mvn project =================="
@@ -45,12 +38,6 @@ agent any
             steps {
                 echo " ============== start pushing image =================="
                 sh 'docker push maxirage/csr:latest'
-            }
-        }
-        stage("Run app") {
-            steps {
-                echo " ============== start app =================="
-                sh 'docker-compose up -d --build'
             }
         }
     }
