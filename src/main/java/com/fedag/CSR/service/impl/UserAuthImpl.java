@@ -2,6 +2,7 @@ package com.fedag.CSR.service.impl;
 
 import com.fedag.CSR.enums.Role;
 import com.fedag.CSR.email.EmailService;
+import com.fedag.CSR.exception.EntityNotFoundException;
 import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.model.User;
 import com.fedag.CSR.repository.UserRepository;
@@ -32,6 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -152,6 +154,26 @@ public class UserAuthImpl implements UserAuth {
                 responseMap.put("message", "Invalid token");
                 return responseMap;
             }
+        }
+    }
+
+    @Override
+    public Map<String, Object> getUserData(Optional<User> optionalUser, String steamId) {
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Map<String, Object> responseMap = new LinkedHashMap<>();
+            responseMap.put("error", false);
+            responseMap.put("id", user.getId());
+            responseMap.put("user_name", user.getUserName());
+            responseMap.put("confirmation_token", user.getConfirmationToken());
+            responseMap.put("steam_avatar", user.getSteamAvatarLink());
+            responseMap.put("steam_medium", user.getSteamAvatarMediumLink());
+            responseMap.put("steam_avatar_full", user.getSteamFullAvatarLink());
+            responseMap.put("steam_link", user.getSteamLink());
+            return responseMap;
+        }
+        else {
+            throw new EntityNotFoundException("User", "SteamId", steamId);
         }
     }
 }

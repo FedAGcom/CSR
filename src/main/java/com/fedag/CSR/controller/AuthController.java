@@ -25,6 +25,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -117,13 +119,49 @@ public class AuthController {
                         "&openid.realm=" + steamOpenIdRealm +
                         "&openid.mode=" + steamOpenIdMode)).build();
     }
+    @Operation(summary = "Направляемый запрос для сохранения данных")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Данные о пользователе со steam сохранены",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
     @GetMapping("/authentication-with-steam")
     public ResponseEntity<?> getUrl(HttpServletRequest request, SteamAuthRequestDto dto) {
         try {
-            return ResponseEntity.ok(userAuth.saveSteamUser(request, dto));
+            Map<String, Object> userForSave = userAuth.saveSteamUser(request, dto);
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI
+                    .create("http://csgofarm.online//api/v1/auth/success_url/" + "?steam_id=" + userForSave.get("steam_id"))).build();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI
+                    .create("http://csgofarm.online/apiv/v1/auth/error_url")).build();
         }
+    }
+
+    @Operation(summary = "Получение данных из базы, об авторизированном пользователе через сервис steam, по steam_id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Данные получены",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+    @GetMapping("success_url")
+    public ResponseEntity<?> getUserDataAfterAuthentication(@RequestParam("steam_id") String steamId){
+        Optional<User> user = userRepository.findBySteamId(steamId);
+        return ResponseEntity.ok().body(userAuth.getUserData(user, steamId));
+    }
+
+    @Operation(summary = "Ошибка получения данных с сервиса steam")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Данные не найдены",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+    @GetMapping("error_url")
+    public void getErrorAfterFailed(){
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Данные аккаунта steam не найдены");
     }
 }
 
