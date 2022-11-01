@@ -7,6 +7,7 @@ import com.fedag.CSR.service.FrontParamsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -17,6 +18,14 @@ public class FrontParamsServiceImpl implements FrontParamsService {
 
     public FrontParamsServiceImpl(FrontParamsRepository frontParamsRepository) {
         this.frontParamsRepository = frontParamsRepository;
+    }
+
+    @Override
+    public List<FrontParams> getAllFrontParams() {
+        log.info("Запрос всех FrontParams");
+        List<FrontParams> frontParams = frontParamsRepository.findAll();
+        log.info("Все FrontParams получены");
+        return frontParams;
     }
 
     @Override

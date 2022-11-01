@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -20,6 +22,22 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FrontParamsController {
     private final FrontParamsService frontParamsService;
+
+    @GetMapping
+    @ApiOperation(value = "Получение всех фронт-параметров.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Фронт-параметры получены",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+//    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    public ResponseEntity<?> getAllFrontParams() {
+        return ResponseEntity.ok().body(frontParamsService.getAllFrontParams());
+    }
+
+
+
     @GetMapping("/{id}")
     @ApiOperation(value = "Получение фронт-параметров по id.",
             notes = "Предоставьте id.")
