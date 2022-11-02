@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://csgofarm.online/api")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -131,10 +131,10 @@ public class AuthController {
         try {
             Map<String, Object> userForSave = userAuth.saveSteamUser(request, dto);
             return ResponseEntity.status(HttpStatus.FOUND).location(URI
-                    .create("http://csgofarm.online//api/v1/auth/success_url/" + "?steam_id=" + userForSave.get("steam_id"))).build();
+                    .create("http://csgofarm.online/api/v1/auth/success_url/" + "?steam_id=" + userForSave.get("steam_id"))).build();
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.FOUND).location(URI
-                    .create("http://csgofarm.online/apiv/v1/auth/error_url")).build();
+                    .create("http://csgofarm.online/api/v1/auth/error_url")).build();
         }
     }
 
