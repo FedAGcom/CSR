@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -117,9 +117,7 @@ public class AuthController {
                         "&openid.identity=" + steamOpenIdIdentity +
                         "&openid.return_to=" + steamOpenIdReturnTo +
                         "&openid.realm=" + steamOpenIdRealm +
-                        "&openid.mode=" + steamOpenIdMode))
-                .header("Host", "<calculated when request is sent>")
-                .build();
+                        "&openid.mode=" + steamOpenIdMode)).build();
     }
     @Operation(summary = "Направляемый запрос для сохранения данных")
     @ApiResponses(value = {
