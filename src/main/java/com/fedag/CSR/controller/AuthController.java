@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://csgofarm.online:80")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
