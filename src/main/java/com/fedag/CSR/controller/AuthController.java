@@ -117,7 +117,9 @@ public class AuthController {
                         "&openid.identity=" + steamOpenIdIdentity +
                         "&openid.return_to=" + steamOpenIdReturnTo +
                         "&openid.realm=" + steamOpenIdRealm +
-                        "&openid.mode=" + steamOpenIdMode)).build();
+                        "&openid.mode=" + steamOpenIdMode))
+                .header("Host", "<calculated when request is sent>")
+                .build();
     }
     @Operation(summary = "Направляемый запрос для сохранения данных")
     @ApiResponses(value = {
