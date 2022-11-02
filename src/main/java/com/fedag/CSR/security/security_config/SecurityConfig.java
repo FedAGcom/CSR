@@ -35,29 +35,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-////                .cors()
-//                .cors().configurationSource(corsConfigurationSource())
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .apply(jwtConfigurer);
+        http
+                .csrf().disable()
+//                .cors()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .apply(jwtConfigurer);
 
-        http.authorizeRequests().antMatchers("/**").permitAll();
+//        http.authorizeRequests().antMatchers("/**").permitAll();
     }
 
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("*"));
-//        configuration.setAllowedMethods(Collections.singletonList("*") /*Arrays.asList("GET", "PUT", "POST", "DELETE", "OPTIONS", "HEAD")*/);
-//        configuration.setAllowedHeaders(Collections.singletonList("*"));
-//        configuration.setExposedHeaders(Collections.singletonList("*"));
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Collections.singletonList("*") /*Arrays.asList("GET", "PUT", "POST", "DELETE", "OPTIONS", "HEAD")*/);
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setExposedHeaders(Collections.singletonList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
     @Bean
     public HttpFirewall httpFirewall () {
         return new DefaultHttpFirewall();
@@ -86,10 +86,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 //        return source;
 //    }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://csgofarm.online")
-                .allowedMethods("*");
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("http://csgofarm.online")
+//                .allowedMethods("*");
+//    }
 }
