@@ -112,8 +112,7 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @RequestMapping(method = RequestMethod.POST, path = "/steam-registration")
-//    @PostMapping("/steam-registration")
+    @PostMapping("/steam-registration")
     public ResponseEntity<?> saveUserWithSteam() {
         return ResponseEntity.status(HttpStatus.FOUND).location(URI
                         .create("https://steamcommunity.com/openid/login?openid.ns=" + steamOpenIdNs +
