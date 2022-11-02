@@ -120,8 +120,7 @@ public class AuthController {
                                 "&openid.identity=" + steamOpenIdIdentity +
                                 "&openid.return_to=" + steamOpenIdReturnTo +
                                 "&openid.realm=" + steamOpenIdRealm +
-                                "&openid.mode=" + steamOpenIdMode))
-                .header("Access-Control-Allow-Origin", "*").build();
+                                "&openid.mode=" + steamOpenIdMode)).build();
     }
 
     @Operation(summary = "Направляемый запрос для сохранения данных")
