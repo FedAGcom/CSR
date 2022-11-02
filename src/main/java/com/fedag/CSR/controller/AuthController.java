@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://csgofarm.online:3000")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -120,11 +120,7 @@ public class AuthController {
                                 "&openid.identity=" + steamOpenIdIdentity +
                                 "&openid.return_to=" + steamOpenIdReturnTo +
                                 "&openid.realm=" + steamOpenIdRealm +
-                                "&openid.mode=" + steamOpenIdMode))
-                .header("Access-Control-Allow-Origin", "http://csgofarm.online")
-                .header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-                .header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-                .build();
+                                "&openid.mode=" + steamOpenIdMode)).build();
     }
 
     @Operation(summary = "Направляемый запрос для сохранения данных")
