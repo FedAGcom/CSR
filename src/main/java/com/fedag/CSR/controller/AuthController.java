@@ -57,6 +57,7 @@ public class AuthController {
     private String steamOpenIdRealm;
     @Value("${steam.openid.mode}")
     private String steamOpenIdMode;
+
     @Operation(summary = "Ввод и проверка данных для аутентификации и авторизации пользователя.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь зашел в учетную запись.",
@@ -68,7 +69,7 @@ public class AuthController {
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDto request) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword()));
-            User user = userRepository.findByUserName(request.getUserName()).orElseThrow(()   -> new UsernameNotFoundException("User doesn't exist"));
+            User user = userRepository.findByUserName(request.getUserName()).orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
             String token = jwtTokenProvider.createToken(request.getUserName(), user.getRole().name());
             Map<Object, Object> response = new HashMap<>();
             response.put("userName", request.getUserName());
@@ -78,6 +79,7 @@ public class AuthController {
             return new ResponseEntity<>("Неверная пара username/пароль.", HttpStatus.FORBIDDEN);
         }
     }
+
     @Operation(summary = "Выход из учетной записи.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Выход выполнен",
@@ -90,6 +92,7 @@ public class AuthController {
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);
     }
+
     @Operation(summary = "Регистрация")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Регистрация",
@@ -112,13 +115,15 @@ public class AuthController {
     @PostMapping("/steam-registration")
     public ResponseEntity<?> saveUserWithSteam() {
         return ResponseEntity.status(HttpStatus.FOUND).location(URI
-                .create("https://steamcommunity.com/openid/login?openid.ns=" + steamOpenIdNs +
-                        "&openid.claimed_id=" + steamOpenIdClaimedId +
-                        "&openid.identity=" + steamOpenIdIdentity +
-                        "&openid.return_to=" + steamOpenIdReturnTo +
-                        "&openid.realm=" + steamOpenIdRealm +
-                        "&openid.mode=" + steamOpenIdMode)).build();
+                        .create("https://steamcommunity.com/openid/login?openid.ns=" + steamOpenIdNs +
+                                "&openid.claimed_id=" + steamOpenIdClaimedId +
+                                "&openid.identity=" + steamOpenIdIdentity +
+                                "&openid.return_to=" + steamOpenIdReturnTo +
+                                "&openid.realm=" + steamOpenIdRealm +
+                                "&openid.mode=" + steamOpenIdMode))
+                .header("Access-Control-Allow-Origin", "*").build();
     }
+
     @Operation(summary = "Направляемый запрос для сохранения данных")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Данные о пользователе со steam сохранены",
@@ -146,7 +151,7 @@ public class AuthController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @GetMapping("success_url")
-    public ResponseEntity<?> getUserDataAfterAuthentication(@RequestParam("steam_id") String steamId){
+    public ResponseEntity<?> getUserDataAfterAuthentication(@RequestParam("steam_id") String steamId) {
         Optional<User> user = userRepository.findBySteamId(steamId);
         return ResponseEntity.ok().body(userAuth.getUserData(user, steamId));
     }
@@ -159,7 +164,7 @@ public class AuthController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @GetMapping("error_url")
-    public void getErrorAfterFailed(){
+    public void getErrorAfterFailed() {
         throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Данные аккаунта steam не найдены");
     }
