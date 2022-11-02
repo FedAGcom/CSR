@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/api/v1/spin/2");
+        web.ignoring().antMatchers("/api/v1/steam-registration");
     }
     @Bean
     @Override
