@@ -12,5 +12,4 @@ public class CsrApplication {
     static public void main(String[] args) {
        SpringApplication.run(CsrApplication.class, args);
     }
-
 }
