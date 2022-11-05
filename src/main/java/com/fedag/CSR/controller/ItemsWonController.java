@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/itemsWon")
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class ItemsWonController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public void sellAllItems(@PathVariable BigDecimal id){
+    public void sellAllItems(@PathVariable BigDecimal id) {
         itemsWonService.sellAllItemsByBalanceIdAndItemsWonStatus(id);
     }
 
@@ -45,7 +44,7 @@ public class ItemsWonController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public void sellAnItem(@PathVariable BigDecimal id, @RequestHeader("Authorization") String token){
+    public void sellAnItem(@PathVariable BigDecimal id, @RequestHeader("Authorization") String token) {
         itemsWonService.sellAnItemWonByUserIdAndItemId(id, token);
     }
 }

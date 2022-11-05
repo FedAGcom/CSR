@@ -1,14 +1,11 @@
 package com.fedag.CSR.controller;
 
-import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.dto.request.BalanceRequest;
-import com.fedag.CSR.dto.update.BalanceUpdate;
 import com.fedag.CSR.dto.response.BalanceResponse;
+import com.fedag.CSR.dto.update.BalanceUpdate;
 import com.fedag.CSR.mapper.BalanceMapper;
-import com.fedag.CSR.model.User;
-import com.fedag.CSR.repository.UserRepository;
+import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.service.BalanceService;
-import com.fedag.CSR.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,7 +23,8 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 /**
  * Rest Controller for class {@link Balance}.
@@ -35,13 +33,13 @@ import static org.springframework.http.HttpStatus.*;
  * @version 1.1
  * @since 2022-09-01
  */
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/balances")
 @RequiredArgsConstructor
 public class BalanceController {
     private final BalanceService balanceService;
     private final BalanceMapper balanceMapper;
+
     @GetMapping
     @ApiOperation(value = "Список всех балансов.")
     @ApiResponses(value = {
@@ -137,7 +135,7 @@ public class BalanceController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public ResponseEntity<?> soldAllItemsByBalanceId(@PathVariable BigDecimal id){
+    public ResponseEntity<?> soldAllItemsByBalanceId(@PathVariable BigDecimal id) {
         return ResponseEntity.ok().body("Продано предметов на сумму: " + balanceService.soldAllItemsByBalanceId(id));
     }
 }

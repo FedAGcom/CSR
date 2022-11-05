@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/packs")
 @RequiredArgsConstructor

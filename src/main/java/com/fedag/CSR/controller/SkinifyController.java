@@ -1,6 +1,5 @@
 package com.fedag.CSR.controller;
 
-import com.fedag.CSR.enums.DepositStatus;
 import com.fedag.CSR.service.impl.SkinifyServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -47,13 +46,14 @@ public class SkinifyController {
         }
         return null;
     }
+
     @GetMapping("/success")
-    public ResponseEntity<?> showSuccessUrl(){
+    public ResponseEntity<?> showSuccessUrl() {
         return ResponseEntity.ok().body("Оплата успешно произведена");
     }
 
     @GetMapping("/fail")
-    public ResponseEntity<?> showFailedUrl(){
+    public ResponseEntity<?> showFailedUrl() {
         return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.BAD_REQUEST);
     }
 }

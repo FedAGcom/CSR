@@ -1,7 +1,6 @@
 package com.fedag.CSR.controller;
 
 import com.fedag.CSR.model.FrontParams;
-import com.fedag.CSR.repository.FrontParamsRepository;
 import com.fedag.CSR.service.FrontParamsService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,13 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/front")
 @RequiredArgsConstructor
@@ -37,7 +31,6 @@ public class FrontParamsController {
     }
 
 
-
     @GetMapping("/{id}")
     @ApiOperation(value = "Получение фронт-параметров по id.",
             notes = "Предоставьте id.")
@@ -48,7 +41,7 @@ public class FrontParamsController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
 //    @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public ResponseEntity<?> getFrontParams(@PathVariable Long id){
+    public ResponseEntity<?> getFrontParams(@PathVariable Long id) {
         return ResponseEntity.ok().body(frontParamsService.getTheFrontParamsById(id));
     }
 

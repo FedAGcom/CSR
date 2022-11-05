@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/items")
 @RequiredArgsConstructor
@@ -37,7 +36,7 @@ public class ItemController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public ResponseEntity<?> getItem(@PathVariable BigDecimal id){
+    public ResponseEntity<?> getItem(@PathVariable BigDecimal id) {
         return ResponseEntity.ok().body(itemService.findById(id));
     }
 

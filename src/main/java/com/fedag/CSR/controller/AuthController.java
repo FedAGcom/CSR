@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -35,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -112,15 +109,14 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @PostMapping("/steam-registration")
-    public ResponseEntity<?> saveUserWithSteam() {
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI
-                        .create("https://steamcommunity.com/openid/login?openid.ns=" + steamOpenIdNs +
-                                "&openid.claimed_id=" + steamOpenIdClaimedId +
-                                "&openid.identity=" + steamOpenIdIdentity +
-                                "&openid.return_to=" + steamOpenIdReturnTo +
-                                "&openid.realm=" + steamOpenIdRealm +
-                                "&openid.mode=" + steamOpenIdMode)).build();
+    @GetMapping("/steam-registration")
+    public String saveUserWithSteam() {
+        return "https://steamcommunity.com/openid/login?openid.ns=" + steamOpenIdNs +
+                        "&openid.claimed_id=" + steamOpenIdClaimedId +
+                        "&openid.identity=" + steamOpenIdIdentity +
+                        "&openid.return_to=" + steamOpenIdReturnTo +
+                        "&openid.realm=" + steamOpenIdRealm +
+                        "&openid.mode=" + steamOpenIdMode;
     }
 
     @Operation(summary = "Направляемый запрос для сохранения данных")

@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
-public class WinChanceController{
+public class WinChanceController {
 
     private final WinChanceServiceImpl winChanceService;
 
