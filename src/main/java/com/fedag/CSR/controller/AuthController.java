@@ -110,13 +110,16 @@ public class AuthController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @GetMapping("/steam-registration")
-    public String saveUserWithSteam() {
-        return "https://steamcommunity.com/openid/login?openid.ns=" + steamOpenIdNs +
-                        "&openid.claimed_id=" + steamOpenIdClaimedId +
-                        "&openid.identity=" + steamOpenIdIdentity +
-                        "&openid.return_to=" + steamOpenIdReturnTo +
-                        "&openid.realm=" + steamOpenIdRealm +
-                        "&openid.mode=" + steamOpenIdMode;
+    public ResponseEntity<?> saveUserWithSteam() {
+        Map <String, String> hashMap = new HashMap<>();
+        String link = "https://steamcommunity.com/openid/login?openid.ns=" + steamOpenIdNs +
+        "&openid.claimed_id=" + steamOpenIdClaimedId +
+                "&openid.identity=" + steamOpenIdIdentity +
+                "&openid.return_to=" + steamOpenIdReturnTo +
+                "&openid.realm=" + steamOpenIdRealm +
+                "&openid.mode=" + steamOpenIdMode;
+        hashMap.put("link", link);
+        return ResponseEntity.ok().body(hashMap);
     }
 
     @Operation(summary = "Направляемый запрос для сохранения данных")
