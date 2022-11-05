@@ -145,7 +145,7 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @GetMapping("success_url")
+    @GetMapping("/success_url")
     public ResponseEntity<?> getUserDataAfterAuthentication(@RequestParam("steam_id") String steamId) {
         Optional<User> user = userRepository.findBySteamId(steamId);
         return ResponseEntity.ok().body(userAuth.getUserData(user, steamId));
@@ -158,7 +158,7 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @GetMapping("error_url")
+    @GetMapping("/error_url")
     public void getErrorAfterFailed() {
         throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Данные аккаунта steam не найдены");
