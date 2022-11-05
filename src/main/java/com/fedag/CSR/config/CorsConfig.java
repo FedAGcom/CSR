@@ -19,6 +19,7 @@ public class CorsConfig implements WebMvcConfigurer {
 
                     //TODO Убрать в проде localhost
                 .allowedOrigins("http://csgofarm.online:3000", "http://localhost:3000", "https://steamcommunity.com"
-                ,"http://localhost:8080", "http://localhost", "http://csgofarm.online:8080");
+                ,"http://localhost:8080", "http://localhost", "http://csgofarm.online:8080", "http://csgofarm.online:80",
+                        "http://csgofarm.online");
     }
 }
