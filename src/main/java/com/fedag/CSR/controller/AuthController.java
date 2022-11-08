@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URI;
@@ -78,11 +79,11 @@ public class AuthController {
         try {
             User user = userAuth.saveSteamUser(request, dto);
 
-            UserDetailsImpl userDetails = new UserDetailsImpl(user.getId(), user.getUserName(),
-                    user.getSteamId());
-            ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+            HttpCookie cookie = ResponseCookie.from("AuthorizationCSRApp", user.getConfirmationToken())
+                    .path("/")
+                    .build();
 
-            return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+            return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .location(URI.create("http://localhost:8080/")).build();
         }
         catch (IOException e) {
