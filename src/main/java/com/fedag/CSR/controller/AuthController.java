@@ -14,9 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -130,12 +128,18 @@ public class AuthController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @GetMapping("/authentication-with-steam")
-    public ResponseEntity<?> getUrl(HttpServletRequest request, SteamAuthRequestDto dto) {
+    public ResponseEntity<?> getUrl(HttpServletRequest request, SteamAuthRequestDto dto){
         try {
-            Map<String, Object> userForSave = userAuth.saveSteamUser(request, dto);
-            return ResponseEntity.status(HttpStatus.FOUND).location(URI
-                    .create("http://csgofarm.online/api/v1/auth/success_url/" + "?steam_id=" + userForSave.get("steam_id"))).build();
-        } catch (IOException e) {
+            Map<String, Object> userInfo = userAuth.saveSteamUser(request, dto);
+
+            HttpCookie cookie = ResponseCookie.from("AuthorizationCSRApp", (String) userInfo.get("token"))
+                    .path("/")
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .location(URI.create("http://csgofarm.online")).build();
+        }
+        catch (IOException e) {
             return ResponseEntity.status(HttpStatus.FOUND).location(URI
                     .create("http://csgofarm.online/api/v1/auth/error_url")).build();
         }
