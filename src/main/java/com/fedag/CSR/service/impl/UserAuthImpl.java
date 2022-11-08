@@ -126,7 +126,7 @@ public class UserAuthImpl implements UserAuth {
 
             user.setEmail("fedag@gmail.com");
 
-            String token = jwtTokenProvider.createToken(user.getUserName(), user.getRole().name());
+            String token = jwtTokenProvider.createToken(user.getSteamId(), user.getRole().name());
             user.setConfirmationToken(token);
             userRepository.save(user);
 
