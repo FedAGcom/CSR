@@ -2,8 +2,8 @@ package com.fedag.CSR.service.impl;
 
 import com.fedag.CSR.enums.ItemsWonStatus;
 import com.fedag.CSR.exception.EntityNotFoundException;
-import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.mapper.BalanceMapper;
+import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.model.ItemsWon;
 import com.fedag.CSR.repository.BalanceRepository;
 import com.fedag.CSR.repository.ItemsWonRepository;
@@ -26,8 +26,8 @@ import java.util.List;
  * Wrapper for {@link BalanceRepository} and plus business logic.
  *
  * @author Kirill Soklakov
- * @since 2022-09-01
  * @version 1.1
+ * @since 2022-09-01
  */
 @Slf4j
 @Service
@@ -97,12 +97,12 @@ public class BalanceServiceImpl implements BalanceService {
                 });
         Double profit = 0.0;
         List<ItemsWon> listItems = new ArrayList<>();
-        for (ItemsWon i: result.getItemsWon()){
-            if (i.getItemsWonStatus() == ItemsWonStatus.ON_BALANCE){
+        for (ItemsWon i : result.getItemsWon()) {
+            if (i.getItemsWonStatus() == ItemsWonStatus.ON_BALANCE) {
                 i.setItemsWonStatus(ItemsWonStatus.SOLD);
                 i.setItemWonSailedTime(LocalDateTime.now());
                 listItems.add(i);
-                profit = profit + i.getItem_price();
+                profit = profit + i.getItemPrice();
                 itemsWonRepository.save(i);
             }
         }

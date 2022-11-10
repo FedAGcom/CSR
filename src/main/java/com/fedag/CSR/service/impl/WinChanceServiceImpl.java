@@ -1,6 +1,5 @@
 package com.fedag.CSR.service.impl;
 
-import com.fedag.CSR.dto.response.PackResponse;
 import com.fedag.CSR.enums.ItemsWonStatus;
 import com.fedag.CSR.exception.NotEnoughCoinsToBuyAPackException;
 import com.fedag.CSR.model.*;
@@ -12,13 +11,10 @@ import com.fedag.CSR.service.ItemsWonService;
 import com.fedag.CSR.service.PackService;
 import com.fedag.CSR.service.WinChanceService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.internal.util.SerializationHelper;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -32,6 +28,7 @@ public class WinChanceServiceImpl implements WinChanceService {
     private final ItemService itemService;
     private final PackService packService;
     private final ItemsWonService itemsWonService;
+
     @Override
     public BigDecimal spinCase(BigDecimal id, String userToken) {
 
@@ -66,7 +63,7 @@ public class WinChanceServiceImpl implements WinChanceService {
                     itemsWon.setUsers(user.get());
                     itemsWon.setPacks(pack);
                     itemsWon.setItems(item);
-                    itemsWon.setItem_price(item.getPrice());
+                    itemsWon.setItemPrice(item.getPrice());
                     itemsWon.setPack_price(pack.getPrice());
                     itemsWon.setBalances(balance);
                     itemsWon.setPack_opening_timestamp(LocalDateTime.now());

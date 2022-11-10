@@ -68,12 +68,17 @@ public class UserMapper {
     }
 
     public UserResponse modelToDto(User user) {
-        return mapper.map(user, UserResponse.class);
+        return new UserResponse()
+                .setUserName(user.getUserName())
+                .setRole(user.getRole())
+                .setSteamAvatarMedium(user.getSteamAvatarMediumLink());
+
     }
 
     public User dtoToModel(UserRequest user) {
         return mapper.map(user, User.class);
     }
+
     public User dtoToModel(UserUpdate user) {
         return mapper.map(user, User.class);
     }

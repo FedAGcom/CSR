@@ -1,7 +1,6 @@
 package com.fedag.CSR.model;
 
 import com.fedag.CSR.enums.ItemsWonStatus;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,7 +39,7 @@ public class ItemsWon {
     private Double pack_price;
 
     @Column(name = "item_price")
-    private Double item_price;
+    private Double itemPrice;
 
     @Column(name = "pack_opening_timestamp")
     private LocalDateTime pack_opening_timestamp;

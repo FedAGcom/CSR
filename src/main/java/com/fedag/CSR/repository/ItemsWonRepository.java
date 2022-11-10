@@ -13,4 +13,8 @@ public interface ItemsWonRepository extends JpaRepository<ItemsWon, Long> {
     List<ItemsWon> findAllByBalancesIdAndItemsWonStatus(BigDecimal id, ItemsWonStatus itemsWonStatus);
 
     ItemsWon findTopItemsWonByUsersIdAndItemsItemIdAndItemsWonStatus(BigDecimal userId, BigDecimal itemId, ItemsWonStatus itemsWonStatus);
+
+    List<ItemsWon> findAllByUsersIdAndItemsWonStatus(BigDecimal userId, ItemsWonStatus itemsWonStatus);
+
+    List<ItemsWon> findAllByUsersId(BigDecimal userId);
 }

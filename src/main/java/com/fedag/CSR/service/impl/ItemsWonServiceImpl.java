@@ -36,7 +36,7 @@ public class ItemsWonServiceImpl implements ItemsWonService {
         List<ItemsWon> itemsWonList = itemsWonRepository.findAllByBalancesIdAndItemsWonStatus(id, ItemsWonStatus.ON_BALANCE);
         Double profit = 0.0;
         for (ItemsWon itemsWon : itemsWonList) {
-            profit += itemsWon.getItem_price();
+            profit += itemsWon.getItemPrice();
             itemsWon.setItemsWonStatus(ItemsWonStatus.SOLD);
             itemsWon.setItemWonSailedTime(LocalDateTime.now());
             itemsWonRepository.save(itemsWon);
@@ -55,7 +55,7 @@ public class ItemsWonServiceImpl implements ItemsWonService {
         itemsWon.setItemsWonStatus(ItemsWonStatus.SOLD);
         itemsWon.setItemWonSailedTime(LocalDateTime.now());
         Balance balance = itemsWon.getBalances();
-        balance.setCoins(balance.getCoins() + itemsWon.getItem_price());
+        balance.setCoins(balance.getCoins() + itemsWon.getItemPrice());
 
         itemsWonRepository.save(itemsWon);
         balanceRepository.save(balance);
