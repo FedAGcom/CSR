@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         getUserDetails.put("nickNameSteam", user.getUserName());
         getUserDetails.put("role", user.getRole());
         getUserDetails.put("steamAvatarMedium", user.getSteamAvatarMediumLink());
+        getUserDetails.put("tradeUrl", user.getTradeUrl());
         getUserDetails.put("balance", balanceRepository.findAllByUserId(user.getId())
                 .stream()
                 .map(Balance::getCoins)
