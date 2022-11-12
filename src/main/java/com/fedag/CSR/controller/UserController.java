@@ -93,7 +93,7 @@ public class UserController {
         return "User with ID = " + id + " was deleted.";
     }
 
-    @PatchMapping("/insert-trade-url/{steam_id}")
+    @PatchMapping("/insert-trade-url")
     @ApiOperation(value = "Добавление trade url по steam id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Trade url внесана в базу",
@@ -102,7 +102,7 @@ public class UserController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public void insertTradeUrl(@PathVariable String steam_id, @RequestHeader("TradeURL") String tradeUrl) {
-        userService.insertTradeUrl(steam_id, tradeUrl);
+    public void insertTradeUrl(@RequestHeader("Authorization") String confirmationToken, @RequestHeader("TradeURL") String tradeUrl) {
+        userService.insertTradeUrl(confirmationToken, tradeUrl);
     }
 }

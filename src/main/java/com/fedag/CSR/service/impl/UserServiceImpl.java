@@ -124,14 +124,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void insertTradeUrl(String steamId, String tradeURL) {
-        log.info("Обновление трейд ссылки по steam_id: {}", steamId);
-        Optional<User> optional = userRepository.findBySteamId(steamId);
+    public void insertTradeUrl(String confirmationToken, String tradeURL) {
+        log.info("Обновление трейд ссылки");
+        Optional<User> optional = userRepository.findUserByConfirmationToken(confirmationToken);
         if (optional.isPresent()) {
             User source = optional.get();
             source.setTradeUrl(tradeURL);
             userRepository.save(source);
-            log.info("Трейд ссылка пользователя со steam_id: {} обновлена", steamId);
+            log.info("Трейд ссылка пользователя обновлена");
         } else throw new EntityNotFoundException("Пользователь не найден");
     }
 }

@@ -23,5 +23,5 @@ public interface UserService<T> {
 
     Map<String, Object> getUserAndBalanceAndAllActiveItemsAndFavoritePackAndBestItem(String token);
 
-    void insertTradeUrl(String steamId, String tradeURL);
+    void insertTradeUrl(String confirmationToken, String tradeURL);
 }
