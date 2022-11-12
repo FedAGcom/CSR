@@ -59,7 +59,6 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public Page<PackResponse> getAllPacks(@PageableDefault(size = 125) Pageable pageable) {
         return packService.findAll(pageable);
     }
