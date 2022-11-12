@@ -4,14 +4,14 @@ import com.fedag.CSR.enums.ItemsWonStatus;
 import com.fedag.CSR.model.*;
 import com.fedag.CSR.repository.*;
 import com.fedag.CSR.service.ItemsWonService;
+import liquibase.pro.packaged.V;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -22,6 +22,7 @@ public class ItemsWonServiceImpl implements ItemsWonService {
     private final BalanceRepository balanceRepository;
 
     private final UserRepository userRepository;
+    private final WinChanceRepository winChanceRepository;
 
 
     @Override
@@ -59,5 +60,32 @@ public class ItemsWonServiceImpl implements ItemsWonService {
 
         itemsWonRepository.save(itemsWon);
         balanceRepository.save(balance);
+    }
+    @Override
+    public List<Map<String, Object>> getLastWiningItems(){
+        List<ItemsWon> lastItems = itemsWonRepository.getLastItemsWonLimit10();
+        return createResultList(lastItems);
+    }
+
+    @Override
+    public List<Map<String, Object>> getTheBestWiningItems(){
+        List<ItemsWon> lastItems = itemsWonRepository.getTheBestItemsWonLimit10();
+        return createResultList(lastItems);
+    }
+
+    public List<Map<String, Object>> createResultList(List<ItemsWon> lastItems){
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        for (ItemsWon lastItem : lastItems) {
+            Map<String, Object> itemMap = new LinkedHashMap<>();
+            itemMap.put("icon", lastItem.getItems().getIconItemId());
+            itemMap.put("rare", lastItem.getItems().getRare());
+            itemMap.put("type", lastItem.getItems().getType());
+            itemMap.put("item_title", lastItem.getItems().getTitle());
+            itemMap.put("pack_title", lastItem.getPacks().getTitle());
+            itemMap.put("user_name", lastItem.getUsers().getUserName());
+            itemMap.put("user_icon", lastItem.getUsers().getSteamFullAvatarLink());
+            resultList.add(itemMap);
+        }
+        return resultList;
     }
 }

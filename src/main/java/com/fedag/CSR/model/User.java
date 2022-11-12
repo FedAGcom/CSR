@@ -73,6 +73,9 @@ public class User {
     @Column(name = "steam_avatar_full")
     private String steamFullAvatarLink;
 
+    @Column(name = "trade_url")
+    private String tradeUrl;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Balance balance;
 

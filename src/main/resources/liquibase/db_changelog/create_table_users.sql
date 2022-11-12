@@ -14,5 +14,6 @@ CREATE TABLE Users
     steam_id            VARCHAR(256),
     steam_avatar        VARCHAR(256),
     steam_avatar_medium VARCHAR(256),
-    steam_avatar_full   VARCHAR(256)
+    steam_avatar_full   VARCHAR(256),
+    trade_url           VARCHAR(256)
 );

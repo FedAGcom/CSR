@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
@@ -119,6 +120,19 @@ public class UserServiceImpl implements UserService {
         log.info("Обновление пользователя с id {}", user.getId());
         userRepository.save(userMapper.dtoToModel(user));
         log.info("Пользователь с id {} обновлен", user.getId());
+    }
+
+    @Override
+    @Transactional
+    public void insertTradeUrl(String steamId, String tradeURL) {
+        log.info("Обновление трейд ссылки по steam_id: {}", steamId);
+        Optional<User> optional = userRepository.findBySteamId(steamId);
+        if (optional.isPresent()) {
+            User source = optional.get();
+            source.setTradeUrl(tradeURL);
+            userRepository.save(source);
+            log.info("Трейд ссылка пользователя со steam_id: {} обновлена", steamId);
+        } else throw new EntityNotFoundException("Пользователь не найден");
     }
 }
 
