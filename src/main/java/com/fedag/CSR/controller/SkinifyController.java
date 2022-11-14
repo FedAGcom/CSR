@@ -29,7 +29,7 @@ public class SkinifyController {
         return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url)).build();
     }
 
-    @GetMapping("/result")
+    @PostMapping("/result")
     public ResponseEntity<?> showResult(HttpServletRequest servletRequest) {
 
         if (servletRequest.getParameter("token_md5").equals(skinifyTokenMD5)) {
