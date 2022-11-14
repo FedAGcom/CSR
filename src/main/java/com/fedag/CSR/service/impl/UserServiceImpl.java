@@ -47,6 +47,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, Object> getUserAndBalanceAndAllActiveItemsAndFavoritePackAndBestItem(String token) {
+        log.info("Получение пользователя, баланса, выигранных предметов на балансе, самых дорогих выигранных предметов и " +
+                "наиболее часто открываемых кейсов");
         Map<String, Object> getUserDetails = new LinkedHashMap<>();
 
         User user = userRepository.findUserByConfirmationToken(token)
@@ -84,7 +86,8 @@ public class UserServiceImpl implements UserService {
                 itemsWonRepository.findAllByUsersIdAndItemsWonStatus(user.getId(), ItemsWonStatus.ON_BALANCE)
                         .stream()
                         .map(itemsWon -> itemsWon.getItems().getItemId()));
-
+        log.info("Пользователь, баланс, выигранные предметы на балансе, самые дорогие выигранные предметы и " +
+                "наиболее часто открываемые кейсы получены");
         return getUserDetails;
     }
 
