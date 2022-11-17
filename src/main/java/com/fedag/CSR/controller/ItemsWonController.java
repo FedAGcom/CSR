@@ -83,7 +83,6 @@ public class ItemsWonController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public long totalPacksOpened() {
         return itemsWonService.totalPacksOpened();
     }
