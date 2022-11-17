@@ -24,4 +24,6 @@ public interface UserService<T> {
     Map<String, Object> getUserAndBalanceAndAllActiveItemsAndFavoritePackAndBestItem(String token);
 
     void insertTradeUrl(String confirmationToken, String tradeURL);
+
+    long totalUsersCount();
 }

@@ -138,6 +138,11 @@ public class UserServiceImpl implements UserService {
             log.info("Трейд ссылка пользователя обновлена");
         } else throw new EntityNotFoundException("Пользователь не найден");
     }
+
+    @Override
+    public long totalUsersCount() {
+        return userRepository.count();
+    }
 }
 
 

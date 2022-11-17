@@ -74,4 +74,17 @@ public class ItemsWonController {
     public ResponseEntity<?> getTheBestItemsWon(){
         return ResponseEntity.ok().body(itemsWonService.getTheBestWiningItems());
     }
+
+    @GetMapping("/count")
+    @ApiOperation(value = "Получение количества открытых кейсов.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Количество получено",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    public long totalPacksOpened() {
+        return itemsWonService.totalPacksOpened();
+    }
 }
