@@ -105,4 +105,16 @@ public class UserController {
     public void insertTradeUrl(@RequestHeader("Authorization") String confirmationToken, @RequestHeader("TradeURL") String tradeUrl) {
         userService.insertTradeUrl(confirmationToken, tradeUrl);
     }
+
+    @GetMapping("/count")
+    @ApiOperation(value = "Получение количества пользователей.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Количество получено",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+    public Long totalUserCount() {
+        return userService.totalUsersCount();
+    }
 }

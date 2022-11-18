@@ -73,6 +73,11 @@ public class ItemsWonServiceImpl implements ItemsWonService {
         return createResultList(lastItems);
     }
 
+    @Override
+    public long totalPacksOpened() {
+        return itemsWonRepository.count();
+    }
+
     public List<Map<String, Object>> createResultList(List<ItemsWon> lastItems){
         List<Map<String, Object>> resultList = new ArrayList<>();
         for (ItemsWon lastItem : lastItems) {

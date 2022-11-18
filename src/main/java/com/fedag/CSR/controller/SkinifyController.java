@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -21,15 +23,16 @@ public class SkinifyController {
     String skinifyTokenMD5;
 
 
-    @PostMapping("/create-deposit")
+    @GetMapping("/create-deposit")
     @PreAuthorize("hasAuthority('user')")
     public ResponseEntity<?> createDepositPost(@RequestHeader("Authorization") String userToken) {
+        Map<String, String> hashMap = new HashMap<>();
         String url = skinifyService.createDeposit(userToken);
-
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url)).build();
+        hashMap.put("link", url);
+        return ResponseEntity.ok().body(hashMap);
     }
 
-    @GetMapping("/result")
+    @PostMapping("/result")
     public ResponseEntity<?> showResult(HttpServletRequest servletRequest) {
 
         if (servletRequest.getParameter("token_md5").equals(skinifyTokenMD5)) {

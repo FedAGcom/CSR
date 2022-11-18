@@ -14,4 +14,6 @@ public interface ItemsWonService {
     void sellAnItemWonByUserIdAndItemId(BigDecimal itemId, String userToken);
     List<Map<String, Object>> getLastWiningItems();
     List<Map<String, Object>> getTheBestWiningItems();
+
+    long totalPacksOpened();
 }
