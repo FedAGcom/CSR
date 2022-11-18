@@ -79,12 +79,8 @@ public class PackServiceImpl implements PackService {
             winChance.setPack(newPack);
             winChance.setWinChance(arrayJson.getDouble("winchance"));
 
-            String medianPrice = null;
-            try {
-                medianPrice = getItemPriceFromSteam(item);
-            } catch (HttpClientErrorException TooManyRequests) {
-                throw new ObjectNotFoundException("Too Many Requests to steam community market, please try again later");
-            }
+            String medianPrice = medianPrice = getItemPriceFromSteam(item);
+
             item.setPrice(Double.valueOf(medianPrice.substring(0, medianPrice.length() - 5).replace(",", ".")));
             //Формирование картинки предмета
             String itemIcon = getItemIcon(item);
@@ -196,9 +192,14 @@ public class PackServiceImpl implements PackService {
 
     public String getItemIcon(Item item) {
         String itemName = item.getTitle() + " (" + item.getQuality() + ")";
-        ResponseEntity<String> response = restTemplate
-                .getForEntity("https://steamcommunity.com/market/listings/730/"
-                        + itemName + "/render?start=0&count=1&currency=3&language=english&format=json", String.class);
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate
+                    .getForEntity("https://steamcommunity.com/market/listings/730/"
+                            + itemName + "/render?start=0&count=1&currency=3&language=english&format=json", String.class);
+        } catch (HttpClientErrorException TooManyRequests) {
+            throw new ObjectNotFoundException("Too Many Requests to steam community market, please try again later");
+        }
         JSONObject jsonAssets = new JSONObject(response.getBody());
         JSONObject jsonObjectAssets = (JSONObject) jsonAssets.get("assets");
         String[] iconUrlArray = String.valueOf(jsonObjectAssets).split("\"icon_url\":\"");
@@ -229,7 +230,7 @@ public class PackServiceImpl implements PackService {
         String price = "";
 
         try {
-            price= (String) jsonObjectForPrice.get("median_price");
+            price = (String) jsonObjectForPrice.get("median_price");
         } catch (JSONException e) {
             try {
                 price = (String) jsonObjectForPrice.get("lowest_price");
@@ -237,6 +238,6 @@ public class PackServiceImpl implements PackService {
                 throw new ObjectNotFoundException("Item doesn't exist on steam community market");
             }
         }
-            return price;
+        return price;
     }
 }
