@@ -2,6 +2,7 @@ package com.fedag.CSR.service.impl;
 
 import com.fedag.CSR.dto.response.PackResponse;
 import com.fedag.CSR.enums.PackStatus;
+import com.fedag.CSR.exception.ObjectNotFoundException;
 import com.fedag.CSR.mapper.PackMapper;
 import com.fedag.CSR.model.Item;
 import com.fedag.CSR.model.Pack;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -218,6 +220,17 @@ public class PackServiceImpl implements PackService {
         URL url = new URL(newUrl);
         String json = IOUtils.toString(url, StandardCharsets.UTF_8);
         JSONObject jsonObjectForPrice = new JSONObject(json);
-        return (String) jsonObjectForPrice.get("median_price");
+        String price = "";
+
+        try {
+            price= (String) jsonObjectForPrice.get("median_price");
+        } catch (JSONException e) {
+            try {
+                price = (String) jsonObjectForPrice.get("lowest_price");
+            } catch (JSONException ex) {
+                throw new ObjectNotFoundException("Item doesn't exist on steam community market");
+            }
+        }
+            return price;
     }
 }
