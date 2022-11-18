@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -78,7 +79,12 @@ public class PackServiceImpl implements PackService {
             winChance.setPack(newPack);
             winChance.setWinChance(arrayJson.getDouble("winchance"));
 
-            String medianPrice = getItemPriceFromSteam(item);
+            String medianPrice = null;
+            try {
+                medianPrice = getItemPriceFromSteam(item);
+            } catch (HttpClientErrorException TooManyRequests) {
+                throw new ObjectNotFoundException("Too Many Requests to steam community market, please try again later");
+            }
             item.setPrice(Double.valueOf(medianPrice.substring(0, medianPrice.length() - 5).replace(",", ".")));
             //Формирование картинки предмета
             String itemIcon = getItemIcon(item);
