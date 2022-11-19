@@ -202,14 +202,14 @@ public class PackServiceImpl implements PackService {
             if (item.getType().equalsIgnoreCase("Knife")) {
                 itemName.append("%E2%98%85%20")
                         .append(item.getTitle().replace("|", "%7C").replace(" ", "%20"))
-                        .append("(")
+                        .append("%20%28")
                         .append(item.getQuality())
-                        .append(")");
+                        .append("%29");
             } else itemName
                     .append(item.getTitle().replace("|", "%7C").replace(" ", "%20"))
-                    .append("(")
+                    .append("%20%28")
                     .append(item.getQuality())
-                    .append(")");
+                    .append("%29");
 
             String url = "https://steamcommunity.com/market/listings/730/" + itemName + "/render?start=0&count=1&currency=3&language=english&format=json";
             log.info("Получение иконки предмета " + url);
