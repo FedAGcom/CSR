@@ -214,7 +214,7 @@ public class PackServiceImpl implements PackService {
             String url = "https://steamcommunity.com/market/listings/730/" + itemName + "/render?start=0&count=1&currency=3&language=english&format=json";
             log.info("Получение иконки предмета " + url);
             ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-            JSONObject jsonAssets = new JSONObject(response);
+            JSONObject jsonAssets = new JSONObject(response.getBody());
             JSONObject jsonObjectAssets = (JSONObject) jsonAssets.get("assets");
 
             String[] iconUrlArray = String.valueOf(jsonObjectAssets).split("\"icon_url\":\"");
