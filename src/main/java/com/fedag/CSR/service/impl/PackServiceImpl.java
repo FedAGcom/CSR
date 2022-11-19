@@ -211,9 +211,12 @@ public class PackServiceImpl implements PackService {
                     .append(item.getQuality())
                     .append("%29");
 
-            String url = "https://steamcommunity.com/market/listings/730/" + itemName + "/render?start=0&count=1&currency=3&language=english&format=json";
-            log.info("Получение иконки предмета " + url);
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+            log.info("Получение иконки предмета " + "https://steamcommunity.com/market/listings/730/"
+                    + itemName + "/render?start=0&count=1&currency=3&language=english&format=json");
+
+            ResponseEntity<String> response = restTemplate
+                    .getForEntity("https://steamcommunity.com/market/listings/730/"
+                            + itemName + "/render?start=0&count=1&currency=3&language=english&format=json", String.class);
             JSONObject jsonAssets = new JSONObject(response.getBody());
             JSONObject jsonObjectAssets = (JSONObject) jsonAssets.get("assets");
 
