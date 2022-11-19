@@ -12,11 +12,15 @@ import com.fedag.CSR.repository.WinChanceRepository;
 import com.fedag.CSR.service.ItemService;
 import com.fedag.CSR.service.PackService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.HttpStatusException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +32,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URL;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +83,7 @@ public class PackServiceImpl implements PackService {
             winChance.setPack(newPack);
             winChance.setWinChance(arrayJson.getDouble("winchance"));
 
-            String medianPrice = medianPrice = getItemPriceFromSteam(item);
+            String medianPrice = getItemPriceFromSteam(item);
 
             item.setPrice(Double.valueOf(medianPrice.substring(0, medianPrice.length() - 5).replace(",", ".")));
             //Формирование картинки предмета
@@ -183,7 +187,7 @@ public class PackServiceImpl implements PackService {
         }
         return responseMap;
     }
-    // Кодировка картинки в БД (если потребуется)
+// Кодировка картинки в БД (если потребуется)
 //    public Pack createImage(MultipartFile file, Pack result) throws IOException {
 //        result.setImage(Base64.toBase64String(file.getBytes()));
 //        result.setImageType(file.getContentType());
@@ -191,44 +195,80 @@ public class PackServiceImpl implements PackService {
 //    }
 
     public String getItemIcon(Item item) {
-        String itemName = item.getTitle() + " (" + item.getQuality() + ")";
-        ResponseEntity<String> response = null;
+
+        StringBuilder itemName = new StringBuilder();
+        String iconUrlFromApi;
         try {
-            response = restTemplate
-                    .getForEntity("https://steamcommunity.com/market/listings/730/"
-                            + itemName + "/render?start=0&count=1&currency=3&language=english&format=json", String.class);
+            if (item.getType().equalsIgnoreCase("Knife")) {
+                itemName.append("%E2%98%85%20")
+                        .append(item.getTitle().replace("|", "%7C").replace(" ", "%20"))
+                        .append("(")
+                        .append(item.getQuality())
+                        .append(")");
+            } else itemName
+                    .append(item.getTitle().replace("|", "%7C").replace(" ", "%20"))
+                    .append("(")
+                    .append(item.getQuality())
+                    .append(")");
+
+            String url = "https://steamcommunity.com/market/listings/730/" + itemName + "/render?start=0&count=1&currency=3&language=english&format=json";
+            log.info("Получение иконки предмета " + url);
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+            JSONObject jsonAssets = new JSONObject(response);
+            JSONObject jsonObjectAssets = (JSONObject) jsonAssets.get("assets");
+
+            String[] iconUrlArray = String.valueOf(jsonObjectAssets).split("\"icon_url\":\"");
+
+            int counter = 0;
+            StringBuilder sb = new StringBuilder();
+            while (iconUrlArray[1].charAt(counter) != 34) {
+                sb.append(iconUrlArray[1].charAt(counter));
+                counter++;
+            }
+            iconUrlFromApi = iconUrlArray[1].substring(0, sb.length());
+            log.info("Иконка предмета получена");
+            return "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
+
         } catch (HttpClientErrorException TooManyRequests) {
-            throw new ObjectNotFoundException("Too Many Requests to steam community market, please try again later");
+            log.warn("Too Many Requests to steam community market, getting an icon from the wiki");
+            itemName.setLength(0);
+            itemName.append(item.getTitle().replace(" | ", "/").replace(" ", "-").toLowerCase());
+            String url = "https://wiki.cs.money/ru/weapons/" + itemName;
+            log.info("Получение иконки предмета " + url);
+            Document document = null;
+            try {
+                document = Jsoup.connect(url).get();
+            } catch (IOException httpStatusException ) {
+                throw new ObjectNotFoundException("Item doesn't exist on wiki market");
+            }
+            log.info("Иконка предмета получена");
+            return document.select("#skins > div.xleatfemcgmqbklagaxecqnufs > div.ugedsptljnltawgotsbdhtgruj > link")
+                    .attr("href");
         }
-        JSONObject jsonAssets = new JSONObject(response.getBody());
-        JSONObject jsonObjectAssets = (JSONObject) jsonAssets.get("assets");
-        String[] iconUrlArray = String.valueOf(jsonObjectAssets).split("\"icon_url\":\"");
-
-        int counter = 0;
-        StringBuilder sb = new StringBuilder();
-        while (iconUrlArray[1].charAt(counter) != 34) {
-            sb.append(iconUrlArray[1].charAt(counter));
-            counter++;
-        }
-
-        String iconUrlFromApi = iconUrlArray[1].substring(0, sb.length());
-        return "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
     }
 
     public String getItemPriceFromSteam(Item item) throws IOException {
-        String hashName = item.getTitle() + " (" + item.getQuality() + ")";
 
-        String basedUrl = "https://steamcommunity.com/market/priceoverview/?appid=730&currency=5&market_hash_name="
-                + hashName;
-        String[] urlArray = basedUrl.split(" ");
-        String newUrl = String.join("%20", urlArray);
-        newUrl.substring(0, newUrl.length() - 3);
+        String itemName;
+        if (item.getType().equalsIgnoreCase("Knife")) {
+            itemName = ("%E2%98%85%20")
+                    + (item.getTitle().replace("|", "%7C").replace(" ", "%20"))
+                    + ("%20%28")
+                    + (item.getQuality().replace(" ", "%20"))
+                    + ("%29");
+        } else itemName =
+                (item.getTitle().replace("|", "%7C").replace(" ", "%20"))
+                + ("%20%28")
+                + (item.getQuality().replace(" ", "%20"))
+                + ("%29");
 
-        URL url = new URL(newUrl);
-        String json = IOUtils.toString(url, StandardCharsets.UTF_8);
+        String url = "https://steamcommunity.com/market/priceoverview/?appid=730&currency=5&market_hash_name="
+                + itemName;
+        log.info("Получение цены предмента " + url);
+
+        String json = IOUtils.toString(URI.create(url), StandardCharsets.UTF_8);
         JSONObject jsonObjectForPrice = new JSONObject(json);
-        String price = "";
-
+        String price;
         try {
             price = (String) jsonObjectForPrice.get("median_price");
         } catch (JSONException e) {
@@ -238,6 +278,7 @@ public class PackServiceImpl implements PackService {
                 throw new ObjectNotFoundException("Item doesn't exist on steam community market");
             }
         }
+        log.info("Цена получена");
         return price;
     }
 }
