@@ -232,7 +232,7 @@ public class PackServiceImpl implements PackService {
             log.info("Иконка предмета получена");
             return "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
 
-        } catch (HttpClientErrorException | JSONException TooManyRequests) {
+        } catch (HttpClientErrorException | JSONException | ClassCastException TooManyRequests) {
             log.warn("Too Many Requests to steam community market, getting an icon from the wiki");
             itemName.setLength(0);
             itemName.append(item.getTitle().replace(" | ", "/").replace(" ", "-").toLowerCase());
