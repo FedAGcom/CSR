@@ -218,7 +218,7 @@ public class PackServiceImpl implements PackService {
                     .getForEntity("https://steamcommunity.com/market/listings/730/"
                             + itemName + "/render?start=0&count=1&currency=3&language=english&format=json", String.class);
             JSONObject jsonAssets = new JSONObject(response.getBody());
-            String jsonObjectAssets = (String) jsonAssets.get("assets");
+            JSONObject jsonObjectAssets = (JSONObject) jsonAssets.get("assets");
 
             String[] iconUrlArray = String.valueOf(jsonObjectAssets).split("\"icon_url\":\"");
 
@@ -232,7 +232,7 @@ public class PackServiceImpl implements PackService {
             log.info("Иконка предмета получена");
             return "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
 
-        } catch (HttpClientErrorException TooManyRequests) {
+        } catch (HttpClientErrorException | JSONException TooManyRequests) {
             log.warn("Too Many Requests to steam community market, getting an icon from the wiki");
             itemName.setLength(0);
             itemName.append(item.getTitle().replace(" | ", "/").replace(" ", "-").toLowerCase());
