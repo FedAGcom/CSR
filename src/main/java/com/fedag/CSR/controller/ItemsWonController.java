@@ -50,8 +50,7 @@ public class ItemsWonController {
     }
 
     @GetMapping("/get-last-items-won")
-    @ApiOperation(value = "Получение последних выигранных предметов",
-            notes = "Предоставьте id.")
+    @ApiOperation(value = "Получение последних выигранных предметов")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Предметы получены",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
@@ -63,8 +62,7 @@ public class ItemsWonController {
     }
 
     @GetMapping("/get-the-best-items-won")
-    @ApiOperation(value = "Получение лучших выигранных предметов",
-            notes = "Предоставьте id.")
+    @ApiOperation(value = "Получение лучших выигранных предметов")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Предметы получены",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),

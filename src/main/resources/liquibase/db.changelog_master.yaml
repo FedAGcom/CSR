@@ -18,4 +18,10 @@ databaseChangeLog:
   - include:
       file: classpath:liquibase/db_changelog/create_front_params.sql
   - include:
+      file: classpath:liquibase/db_changelog/create_table_support.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_promocodes_table.sql
+  - include:
       file: classpath:liquibase/db_changelog/filling_in_all_tables.sql
+
+
