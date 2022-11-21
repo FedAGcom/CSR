@@ -20,6 +20,18 @@ public class FrontParamsServiceImpl implements FrontParamsService {
     }
 
     @Override
+    public FrontParams getFrontParam() {
+        log.info("Запрос всех FrontParams");
+        FrontParams result = frontParamsRepository.findById(1L)
+                .orElseThrow(() -> {
+                    log.error("Фронт параметры не найдены");
+                    throw new EntityNotFoundException("Фронт параметры не найдены");
+                });
+        log.info("Все FrontParams получены");
+        return result;
+    }
+
+    @Override
     public FrontParams updateFrontParam(FrontParams frontParams) {
         log.info("Обновление фронт параметров");
         Optional<FrontParams> optional = frontParamsRepository.findById(1L);

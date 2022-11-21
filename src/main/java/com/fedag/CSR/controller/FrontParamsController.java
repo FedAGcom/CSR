@@ -18,6 +18,18 @@ import org.springframework.web.bind.annotation.*;
 public class FrontParamsController {
     private final FrontParamsService frontParamsService;
 
+    @GetMapping
+    @ApiOperation(value = "Получение фронт-параметров.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Фронт-параметры получены",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+    public ResponseEntity<?> getAllFrontParams() {
+        return ResponseEntity.ok().body(frontParamsService.getFrontParam());
+    }
+
     @PutMapping
     @ApiOperation(value = "Обновление параметров в базе.")
     @ApiResponses(value = {
