@@ -1,4 +1,4 @@
-﻿package com.fedag.CSR.exception;
+package com.fedag.CSR.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
