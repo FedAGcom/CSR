@@ -7,7 +7,6 @@ import com.fedag.CSR.service.FrontParamsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -21,34 +20,45 @@ public class FrontParamsServiceImpl implements FrontParamsService {
     }
 
     @Override
-    public List<FrontParams> getAllFrontParams() {
+    public FrontParams getFrontParam() {
         log.info("Запрос всех FrontParams");
-        List<FrontParams> frontParams = frontParamsRepository.findAll();
+        FrontParams result = frontParamsRepository.findById(1L)
+                .orElseThrow(() -> {
+                    log.error("Фронт параметры не найдены");
+                    throw new EntityNotFoundException("Фронт параметры не найдены");
+                });
         log.info("Все FrontParams получены");
-        return frontParams;
-    }
-
-    @Override
-    public FrontParams getTheFrontParamsById(Long id) {
-        Optional<FrontParams> optional = frontParamsRepository.findById(id);
-        if (optional.isPresent())
-            return optional.get();
-
-        else
-            throw new EntityNotFoundException("There are no such parameters with the id provided.");
-    }
-    @Override
-    public FrontParams createFrontParams(FrontParams frontParams) {
-        log.info("Создание FrontParams");
-        FrontParams result = frontParamsRepository.save(frontParams);
-        log.info("FrontParams созданы");
         return result;
     }
 
     @Override
-    public void deleteFrontParams(Long id) {
-        log.info("Удаление FrontParams по id");
-        frontParamsRepository.deleteById(id);
-        log.info("Удаление FrontParams завершено");
+    public void updateFrontParam(FrontParams frontParams) {
+        log.info("Обновление фронт параметров");
+        Optional<FrontParams> optional = frontParamsRepository.findById(1L);
+
+        if (optional.isPresent()) {
+            FrontParams source = optional.get();
+            source.setActiveWindow(frontParams.isActiveWindow());
+            source.setBackgroundCase(frontParams.getBackgroundCase());
+            source.setBackgroundMainBottom(frontParams.getBackgroundMainBottom());
+            source.setButtonText(frontParams.getButtonText());
+            source.setColorBackground(frontParams.getColorBackground());
+            source.setColorBackgroundOne(frontParams.getColorBackgroundOne());
+            source.setColorBackgroundTwo(frontParams.getColorBackgroundTwo());
+            source.setColorButton(frontParams.getColorButton());
+            source.setColorButtons(frontParams.getColorButtons());
+            source.setColorFooterDown(frontParams.getColorFooterDown());
+            source.setColorFooterUp(frontParams.getColorFooterUp());
+            source.setColorHeaderLeft(frontParams.getColorHeaderLeft());
+            source.setColorHeaderRight(frontParams.getColorHeaderRight());
+            source.setFooterLogo(frontParams.getFooterLogo());
+            source.setHeaderLogo(frontParams.getHeaderLogo());
+            source.setTextImage(frontParams.getTextImage());
+            source.setTitleText(frontParams.getTitleText());
+            source.setWindowTextTwo(frontParams.getWindowTextTwo());
+            frontParamsRepository.save(source);
+            log.info("Фронт параметры обновлена");
+
+        } else frontParamsRepository.save(frontParams);
     }
 }

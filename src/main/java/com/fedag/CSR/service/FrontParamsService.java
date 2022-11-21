@@ -1,17 +1,11 @@
 package com.fedag.CSR.service;
 
 import com.fedag.CSR.model.FrontParams;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Optional;
 
 public interface FrontParamsService {
+    FrontParams getFrontParam();
+    void updateFrontParam(FrontParams frontParams);
 
-    List<FrontParams> getAllFrontParams();
-    FrontParams getTheFrontParamsById(Long id);
-
-    FrontParams createFrontParams(FrontParams frontParams);
-
-    void deleteFrontParams(Long id);
 }
