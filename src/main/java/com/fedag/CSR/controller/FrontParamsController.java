@@ -30,7 +30,7 @@ public class FrontParamsController {
         return ResponseEntity.ok().body(frontParamsService.getFrontParam());
     }
 
-    @PostMapping
+    @PutMapping
     @ApiOperation(value = "Обновление параметров в базе.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Фронт-параметры записаны.",
