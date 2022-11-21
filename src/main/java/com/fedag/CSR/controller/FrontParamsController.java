@@ -40,6 +40,6 @@ public class FrontParamsController {
     })
     @PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<?> saveFrontParams(@RequestBody FrontParams frontParams) {
-        return ResponseEntity.ok().body(frontParamsService.updateFrontParam(frontParams));
+        frontParamsService.updateFrontParam(frontParams);
     }
 }

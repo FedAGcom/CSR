@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface FrontParamsService {
     FrontParams getFrontParam();
-    FrontParams updateFrontParam(FrontParams frontParams);
+    void updateFrontParam(FrontParams frontParams);
 }

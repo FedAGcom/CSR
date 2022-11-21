@@ -32,7 +32,7 @@ public class FrontParamsServiceImpl implements FrontParamsService {
     }
 
     @Override
-    public FrontParams updateFrontParam(FrontParams frontParams) {
+    public void updateFrontParam(FrontParams frontParams) {
         log.info("Обновление фронт параметров");
         Optional<FrontParams> optional = frontParamsRepository.findById(1L);
 
@@ -58,8 +58,7 @@ public class FrontParamsServiceImpl implements FrontParamsService {
             source.setWindowTextTwo(frontParams.getWindowTextTwo());
             frontParamsRepository.save(source);
             log.info("Фронт параметры обновлены");
-            return source;
 
-        } else  return frontParamsRepository.save(frontParams);
+        } else frontParamsRepository.save(frontParams);
     }
 }
