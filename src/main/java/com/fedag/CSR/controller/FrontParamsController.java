@@ -39,7 +39,7 @@ public class FrontParamsController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
     @PreAuthorize("hasAnyAuthority('admin')")
-    public ResponseEntity<?> saveFrontParams(@RequestBody FrontParams frontParams) {
+    public void saveFrontParams(@RequestBody FrontParams frontParams) {
         frontParamsService.updateFrontParam(frontParams);
     }
 }
