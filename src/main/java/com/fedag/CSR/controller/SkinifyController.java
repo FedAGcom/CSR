@@ -24,7 +24,7 @@ public class SkinifyController {
 
 
     @GetMapping("/create-deposit")
-    @PreAuthorize("hasAuthority('user')")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ResponseEntity<?> createDepositPost(@RequestHeader("Authorization") String userToken) {
         Map<String, String> hashMap = new HashMap<>();
         String url = skinifyService.createDeposit(userToken);
