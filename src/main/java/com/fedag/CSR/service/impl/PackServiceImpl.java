@@ -2,6 +2,7 @@ package com.fedag.CSR.service.impl;
 
 import com.fedag.CSR.dto.response.PackResponse;
 import com.fedag.CSR.enums.PackStatus;
+import com.fedag.CSR.exception.HttpClientErrorExceptionCustom;
 import com.fedag.CSR.exception.ObjectNotFoundException;
 import com.fedag.CSR.mapper.PackMapper;
 import com.fedag.CSR.model.Item;
@@ -12,23 +13,18 @@ import com.fedag.CSR.repository.WinChanceRepository;
 import com.fedag.CSR.service.ItemService;
 import com.fedag.CSR.service.PackService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -48,7 +44,6 @@ public class PackServiceImpl implements PackService {
     private final ItemService itemService;
     private final WinChanceRepository winChanceRepository;
     private final PackMapper packMapper;
-    private final RestTemplate restTemplate;
 
     @Override
     @Transactional
@@ -195,9 +190,7 @@ public class PackServiceImpl implements PackService {
 //    }
 
     public String getItemIcon(Item item) {
-
         StringBuilder itemName = new StringBuilder();
-        String iconUrlFromApi;
         try {
             if (item.getType().equalsIgnoreCase("Knife")) {
                 itemName.append("%E2%98%85%20")
@@ -211,28 +204,20 @@ public class PackServiceImpl implements PackService {
                     .append(item.getQuality())
                     .append("%29");
 
-            log.info("Получение иконки предмета " + "https://steamcommunity.com/market/listings/730/"
-                    + itemName + "/render?start=0&count=1&currency=3&language=english&format=json");
+            String url = "https://steamcommunity.com/market/listings/730/" + itemName;
+            log.info("Получение иконки предмета " + url);
 
-            ResponseEntity<String> response = restTemplate
-                    .getForEntity("https://steamcommunity.com/market/listings/730/"
-                            + itemName + "/render?start=0&count=1&currency=3&language=english&format=json", String.class);
-            JSONObject jsonAssets = new JSONObject(response.getBody());
-            JSONObject jsonObjectAssets = (JSONObject) jsonAssets.get("assets");
-
-            String[] iconUrlArray = String.valueOf(jsonObjectAssets).split("\"icon_url\":\"");
-
-            int counter = 0;
-            StringBuilder sb = new StringBuilder();
-            while (iconUrlArray[1].charAt(counter) != 34) {
-                sb.append(iconUrlArray[1].charAt(counter));
-                counter++;
+            Document document = null;
+            try {
+                document = Jsoup.connect(url).get();
+            } catch (IOException e) {
+                throw new HttpClientErrorExceptionCustom("Not found page with items");
             }
-            iconUrlFromApi = iconUrlArray[1].substring(0, sb.length());
             log.info("Иконка предмета получена");
-            return "http://cdn.steamcommunity.com/economy/image/" + iconUrlFromApi;
-
-        } catch (HttpClientErrorException | JSONException | ClassCastException TooManyRequests) {
+            return document.select("#mainContents > div.market_page_fullwidth.market_listing_firstsection > div > div.market_listing_largeimage > img")
+                    .attr("src");
+        } catch (
+                HttpClientErrorExceptionCustom TooManyRequests) {
             log.warn("Too Many Requests to steam community market, getting an icon from the wiki");
             itemName.setLength(0);
             itemName.append(item.getTitle().replace(" | ", "/").replace(" ", "-").toLowerCase());
@@ -241,7 +226,7 @@ public class PackServiceImpl implements PackService {
             Document document = null;
             try {
                 document = Jsoup.connect(url).get();
-            } catch (IOException httpStatusException ) {
+            } catch (IOException httpStatusException) {
                 throw new ObjectNotFoundException("Item doesn't exist on wiki market");
             }
             log.info("Иконка предмета получена");
@@ -261,9 +246,9 @@ public class PackServiceImpl implements PackService {
                     + ("%29");
         } else itemName =
                 (item.getTitle().replace("|", "%7C").replace(" ", "%20"))
-                + ("%20%28")
-                + (item.getQuality().replace(" ", "%20"))
-                + ("%29");
+                        + ("%20%28")
+                        + (item.getQuality().replace(" ", "%20"))
+                        + ("%29");
 
         String url = "https://steamcommunity.com/market/priceoverview/?appid=730&currency=5&market_hash_name="
                 + itemName;
