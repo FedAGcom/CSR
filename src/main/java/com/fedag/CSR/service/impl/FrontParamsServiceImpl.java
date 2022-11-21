@@ -20,19 +20,7 @@ public class FrontParamsServiceImpl implements FrontParamsService {
     }
 
     @Override
-    public FrontParams getFrontParam() {
-        log.info("Запрос всех FrontParams");
-        FrontParams result = frontParamsRepository.findById(1L)
-                .orElseThrow(() -> {
-                    log.error("Фронт параметры не найдены");
-                    throw new EntityNotFoundException("Фронт параметры не найдены");
-                });
-        log.info("Все FrontParams получены");
-        return result;
-    }
-
-    @Override
-    public void updateFrontParam(FrontParams frontParams) {
+    public FrontParams updateFrontParam(FrontParams frontParams) {
         log.info("Обновление фронт параметров");
         Optional<FrontParams> optional = frontParamsRepository.findById(1L);
 
@@ -57,8 +45,9 @@ public class FrontParamsServiceImpl implements FrontParamsService {
             source.setTitleText(frontParams.getTitleText());
             source.setWindowTextTwo(frontParams.getWindowTextTwo());
             frontParamsRepository.save(source);
-            log.info("Фронт параметры обновлена");
+            log.info("Фронт параметры обновлены");
+            return source;
 
-        } else frontParamsRepository.save(frontParams);
+        } else  return frontParamsRepository.save(frontParams);
     }
 }

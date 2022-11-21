@@ -164,6 +164,5 @@ public class SkinifyServiceImpl implements SkinifyService {
 
         return currentDeposit.getStatus();
     }
-
 }
 

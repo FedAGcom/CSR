@@ -5,7 +5,5 @@ import com.fedag.CSR.model.FrontParams;
 import java.util.Optional;
 
 public interface FrontParamsService {
-    FrontParams getFrontParam();
-    void updateFrontParam(FrontParams frontParams);
-
+    FrontParams updateFrontParam(FrontParams frontParams);
 }
