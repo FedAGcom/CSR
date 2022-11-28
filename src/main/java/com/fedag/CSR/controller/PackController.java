@@ -34,7 +34,6 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ResponseEntity<?> getPack(@PathVariable BigDecimal id) {
         return ResponseEntity.ok().body(packService.findById(id));
     }
@@ -47,6 +46,7 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
+    @PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<?> updatePack(@RequestBody String pack) throws IOException {
         return ResponseEntity.ok().body(packService.updatePack(pack));
     }
@@ -71,7 +71,7 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public void createPack(@RequestBody String pack) throws IOException {
         packService.create(pack);
     }
@@ -100,7 +100,7 @@ public class PackController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-//    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public String getImage(@PathVariable BigDecimal id) {
         PackResponse packResponse = packService.findById(id);
         return "<img src='data:" + packResponse.getImageType() + ";base64," + packResponse.getImage() + "'/>";
