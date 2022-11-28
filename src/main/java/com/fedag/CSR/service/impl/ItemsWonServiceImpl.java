@@ -89,6 +89,7 @@ public class ItemsWonServiceImpl implements ItemsWonService {
             itemMap.put("pack_title", lastItem.getPacks().getTitle());
             itemMap.put("user_name", lastItem.getUsers().getUserName());
             itemMap.put("user_icon", lastItem.getUsers().getSteamFullAvatarLink());
+            itemMap.put("item_id", lastItem.getItems().getItemId());
             resultList.add(itemMap);
         }
         return resultList;
