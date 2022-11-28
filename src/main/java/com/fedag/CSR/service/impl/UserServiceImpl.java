@@ -82,10 +82,10 @@ public class UserServiceImpl implements UserService {
                         .entrySet()
                         .stream()
                         .max(Map.Entry.comparingByValue()));
-        getUserDetails.put("itemsActiveAll",
-                itemsWonRepository.findAllByUsersIdAndItemsWonStatus(user.getId(), ItemsWonStatus.ON_BALANCE));
-//                        .stream()
-//                        .map(itemsWon -> itemsWon.getItems().getItemId()));
+        getUserDetails.put("itemsIdActiveAll",
+                itemsWonRepository.findAllByUsersIdAndItemsWonStatus(user.getId(), ItemsWonStatus.ON_BALANCE)
+                        .stream()
+                        .map(itemsWon -> itemsWon.getItems().getItemId()));
         log.info("Пользователь, баланс, выигранные предметы на балансе, самые дорогие выигранные предметы и " +
                 "наиболее часто открываемые кейсы получены");
         return getUserDetails;
