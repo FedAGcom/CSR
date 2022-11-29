@@ -80,7 +80,7 @@ public class FrontParamServiceTest {
 //    }
 
     @Test
-    @Order(4)
+    @Order(3)
     void getFrontParamsIfDataIsNotPresentInTable(){
         given(frontParamsRepository.findById(1L)).isNotPresent();
         when(frontParamsRepository.save(any(FrontParams.class))).thenReturn(halloweenFrontParams);
