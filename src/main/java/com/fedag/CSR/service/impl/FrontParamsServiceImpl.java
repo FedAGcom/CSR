@@ -1,12 +1,12 @@
 package com.fedag.CSR.service.impl;
 
-import com.fedag.CSR.exception.EntityNotFoundException;
 import com.fedag.CSR.model.FrontParams;
 import com.fedag.CSR.repository.FrontParamsRepository;
 import com.fedag.CSR.service.FrontParamsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Slf4j
@@ -32,11 +32,11 @@ public class FrontParamsServiceImpl implements FrontParamsService {
     }
 
     @Override
-    public void updateFrontParam(FrontParams frontParams) {
-        log.info("Обновление фронт параметров");
+    public FrontParams updateFrontParam(FrontParams frontParams) {
         Optional<FrontParams> optional = frontParamsRepository.findById(1L);
 
         if (optional.isPresent()) {
+            log.info("Обновление фронт параметров");
             FrontParams source = optional.get();
             source.setActiveWindow(frontParams.isActiveWindow());
             source.setBackgroundCase(frontParams.getBackgroundCase());
@@ -56,9 +56,15 @@ public class FrontParamsServiceImpl implements FrontParamsService {
             source.setTextImage(frontParams.getTextImage());
             source.setTitleText(frontParams.getTitleText());
             source.setWindowTextTwo(frontParams.getWindowTextTwo());
-            frontParamsRepository.save(source);
+            FrontParams newFrontParams = frontParamsRepository.save(source);
             log.info("Фронт параметры обновлены");
+            return newFrontParams;
 
-        } else frontParamsRepository.save(frontParams);
+        } else {
+            log.info("Создание фронт параметров");
+            FrontParams newFrontParams = frontParamsRepository.save(frontParams);
+            log.info("Фронт параметры созданы");
+            return newFrontParams;
+        }
     }
 }

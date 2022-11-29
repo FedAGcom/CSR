@@ -1,6 +1,5 @@
 package com.fedag.CSR.service;
 
-import com.fedag.CSR.exception.EntityNotFoundException;
 import com.fedag.CSR.model.FrontParams;
 import com.fedag.CSR.repository.FrontParamsRepository;
 import com.fedag.CSR.service.impl.FrontParamsServiceImpl;
@@ -10,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
