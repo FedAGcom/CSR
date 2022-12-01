@@ -22,7 +22,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -31,15 +34,12 @@ public class ItemServiceImpl implements ItemService {
 
     private final RestTemplate restTemplate;
     private final UserRepository userRepository;
-
     private String steamURL = "https://steamcommunity.com";
 
     private String getPriceOfItemSteamUrl = "https://steamcommunity.com/market/priceoverview/";
     private final ObjectMapper mapper;
     private final ItemRepositoryImpl itemRepositoryImpl;
-
     private final ItemRepository itemRepository;
-
     private final ItemMapper itemMapper;
 
     @Override
