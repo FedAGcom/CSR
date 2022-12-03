@@ -50,6 +50,7 @@ public class UserAuthImpl implements UserAuth {
     private String steamApiKey;
     @Value("${users.logged.via.steam.shared.password}")
     private String passwordLoggedViaSteam;
+
     @Override
     public Map<String, Object> saveUser(RegistrationRequest registrationRequest) {
         Map<String, Object> responseMap = new HashMap<>();
@@ -79,6 +80,7 @@ public class UserAuthImpl implements UserAuth {
         responseMap.put("token", token);
         return responseMap;
     }
+
     @Override
     public Map<String, Object> saveSteamUser(HttpServletRequest request, SteamAuthRequestDto dto) throws IOException {
         log.info("Получение данных с аккаунта Steam");
@@ -149,6 +151,14 @@ public class UserAuthImpl implements UserAuth {
                 response.put("userName", userName);
                 response.put("token", token);
                 return response;
+            } else if (!jwtTokenProvider.validateToken(token)) {
+                token = jwtTokenProvider.createToken(user.getSteamId(), user.getRole().name());
+                user.setConfirmationToken(token);
+                userRepository.save(user);
+                Map<String, Object> response = new HashMap<>();
+                response.put("userName", userName);
+                response.put("token", token);
+                return response;
             } else {
                 responseMap.put("Error", true);
                 responseMap.put("message", "Invalid token");
@@ -171,8 +181,7 @@ public class UserAuthImpl implements UserAuth {
             responseMap.put("steam_avatar_full", user.getSteamFullAvatarLink());
             responseMap.put("steam_link", user.getSteamLink());
             return responseMap;
-        }
-        else {
+        } else {
             throw new EntityNotFoundException("User", "SteamId", steamId);
         }
     }

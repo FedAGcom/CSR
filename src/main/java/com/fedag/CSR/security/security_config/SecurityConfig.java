@@ -27,11 +27,9 @@ public class SecurityConfig{
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        //TODO enable csrf
         http
-                .csrf().disable()
-//                .and()
+                .csrf()
+                .and()
                 .cors()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
