@@ -138,8 +138,9 @@ public class UserAuthImpl implements UserAuth {
             responseMap.put("token", token);
             log.info("Пользователь со Steam аккаунтом зарегистрирован");
         } else {
-            String token = userRepository.findByUserName(personaname).get().getConfirmationToken();
-            String userName = userRepository.findByUserName(personaname).get().getUserName();
+            user = userRepository.findByUserName(personaname).get();
+            String token = user.getConfirmationToken();
+            String userName = user.getUserName();
             try {
                 jwtTokenProvider.validateToken(token);
                 responseMap.put("userName", userName);
