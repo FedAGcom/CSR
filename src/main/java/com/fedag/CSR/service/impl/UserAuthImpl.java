@@ -1,14 +1,14 @@
 package com.fedag.CSR.service.impl;
 
-import com.fedag.CSR.enums.Role;
 import com.fedag.CSR.email.EmailService;
+import com.fedag.CSR.enums.Role;
 import com.fedag.CSR.exception.EntityNotFoundException;
 import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.model.User;
 import com.fedag.CSR.repository.UserRepository;
 import com.fedag.CSR.security.SteamAuthRequestDto;
-import com.fedag.CSR.security.UserDetailsServiceImpl;
 import com.fedag.CSR.security.jwt.JwtTokenProvider;
+import com.fedag.CSR.security.security_exception.JwtAuthenticationException;
 import com.fedag.CSR.security.security_exception.RegistrationRequest;
 import com.fedag.CSR.service.UserAuth;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +27,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -142,29 +137,23 @@ public class UserAuthImpl implements UserAuth {
             responseMap.put("message", "Account created successfully");
             responseMap.put("token", token);
             log.info("Пользователь со Steam аккаунтом зарегистрирован");
-            return responseMap;
         } else {
             String token = userRepository.findByUserName(personaname).get().getConfirmationToken();
             String userName = userRepository.findByUserName(personaname).get().getUserName();
-            if (jwtTokenProvider.validateToken(token)) {
-                Map<String, Object> response = new HashMap<>();
-                response.put("userName", userName);
-                response.put("token", token);
-                return response;
-            } else if (!jwtTokenProvider.validateToken(token)) {
+            try {
+                jwtTokenProvider.validateToken(token);
+                responseMap.put("userName", userName);
+                responseMap.put("token", token);
+            } catch (JwtAuthenticationException e) {
+                log.info("Токен истёк и обновлён");
                 token = jwtTokenProvider.createToken(user.getSteamId(), user.getRole().name());
                 user.setConfirmationToken(token);
                 userRepository.save(user);
-                Map<String, Object> response = new HashMap<>();
-                response.put("userName", userName);
-                response.put("token", token);
-                return response;
-            } else {
-                responseMap.put("Error", true);
-                responseMap.put("message", "Invalid token");
-                return responseMap;
+                responseMap.put("userName", userName);
+                responseMap.put("token", token);
             }
         }
+        return responseMap;
     }
 
     @Override
