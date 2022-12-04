@@ -35,7 +35,7 @@ public class PromoCodesController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<?> createPromo(@RequestBody PromoCode promoCode) {
         promoCodesService.save(promoCode);
         return ResponseEntity.ok().body(promoCode);
@@ -50,7 +50,7 @@ public class PromoCodesController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<?> checkPromo(@RequestParam(name = "promo") String promoCode, @RequestHeader("Authorization") String userToken) {
         return promoCodesService.checkPromoCode(promoCode, userToken);
     }

@@ -47,7 +47,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     })
-//    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ResponseEntity<?> getUser(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok().body(userService.getUserAndBalanceAndAllActiveItemsAndFavoritePackAndBestItem(token));
     }

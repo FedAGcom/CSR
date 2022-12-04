@@ -32,6 +32,7 @@ public class SkinifyController {
     }
 
     @PostMapping("/result")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ResponseEntity<?> showResult(HttpServletRequest servletRequest) {
 
         if (servletRequest.getParameter("token_md5").equals(skinifyTokenMD5)) {
@@ -50,11 +51,13 @@ public class SkinifyController {
     }
 
     @GetMapping("/success")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ResponseEntity<?> showSuccessUrl() {
         return ResponseEntity.ok().body("Оплата успешно произведена");
     }
 
     @GetMapping("/fail")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ResponseEntity<?> showFailedUrl() {
         return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.BAD_REQUEST);
     }
