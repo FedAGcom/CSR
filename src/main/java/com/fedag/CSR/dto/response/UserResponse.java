@@ -16,11 +16,11 @@ import java.math.BigDecimal;
 public class UserResponse {
 
     private BigDecimal id;
-    //    private String email;
-    private Double balance;
     private Role role;
-    private String steamLink;
     private String userName;
+    private Double balance;
+    //    private String steamLink;
     private String steamAvatarMedium;
+    private String email;
     private String tradeUrl;
 }

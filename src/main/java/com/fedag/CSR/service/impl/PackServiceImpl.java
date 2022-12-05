@@ -210,7 +210,7 @@ public class PackServiceImpl implements PackService {
             Document document = null;
             try {
                 document = Jsoup.connect(url).get();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new HttpClientErrorExceptionCustom("Not found page with items");
             }
             log.info("Иконка предмета получена");

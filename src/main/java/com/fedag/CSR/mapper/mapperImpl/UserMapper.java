@@ -73,15 +73,15 @@ public class UserMapper {
     public UserResponse modelToDto(User user) {
         return new UserResponse()
                 .setId(user.getId())
-//                .setEmail(user.getEmail())
                 .setUserName(user.getUserName())
                 .setRole(user.getRole())
-                .setTradeUrl(user.getTradeUrl())
                 .setSteamAvatarMedium(user.getSteamAvatarMediumLink())
                 .setBalance(balanceRepository.findAllByUserId(user.getId())
                         .stream()
                         .map(Balance::getCoins)
-                        .findFirst().orElse(Double.valueOf("0.00")));
+                        .findFirst().orElse(Double.valueOf("0.00")))
+                .setTradeUrl(user.getTradeUrl())
+                .setEmail(user.getEmail().equals("fedag@gmail.com") ? null : user.getEmail());
     }
 
     public User dtoToModel(UserRequest user) {
