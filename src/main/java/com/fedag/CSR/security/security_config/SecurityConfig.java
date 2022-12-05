@@ -27,9 +27,9 @@ public class SecurityConfig{
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        //TODO убрать .disable() - защита от межсайтовых угроз
         http
-                .csrf()
-                .and()
+                .csrf().disable()
                 .cors()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
