@@ -3,7 +3,9 @@ package com.fedag.CSR.mapper.mapperImpl;
 import com.fedag.CSR.dto.request.UserRequest;
 import com.fedag.CSR.dto.response.UserResponse;
 import com.fedag.CSR.dto.update.UserUpdate;
+import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.model.User;
+import com.fedag.CSR.repository.BalanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -19,6 +21,7 @@ import java.util.function.Function;
 public class UserMapper {
 
     private final ModelMapper mapper;
+    private final BalanceRepository balanceRepository;
 
     @PostConstruct
     public void setupMapper() {
@@ -69,10 +72,16 @@ public class UserMapper {
 
     public UserResponse modelToDto(User user) {
         return new UserResponse()
+                .setId(user.getId())
+//                .setEmail(user.getEmail())
                 .setUserName(user.getUserName())
                 .setRole(user.getRole())
-                .setSteamAvatarMedium(user.getSteamAvatarMediumLink());
-
+                .setTradeUrl(user.getTradeUrl())
+                .setSteamAvatarMedium(user.getSteamAvatarMediumLink())
+                .setBalance(balanceRepository.findAllByUserId(user.getId())
+                        .stream()
+                        .map(Balance::getCoins)
+                        .findFirst().orElse(Double.valueOf("0.00")));
     }
 
     public User dtoToModel(UserRequest user) {

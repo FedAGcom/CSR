@@ -66,7 +66,6 @@ public class UserAuthImpl implements UserAuth {
         userRepository.save(user);
 
         String link = "http://csgofarm.online/api/v1/activate/confirm?token=" + token;
-//        String link = "http://localhost:80/api/v1/activate/confirm?token=" + token;
         emailService.send(registrationRequest.getEmail(), registrationRequest.getFirstName(), link);
 
         responseMap.put("error", false);
