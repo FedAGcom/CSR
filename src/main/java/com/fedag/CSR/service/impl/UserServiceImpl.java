@@ -4,6 +4,7 @@ import com.fedag.CSR.dto.request.UserRequest;
 import com.fedag.CSR.dto.response.UserResponse;
 import com.fedag.CSR.dto.update.UserUpdate;
 import com.fedag.CSR.enums.ItemsWonStatus;
+import com.fedag.CSR.enums.PackStatus;
 import com.fedag.CSR.exception.EntityNotFoundException;
 import com.fedag.CSR.mapper.mapperImpl.UserMapper;
 import com.fedag.CSR.model.Balance;
@@ -11,6 +12,7 @@ import com.fedag.CSR.model.ItemsWon;
 import com.fedag.CSR.model.User;
 import com.fedag.CSR.repository.BalanceRepository;
 import com.fedag.CSR.repository.ItemsWonRepository;
+import com.fedag.CSR.repository.PackRepository;
 import com.fedag.CSR.repository.UserRepository;
 import com.fedag.CSR.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -37,6 +40,7 @@ public class UserServiceImpl implements UserService {
     private final BalanceRepository balanceRepository;
     private final ItemsWonRepository itemsWonRepository;
     private final PasswordEncoder encoder;
+    private final PackRepository packRepository;
 
     public Page<UserResponse> getAllUsers(Pageable pageable) {
         log.info("Получение всех пользователей");
@@ -68,20 +72,27 @@ public class UserServiceImpl implements UserService {
                         .distinct()
                         .collect(Collectors.toMap
                                 (items -> items.getItems().getItemId(), ItemsWon::getItemPrice,
-                                        (duplicate1, duplicate2) -> {
-                                            return duplicate1;
-                                        }))
+                                        (duplicate1, duplicate2) -> duplicate1))
                         .entrySet()
                         .stream()
                         .max(Map.Entry.comparingByValue()));
-        getUserDetails.put("favoritePackIdAndCount",
-                itemsWonRepository.findAllByUsersId(user.getId())
-                        .stream()
-                        .map(pack -> pack.getPacks().getId())
-                        .collect(Collectors.toMap(Function.identity(), value -> 1, Integer::sum))
-                        .entrySet()
-                        .stream()
-                        .max(Map.Entry.comparingByValue()));
+
+        // Достаём все паки юзера и счетам количество открытий каждого
+        Map<BigDecimal, Integer> allPacksUser = itemsWonRepository.findAllByUsersId(user.getId())
+                .stream()
+                .map(pack -> pack.getPacks().getId())
+                .collect(Collectors.toMap(Function.identity(), value -> 1, Integer::sum));
+
+        // Сортируем их по количеству и проверяем на актуальность
+        Map.Entry<BigDecimal, Integer> favoritePacksActive = allPacksUser.entrySet()
+                .stream()
+                .sorted(Map.Entry.<BigDecimal, Integer>comparingByValue().reversed())
+                .filter(map ->
+                        Objects.requireNonNull(packRepository.findById(map.getKey()).orElse(null)).getStatus().equals(PackStatus.USED))
+                .findFirst().orElse(null);
+
+        getUserDetails.put("favoritePackIdAndCount", favoritePacksActive);
+
         getUserDetails.put("itemsIdActiveAll",
                 itemsWonRepository.findAllByUsersIdAndItemsWonStatus(user.getId(), ItemsWonStatus.ON_BALANCE)
                         .stream()
@@ -94,7 +105,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse getUser(String token) {
         log.info("Получение пользователя c token");
-        UserResponse userResponse = null;
+        UserResponse userResponse;
         Optional<User> optional = userRepository.findUserByConfirmationToken(token);
         if (optional.isPresent()) {
             User user = optional.get();

@@ -4,17 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fedag.CSR.dto.request.PackRequest;
 import com.fedag.CSR.dto.response.PackResponse;
 import com.fedag.CSR.dto.update.PackUpdate;
-import com.fedag.CSR.enums.PackStatus;
 import com.fedag.CSR.mapper.PackMapper;
 import com.fedag.CSR.model.Pack;
-import com.fedag.CSR.repository.PackRepository;
 import com.fedag.CSR.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -48,16 +46,11 @@ public class PackMapperImpl implements PackMapper {
     @Override
     public Page<PackResponse> modelToDto(Page<Pack> packPage) {
         return packPage
-                .map(new Function<Pack, PackResponse>() {
-                    @Override
-                    public PackResponse apply(Pack pack) {
-                            return modelToDto(pack)
-                                    .setPackItemsList(pack.getItems()
-                                            .stream()
-                                            .map(item -> itemService.findById(item.getItemId()))
-                                            .collect(Collectors.toList()));
-                        }
-        });
+                .map(pack -> modelToDto(pack)
+                        .setPackItemsList(pack.getItems()
+                                .stream()
+                                .map(item -> itemService.findById(item.getItemId()))
+                                .collect(Collectors.toList())));
     }
 
     public Pack fromRequest(PackRequest packRequest) {
