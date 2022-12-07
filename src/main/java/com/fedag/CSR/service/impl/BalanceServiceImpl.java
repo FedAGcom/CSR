@@ -1,10 +1,12 @@
 package com.fedag.CSR.service.impl;
 
+import com.fedag.CSR.enums.ItemsWonStatus;
 import com.fedag.CSR.exception.EntityNotFoundException;
-import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.mapper.BalanceMapper;
-import com.fedag.CSR.model.Item;
+import com.fedag.CSR.model.Balance;
+import com.fedag.CSR.model.ItemsWon;
 import com.fedag.CSR.repository.BalanceRepository;
+import com.fedag.CSR.repository.ItemsWonRepository;
 import com.fedag.CSR.service.BalanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,8 +26,8 @@ import java.util.List;
  * Wrapper for {@link BalanceRepository} and plus business logic.
  *
  * @author Kirill Soklakov
- * @since 2022-09-01
  * @version 1.1
+ * @since 2022-09-01
  */
 @Slf4j
 @Service
@@ -33,6 +37,7 @@ public class BalanceServiceImpl implements BalanceService {
 
     private final BalanceRepository balanceRepository;
     private final BalanceMapper balanceMapper;
+    private final ItemsWonRepository itemsWonRepository;
 
     @Override
     public Balance findById(BigDecimal id) {
@@ -58,8 +63,6 @@ public class BalanceServiceImpl implements BalanceService {
     @Transactional
     public Balance create(Balance balance) {
         log.info("Создание баланса");
-        final List<Item> balanceItems = balance.getItems();
-        balance.setItems(balanceItems);
         Balance result = balanceRepository.save(balance);
         log.info("Баланс создан");
         return result;
@@ -83,6 +86,32 @@ public class BalanceServiceImpl implements BalanceService {
         this.findById(id);
         balanceRepository.deleteById(id);
         log.info("Баланс с Id: {} удален", id);
+    }
+
+    @Override
+    public Double soldAllItemsByBalanceId(BigDecimal id) {
+        Balance result = balanceRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Баланс с Id: {} не найден", id);
+                    throw new EntityNotFoundException("Balance", "Id", id);
+                });
+        Double profit = 0.0;
+        List<ItemsWon> listItems = new ArrayList<>();
+        for (ItemsWon i : result.getItemsWon()) {
+            if (i.getItemsWonStatus() == ItemsWonStatus.ON_BALANCE) {
+                i.setItemsWonStatus(ItemsWonStatus.SOLD);
+                i.setItemWonSailedTime(LocalDateTime.now());
+                listItems.add(i);
+                profit = profit + i.getItemPrice();
+                itemsWonRepository.save(i);
+            }
+        }
+        result.setCoins(result.getCoins() + profit);
+        result.setItemsWon(listItems);
+
+        balanceRepository.save(result);
+
+        return profit;
     }
 
 }

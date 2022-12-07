@@ -1,18 +1,19 @@
 package com.fedag.CSR.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item {
+@Builder
+public class Item implements Serializable {
 
     @Id
     @Column(name = "id")
@@ -32,17 +33,18 @@ public class Item {
     private String quality;
 
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "balance_id")
-    private Balance balance;
+    @Column(name = "icon_item_id")
+    private String iconItemId;
 
     @ManyToOne
     @JoinColumn(name = "pack_id")
     private Pack pack;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-//    private List<WinChance> winChances;
-}
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "items")
+    public List<ItemsWon> itemsWon;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
+    public List<WinChance> winChances;
+}

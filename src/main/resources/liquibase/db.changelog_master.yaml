@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - include:
+      file: classpath:liquibase/db_changelog/create_table_users.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_table_balance.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_table_pack.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_table_item.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_table_pack_item.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_table_deposits.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_table_deposit_global.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_table_items_won.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_front_params.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_table_support.sql
+  - include:
+      file: classpath:liquibase/db_changelog/create_promocodes_table.sql
+  - include:
+      file: classpath:liquibase/db_changelog/filling_in_all_tables.sql
+
+

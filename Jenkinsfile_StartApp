@@ -1,0 +1,20 @@
+#!groovy
+properties([disableConcurrentBuilds()])
+
+pipeline {
+agent any
+    options {
+     buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+     timestamps()
+    }
+
+    stages {
+        stage ("Run_App") {
+            steps {
+                echo " ============== Run_App =================="
+                sh 'sudo chmod ugo+xwr /var/run/docker.sock'
+                sh 'docker-compose up -d --build'
+            }
+        }
+    }
+}

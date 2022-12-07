@@ -3,9 +3,12 @@ package com.fedag.CSR.mapper.mapperImpl;
 import com.fedag.CSR.dto.request.BalanceRequest;
 import com.fedag.CSR.dto.update.BalanceUpdate;
 import com.fedag.CSR.dto.response.BalanceResponse;
+import com.fedag.CSR.enums.ItemsWonStatus;
 import com.fedag.CSR.mapper.BalanceMapper;
 import com.fedag.CSR.model.Balance;
 import com.fedag.CSR.model.Item;
+import com.fedag.CSR.model.ItemsWon;
+import com.fedag.CSR.service.ItemsWonService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -49,8 +52,9 @@ public class BalanceMapperImpl implements BalanceMapper {
 
     private void mapSpecificFields(Balance source, BalanceResponse destination) {
         List<BigDecimal> listInt = new ArrayList<>();
-        for (Item i: source.getItems()){
-            listInt.add(i.getItemId());
+        for (ItemsWon i: source.getItemsWon()){
+            if (i.getItemsWonStatus() == ItemsWonStatus.ON_BALANCE)
+            listInt.add(i.getItems().getItemId());
         }
         destination.setBalanceItemsId(listInt);
     }

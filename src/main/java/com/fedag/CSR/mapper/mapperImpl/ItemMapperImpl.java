@@ -5,6 +5,7 @@ import com.fedag.CSR.dto.response.ItemResponse;
 import com.fedag.CSR.dto.update.ItemUpdate;
 import com.fedag.CSR.mapper.ItemMapper;
 import com.fedag.CSR.model.Item;
+import com.fedag.CSR.model.WinChance;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,19 @@ public class ItemMapperImpl implements ItemMapper {
 
     @Override
     public ItemResponse modelToDto(Item item) {
-        return mapper.map(item, ItemResponse.class);
+        return new ItemResponse()
+                .setId(item.getItemId())
+                .setType(item.getType())
+                .setTitle(item.getTitle())
+                .setRare(item.getRare())
+                .setQuality(item.getQuality())
+                .setPrice(item.getPrice())
+                .setIconItemId(item.getIconItemId())
+                .setWinchance(item.getWinChances()
+                        .stream()
+                        .map(WinChance::getWinChance)
+                        .findFirst().orElse((double) 0));
+
     }
 
     @Override

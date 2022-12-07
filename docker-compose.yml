@@ -1,28 +1,38 @@
-version: "3.3"
-volumes:
-  postgres_volume:
+version: "3.9"
 
 services:
   # Application
   csr:
-    image: csr:latest
-    container_name: csrapp
+    image: maxirage/csr:latest
+    container_name: CSRapp
     restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
-      - "8080:8080"
+      - 8080:8080
     depends_on:
-      - postgres
+      - database-postgres
 
-#  PostgreSQL
-  postgres:
-      image: postgres:latest
-      volumes:
-        - postgres_volume:/var/lib/postgresql/data
-      container_name: postgres
-      restart: always
-      environment:
-        - POSTGRES_DB=csr
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=admin
-      ports:
-        - "5433:5432"
+  # FrontApp
+  FrontApp:
+    image: maxirage/frontend:latest
+    container_name: FrontApp
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 80:80
+
+  #  PostgreSQL
+  database-postgres:
+    image: postgres:14
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=csrDocker
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - 5433:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data

@@ -1,27 +1,32 @@
 package com.fedag.CSR.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "pack_item")
-@IdClass(WinChanceId.class)
 public class WinChance {
 
     @Id
-    @Column(name = "pack_id", insertable = false, updatable = false)
-    private Long packId;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Id
-    @Column(name = "item_id", insertable = false, updatable = false)
-    private Long itemId;
 
-    @Column(name = "win_chance")
+    @Column(name = "win_chance", updatable = false)
     private Double winChance;
+
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
+
+    @ManyToOne
+    @JoinColumn(name = "pack_id")
+    private Pack pack;
 }

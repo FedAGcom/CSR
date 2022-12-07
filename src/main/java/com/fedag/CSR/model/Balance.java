@@ -1,6 +1,9 @@
 package com.fedag.CSR.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,9 +17,16 @@ import java.util.List;
  * @author Kirill Soklakov
  * @version 1.1
  */
-@Data
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Balance {
+
+    public Balance(Double coins, User user) {
+        this.coins = coins;
+        this.user = user;
+    }
 
     @Id
     @Column(name = "id")
@@ -24,12 +34,13 @@ public class Balance {
     private BigDecimal id;
 
     @Column(name = "coins")
-    private int coins;
+    private Double coins;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "balance")
-    private List<Item> items = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "balances")
+    public List<ItemsWon> itemsWon;
+
 }
