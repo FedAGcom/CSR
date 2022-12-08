@@ -19,7 +19,7 @@ agent any
         stage("Docker login") {
             steps {
                 echo " ============== docker login =================="
-                withCredentials([usernamePassword(credentialsId: 'docker_hub_maxirage', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker_hub_fedag', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh """
                     docker login -u $USERNAME -p $PASSWORD
                     """
@@ -31,13 +31,13 @@ agent any
                 echo " ============== start building image =================="
                 sh 'sudo chmod --recursive ugo+xwr /var/lib/jenkins/workspace/CSR/postgres-data/'
                 sh 'sudo chmod --recursive ugo+xwr /var/lib/jenkins/workspace/CSR/postgres-data/pg_stat_tmp'
-                sh 'docker build -t maxirage/csr:latest . '
+                sh 'docker build -t fedag/csr:latest . '
             }
         }
         stage("Docker push") {
             steps {
                 echo " ============== start pushing image =================="
-                sh 'docker push maxirage/csr:latest'
+                sh 'docker push fedag/csr:latest'
             }
         }
     }
