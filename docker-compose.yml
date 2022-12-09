@@ -3,7 +3,7 @@ version: "3.9"
 services:
   # Application
   csr:
-    image: maxirage/csr:latest
+    image: fedag/csr:latest
     container_name: CSRapp
     restart: always
     extra_hosts:
@@ -15,7 +15,7 @@ services:
 
   # FrontApp
   FrontApp:
-    image: maxirage/frontend:latest
+    image: fedag/frontend:latest
     container_name: FrontApp
     restart: always
     extra_hosts:
