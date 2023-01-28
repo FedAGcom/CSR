@@ -59,35 +59,32 @@ public class PackServiceImpl implements PackService {
         newPack.setTitle((String) jsonObject.get("title"));
         newPack.setStatus(PackStatus.USED);
         newPack.setImage((String) jsonObject.get("file"));
-        JSONArray itemsArray = jsonObject.getJSONArray("items");
         packRepository.save(newPack);
-
-        for (int i = 0; i < itemsArray.length(); i++) {
-
-            Item item = new Item();
-            WinChance winChance = new WinChance();
-            JSONObject arrayJson = itemsArray.getJSONObject(i);
-
-            item.setPack(newPack);
-            item.setType(arrayJson.getString("type"));
-            item.setTitle(arrayJson.getString("title"));
-            item.setRare(arrayJson.getString("rare"));
-            item.setQuality(arrayJson.getString("quality"));
-
-            winChance.setItem(item);
-            winChance.setPack(newPack);
-            winChance.setWinChance(arrayJson.getDouble("winchance"));
-
-            String medianPrice = getItemPriceFromSteam(item);
-
-            item.setPrice(Double.valueOf(medianPrice.substring(0, medianPrice.length() - 5).replace(",", ".")));
-            //Формирование картинки предмета
-            String itemIcon = getItemIcon(item);
-            item.setIconItemId(itemIcon);
-            itemService.create(item);
-            winChanceRepository.saveAndFlush(winChance);
-        }
+        log.info("Кейс создан");
         return newPack;
+    }
+
+    @Override
+    public void addItemsToPack(BigDecimal packId, String item) {
+        Optional<Pack> pack = packRepository.findById(packId);
+        WinChance winChance = new WinChance();
+        Item requestItem = new Item();
+        JSONObject jsonObject = new JSONObject(item);
+
+        requestItem.setPrice(jsonObject.getDouble("price"));
+        requestItem.setType(jsonObject.getString("type"));
+        requestItem.setTitle(jsonObject.getString("title"));
+        requestItem.setRare(jsonObject.getString("rare"));
+        requestItem.setQuality(jsonObject.getString("quality"));
+        String itemIcon = getItemIcon(requestItem);
+        requestItem.setIconItemId(itemIcon);
+
+        winChance.setItem(requestItem);
+        winChance.setPack(pack.get());
+        winChance.setWinChance(jsonObject.getDouble("winchance"));
+
+        itemService.create(requestItem);
+        winChanceRepository.saveAndFlush(winChance);
     }
 
 
@@ -182,6 +179,8 @@ public class PackServiceImpl implements PackService {
         }
         return responseMap;
     }
+
+
 // Кодировка картинки в БД (если потребуется)
 //    public Pack createImage(MultipartFile file, Pack result) throws IOException {
 //        result.setImage(Base64.toBase64String(file.getBytes()));

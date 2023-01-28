@@ -38,6 +38,19 @@ public class PackController {
         return ResponseEntity.ok().body(packService.findById(id));
     }
 
+    @PostMapping("/addItems/{packId}")
+    @ApiOperation(value = "Добавление предмета в кейс")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Предмет добавлен",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)}),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    })
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public void addItemsToPack(@PathVariable BigDecimal packId, @RequestBody String item) throws IOException {
+        packService.addItemsToPack(packId, item);
+    }
+
     @PutMapping
     @ApiOperation(value = "Обновление кейса по id.")
     @ApiResponses(value = {
