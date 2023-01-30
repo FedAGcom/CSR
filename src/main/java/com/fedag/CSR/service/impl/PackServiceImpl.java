@@ -76,6 +76,7 @@ public class PackServiceImpl implements PackService {
         requestItem.setTitle(jsonObject.getString("title"));
         requestItem.setRare(jsonObject.getString("rare"));
         requestItem.setQuality(jsonObject.getString("quality"));
+        requestItem.setPack(pack.get());
         String itemIcon = getItemIcon(requestItem);
         requestItem.setIconItemId(itemIcon);
 
