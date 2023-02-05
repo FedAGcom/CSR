@@ -26,4 +26,7 @@ public interface PackService {
     Pack findPackById(BigDecimal id);
 
     Map<String, Object> updatePack(String pack) throws IOException;
+
+    void addItemsToPack(BigDecimal packId, String item);
+
 }
